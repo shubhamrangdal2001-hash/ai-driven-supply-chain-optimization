@@ -1,0 +1,54 @@
+// ── Fact_Orders ──────────────────────────────────────────────
+Total Revenue = SUM(Fact_Orders[Revenue])
+Total Profit = SUM(Fact_Orders[Profit])
+Total Orders = COUNTROWS(Fact_Orders)
+Total Units = SUM(Fact_Orders[Quantity])
+On-Time Delivery % = DIVIDE(SUM(Fact_Orders[On_Time]), COUNTROWS(Fact_Orders))
+Late Delivery % = 1 - [On-Time Delivery %]
+Avg Order Value = DIVIDE([Total Revenue], [Total Orders])
+Profit Margin % = DIVIDE([Total Profit], [Total Revenue])
+Avg Delay Days = AVERAGE(Fact_Orders[Delay_Days])
+
+// ── Time intelligence (requires Dim_Date relationship) ───────
+Revenue YTD =
+    TOTALYTD([Total Revenue], Dim_Date[Date])
+
+Revenue PY =
+    CALCULATE([Total Revenue], SAMEPERIODLASTYEAR(Dim_Date[Date]))
+
+Revenue YoY % =
+    DIVIDE([Total Revenue] - [Revenue PY], [Revenue PY])
+
+// ── Inventory_Plan ───────────────────────────────────────────
+SKU Count = COUNTROWS(Inventory_Plan)
+Avg EOQ = AVERAGE(Inventory_Plan[EOQ])
+Avg Safety Stock = AVERAGE(Inventory_Plan[safety_stock])
+Class A SKUs =
+    CALCULATE([SKU Count], Inventory_Plan[ABC] = "A")
+
+// ── Fact_Demand_Monthly ──────────────────────────────────────
+Total Demand = SUM(Fact_Demand_Monthly[Total_Demand])
+Avg Monthly Demand = AVERAGE(Fact_Demand_Monthly[Total_Demand])
+
+// ── Fact_Routes (Olist VRP) ───────────────────────────────────
+Total Route Distance km = SUM(Fact_Routes[distance_km])
+Avg Stops per Vehicle = AVERAGE(Fact_Routes[stops])
+
+// ── Simulation (Monte Carlo on real SKU stats) ────────────────
+Baseline Stockout Prob =
+    CALCULATE(
+        MAX(Simulation_KPIs[Value]),
+        Simulation_KPIs[Metric] = "Baseline Stockout Prob"
+    )
+
+Optimised Stockout Prob =
+    CALCULATE(
+        MAX(Simulation_KPIs[Value]),
+        Simulation_KPIs[Metric] = "Optimised Stockout Prob"
+    )
+
+Stockout Reduction % =
+    CALCULATE(
+        MAX(Simulation_KPIs[Value]),
+        Simulation_KPIs[Metric] = "Stockout Reduction %"
+    )

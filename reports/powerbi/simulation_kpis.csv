@@ -1,0 +1,10 @@
+Metric,Value
+SKUs Simulated,500.0
+Monte Carlo Iterations,10000.0
+Service Level Target,0.95
+Lead Time (days),7.0
+Baseline Stockout Prob,0.5511
+Optimised Stockout Prob,0.0623
+Stockout Reduction %,88.7
+Baseline Overstock Units,23772.94
+Optimised Overstock Units,98255.08

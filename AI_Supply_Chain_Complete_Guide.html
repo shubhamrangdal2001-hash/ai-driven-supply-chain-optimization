@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI-Driven Supply Chain Optimization — Complete Project Guide</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+  :root {
+    --teal: #0F6E56; --teal-l: #E1F5EE; --teal-m: #1D9E75;
+    --blue: #185FA5; --blue-l: #E6F1FB; --blue-m: #378ADD;
+    --amber: #854F0B; --amber-l: #FAEEDA; --amber-m: #EF9F27;
+    --purple: #534AB7; --purple-l: #EEEDFE; --purple-m: #7F77DD;
+    --coral: #993C1D; --coral-l: #FAECE7; --coral-m: #D85A30;
+    --gray: #444441; --gray-l: #F1EFE8; --gray-m: #888780;
+    --bg: #ffffff; --bg2: #f8f7f4; --border: #e5e4df;
+    --text: #1a1a18; --text2: #5f5e5a; --text3: #888780;
+    --radius: 10px; --code-bg: #1e1e2e;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Inter', sans-serif; background: var(--bg2); color: var(--text); line-height: 1.6; }
+  
+  .hero { background: var(--teal); color: white; padding: 3rem 4rem; }
+  .hero h1 { font-size: 2rem; font-weight: 700; margin-bottom: .5rem; }
+  .hero p { font-size: 1rem; opacity: .85; max-width: 600px; }
+  .hero-meta { display: flex; gap: 1.5rem; margin-top: 1.5rem; flex-wrap: wrap; }
+  .hero-badge { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25); border-radius: 20px; padding: 4px 14px; font-size: 13px; }
+
+  .container { max-width: 1100px; margin: 0 auto; padding: 2.5rem 2rem; }
+
+  /* DATASETS SECTION */
+  .section-title { font-size: 1.4rem; font-weight: 700; margin-bottom: 1.5rem; padding-bottom: .75rem; border-bottom: 2px solid var(--border); display: flex; align-items: center; gap: 10px; }
+  .section-title span { font-size: 1.5rem; }
+
+  .datasets-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 2.5rem; }
+  .ds-card { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+  .ds-card-top { padding: 1rem 1.2rem; border-bottom: 1px solid var(--border); }
+  .ds-name { font-size: 15px; font-weight: 600; margin-bottom: 3px; }
+  .ds-desc { font-size: 12.5px; color: var(--text2); margin-bottom: 8px; }
+  .ds-tags { display: flex; gap: 5px; flex-wrap: wrap; }
+  .tag { font-size: 11px; font-weight: 500; padding: 2px 8px; border-radius: 20px; }
+  .ds-card-bottom { padding: .9rem 1.2rem; display: flex; flex-direction: column; gap: 8px; }
+  .ds-stat { display: flex; justify-content: space-between; font-size: 12.5px; }
+  .ds-stat-label { color: var(--text3); }
+  .ds-stat-val { font-weight: 500; }
+  .download-btn { display: inline-flex; align-items: center; gap: 6px; background: var(--teal); color: white; text-decoration: none; padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 500; margin-top: 4px; transition: background .2s; }
+  .download-btn:hover { background: var(--teal-m); }
+  .download-btn svg { width: 14px; height: 14px; }
+  .primary-badge { display: inline-block; background: var(--teal-l); color: var(--teal); font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 20px; margin-left: 8px; vertical-align: middle; }
+
+  /* PHASES */
+  .phases { display: flex; flex-direction: column; gap: 2rem; }
+  .phase { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+  .phase-header { padding: 1.2rem 1.5rem; display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+  .phase-header:hover { background: var(--bg2); }
+  .phase-num { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; flex-shrink: 0; }
+  .phase-info { flex: 1; }
+  .phase-title { font-size: 16px; font-weight: 600; }
+  .phase-subtitle { font-size: 12.5px; color: var(--text2); margin-top: 2px; }
+  .phase-time { font-size: 12px; color: var(--text3); font-weight: 500; white-space: nowrap; }
+  .phase-body { border-top: 1px solid var(--border); display: none; }
+  .phase-body.open { display: block; }
+  .phase-inner { padding: 1.5rem; }
+
+  /* CODE */
+  .code-section { margin: 1.2rem 0; }
+  .code-label { font-size: 12px; font-weight: 600; color: var(--text3); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 6px; display: flex; align-items: center; justify-content: space-between; }
+  .code-wrap { background: var(--code-bg); border-radius: 8px; overflow: hidden; }
+  .code-wrap pre { padding: 1.2rem 1.4rem; overflow-x: auto; font-family: 'JetBrains Mono', monospace; font-size: 13px; line-height: 1.7; color: #cdd6f4; }
+  .kw { color: #cba6f7; } .fn { color: #89b4fa; } .str { color: #a6e3a1; }
+  .cm { color: #6c7086; font-style: italic; } .num { color: #fab387; }
+  .copy-btn { background: rgba(255,255,255,0.1); color: #cdd6f4; border: none; border-radius: 6px; padding: 4px 10px; font-size: 11px; cursor: pointer; font-family: 'Inter', sans-serif; }
+  .copy-btn:hover { background: rgba(255,255,255,0.2); }
+
+  .step-list { list-style: none; display: flex; flex-direction: column; gap: 8px; margin-bottom: 1rem; }
+  .step-list li { display: flex; gap: 10px; align-items: flex-start; font-size: 13.5px; padding: 8px 12px; background: var(--bg2); border-radius: 8px; }
+  .step-dot { width: 20px; height: 20px; min-width: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; color: white; margin-top: 1px; }
+
+  .output-box { background: #0d1117; border: 1px solid #30363d; border-radius: 8px; padding: 1rem 1.2rem; font-family: 'JetBrains Mono', monospace; font-size: 12.5px; color: #79c0ff; margin-top: .5rem; }
+  .output-box .out-ok { color: #56d364; }
+  .output-box .out-val { color: #ffa657; }
+
+  .info-box { background: var(--blue-l); border-left: 3px solid var(--blue-m); border-radius: 0 8px 8px 0; padding: .8rem 1rem; font-size: 13px; color: var(--blue); margin: 1rem 0; }
+  .warn-box { background: var(--amber-l); border-left: 3px solid var(--amber-m); border-radius: 0 8px 8px 0; padding: .8rem 1rem; font-size: 13px; color: var(--amber); margin: 1rem 0; }
+
+  .results-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 1rem 0; }
+  .metric { background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: .8rem 1rem; text-align: center; }
+  .metric-val { font-size: 22px; font-weight: 700; }
+  .metric-label { font-size: 11px; color: var(--text3); margin-top: 2px; }
+
+  .chevron { transition: transform .3s; }
+  .phase-header.open .chevron { transform: rotate(180deg); }
+
+  @media (max-width: 700px) {
+    .datasets-grid { grid-template-columns: 1fr; }
+    .results-grid { grid-template-columns: 1fr 1fr; }
+    .hero { padding: 2rem 1.5rem; }
+    .container { padding: 1.5rem 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>🔗 AI-Driven Supply Chain Optimization</h1>
+  <p>Complete project guide with dataset downloads, phase-by-phase roadmap, and production-ready Python code.</p>
+  <div class="hero-meta">
+    <span class="hero-badge">📅 2026 Project</span>
+    <span class="hero-badge">🐍 Python 3.11+</span>
+    <span class="hero-badge">⏱ 12 Weeks</span>
+    <span class="hero-badge">5 Phases</span>
+    <span class="hero-badge">4 Kaggle Datasets</span>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- ===== DATASETS ===== -->
+  <div class="section-title"><span>📦</span> Dataset Download Links</div>
+
+  <div class="datasets-grid">
+
+    <div class="ds-card">
+      <div class="ds-card-top">
+        <div class="ds-name">DataCo Smart Supply Chain <span class="primary-badge">PRIMARY</span></div>
+        <div class="ds-desc">180K+ orders with shipping modes, locations, profit margins, delivery status and product categories.</div>
+        <div class="ds-tags">
+          <span class="tag" style="background:#E1F5EE;color:#0F6E56">Full Pipeline</span>
+          <span class="tag" style="background:#E6F1FB;color:#185FA5">Logistics</span>
+          <span class="tag" style="background:#F1EFE8;color:#444">180K rows</span>
+        </div>
+      </div>
+      <div class="ds-card-bottom">
+        <div class="ds-stat"><span class="ds-stat-label">Rows</span><span class="ds-stat-val">180,519</span></div>
+        <div class="ds-stat"><span class="ds-stat-label">Columns</span><span class="ds-stat-val">53</span></div>
+        <div class="ds-stat"><span class="ds-stat-label">Size</span><span class="ds-stat-val">~25 MB</span></div>
+        <div class="ds-stat"><span class="ds-stat-label">CLI command</span><span class="ds-stat-val" style="font-size:11px;font-family:monospace">shashwatwork/dataco-smart...</span></div>
+        <a href="https://www.kaggle.com/datasets/shashwatwork/dataco-smart-supply-chain-for-big-data-analysis" target="_blank" class="download-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+          Download from Kaggle
+        </a>
+      </div>
+    </div>
+
+    <div class="ds-card">
+      <div class="ds-card-top">
+        <div class="ds-name">Product Demand Forecasting</div>
+        <div class="ds-desc">Historical demand for 2,000+ products across 4 warehouses — ideal for ARIMA, XGBoost and LSTM models.</div>
+        <div class="ds-tags">
+          <span class="tag" style="background:#E6F1FB;color:#185FA5">Time Series</span>
+          <span class="tag" style="background:#EEEDFE;color:#534AB7">Forecasting</span>
+          <span class="tag" style="background:#F1EFE8;color:#444">1M+ rows</span>
+        </div>
+      </div>
+      <div class="ds-card-bottom">
+        <div class="ds-stat"><span class="ds-stat-label">Rows</span><span class="ds-stat-val">1,048,575</span></div>
+        <div class="ds-stat"><span class="ds-stat-label">Columns</span><span class="ds-stat-val">4</span></div>
+        <div class="ds-stat"><span class="ds-stat-label">Size</span><span class="ds-stat-val">~10 MB</span></div>
+        <div class="ds-stat"><span class="ds-stat-label">CLI command</span><span class="ds-stat-val" style="font-size:11px;font-family:monospace">felixzhao/productdemandforecasting</span></div>
+        <a href="https://www.kaggle.com/datasets/felixzhao/productdemandforecasting" target="_blank" class="download-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+          Download from Kaggle
+        </a>
+      </div>
+    </div>
+
+    <div class="ds-card">
+      <div class="ds-card-top">
+        <div class="ds-name">Olist Brazilian E-Commerce</div>
+        <div class="ds-desc">100K orders with real seller/customer lat-lng coordinates, freight values and delivery timestamps.</div>
+        <div class="ds-tags">
+          <span class="tag" style="background:#FAECE7;color:#993C1D">Route Opt.</span>
+          <span class="tag" style="background:#E1F5EE;color:#0F6E56">Geospatial</span>
+          <span class="tag" style="background:#F1EFE8;color:#444">9 CSV files</span>
+        </div>
+      </div>
+      <div class="ds-card-bottom">
+        <div class="ds-stat"><span class="ds-stat-label">Orders</span><span class="ds-stat-val">99,441</span></div>
+        <div class="ds-stat"><span class="ds-stat-label">Files</span><span class="ds-stat-val">9 relational CSVs</span></div>
+        <div class="ds-stat"><span class="ds-stat-label">Size</span><span class="ds-stat-val">~43 MB</span></div>
+        <div class="ds-stat"><span class="ds-stat-label">CLI command</span><span class="ds-stat-val" style="font-size:11px;font-family:monospace">olistbr/brazilian-ecommerce</span></div>
+        <a href="https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce" target="_blank" class="download-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+          Download from Kaggle
+        </a>
+      </div>
+    </div>
+
+    <div class="ds-card">
+      <div class="ds-card-top">
+        <div class="ds-name">Supply Chain Shipment Pricing</div>
+        <div class="ds-desc">USAID shipment data with freight cost, weight, product type, and shipping mode for cost optimization.</div>
+        <div class="ds-tags">
+          <span class="tag" style="background:#EEEDFE;color:#534AB7">Cost Opt.</span>
+          <span class="tag" style="background:#FAEEDA;color:#854F0B">Pricing</span>
+          <span class="tag" style="background:#F1EFE8;color:#444">10K rows</span>
+        </div>
+      </div>
+      <div class="ds-card-bottom">
+        <div class="ds-stat"><span class="ds-stat-label">Rows</span><span class="ds-stat-val">10,324</span></div>
+        <div class="ds-stat"><span class="ds-stat-label">Columns</span><span class="ds-stat-val">33</span></div>
+        <div class="ds-stat"><span class="ds-stat-label">Size</span><span class="ds-stat-val">~5 MB</span></div>
+        <div class="ds-stat"><span class="ds-stat-label">CLI command</span><span class="ds-stat-val" style="font-size:11px;font-family:monospace">divyeshardeshana/supply-chain...</span></div>
+        <a href="https://www.kaggle.com/datasets/divyeshardeshana/supply-chain-shipment-pricing-data" target="_blank" class="download-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+          Download from Kaggle
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Kaggle CLI bulk download -->
+  <div class="info-box">
+    💡 <strong>Quick setup:</strong> Install Kaggle CLI (<code>pip install kaggle</code>), place your <code>kaggle.json</code> API token at <code>~/.kaggle/kaggle.json</code>, then run the commands below to download all datasets at once.
+  </div>
+  <div class="code-section">
+    <div class="code-label">Bulk download — all 4 datasets at once</div>
+    <div class="code-wrap">
+      <pre>kaggle datasets download -d shashwatwork/dataco-smart-supply-chain-for-big-data-analysis --unzip -p ./data/dataco
+kaggle datasets download -d felixzhao/productdemandforecasting --unzip -p ./data/demand
+kaggle datasets download -d olistbr/brazilian-ecommerce --unzip -p ./data/olist
+kaggle datasets download -d divyeshardeshana/supply-chain-shipment-pricing-data --unzip -p ./data/shipment</pre>
+    </div>
+  </div>
+
+  <!-- ===== PHASES ===== -->
+  <div class="section-title" style="margin-top:2.5rem"><span>🗺️</span> Project Roadmap with Complete Code</div>
+
+  <div class="phases">
+
+    <!-- PHASE 1 -->
+    <div class="phase">
+      <div class="phase-header" onclick="togglePhase(this)">
+        <div class="phase-num" style="background:#1D9E75">1</div>
+        <div class="phase-info">
+          <div class="phase-title">Data Loading, Cleaning & EDA</div>
+          <div class="phase-subtitle">Load all datasets · Handle nulls · Feature engineering · Visualise trends</div>
+        </div>
+        <div class="phase-time">Weeks 1–2</div>
+        <svg class="chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="phase-body open">
+        <div class="phase-inner">
+          <ul class="step-list">
+            <li><span class="step-dot" style="background:#1D9E75">1</span>Install all required libraries</li>
+            <li><span class="step-dot" style="background:#1D9E75">2</span>Load and inspect each dataset</li>
+            <li><span class="step-dot" style="background:#1D9E75">3</span>Clean missing values and fix data types</li>
+            <li><span class="step-dot" style="background:#1D9E75">4</span>Engineer time-based and lag features</li>
+            <li><span class="step-dot" style="background:#1D9E75">5</span>Visualise demand trends and seasonality</li>
+          </ul>
+
+          <div class="code-section">
+            <div class="code-label">Install dependencies <button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <div class="code-wrap"><pre>pip install pandas numpy matplotlib seaborn plotly scikit-learn xgboost lightgbm
+pip install statsmodels pytorch-lightning torch ortools fastapi streamlit mlflow
+pip install neuralprophet optuna shap folium</pre></div>
+          </div>
+
+          <div class="code-section">
+            <div class="code-label">phase1_data_loading.py <button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <div class="code-wrap"><pre><span class="kw">import</span> pandas <span class="kw">as</span> pd
+<span class="kw">import</span> numpy <span class="kw">as</span> np
+<span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt
+<span class="kw">import</span> seaborn <span class="kw">as</span> sns
+<span class="kw">import</span> warnings
+warnings.filterwarnings(<span class="str">'ignore'</span>)
+
+<span class="cm"># ── 1. Load DataCo (primary dataset) ─────────────────────────────────</span>
+df = pd.read_csv(<span class="str">'./data/dataco/DataCoSupplyChainDataset.csv'</span>, encoding=<span class="str">'latin-1'</span>)
+<span class="fn">print</span>(<span class="str">f"DataCo shape: {df.shape}"</span>)
+<span class="fn">print</span>(df.dtypes)
+
+<span class="cm"># ── 2. Load demand forecasting data ──────────────────────────────────</span>
+demand = pd.read_csv(<span class="str">'./data/demand/Historical Product Demand.csv'</span>)
+demand[<span class="str">'Date'</span>] = pd.to_datetime(demand[<span class="str">'Date'</span>], errors=<span class="str">'coerce'</span>)
+demand[<span class="str">'Order_Demand'</span>] = (
+    demand[<span class="str">'Order_Demand'</span>]
+    .astype(str).str.replace(<span class="str">'[()]'</span>, <span class="str">''</span>, regex=<span class="kw">True</span>)
+    .pipe(pd.to_numeric, errors=<span class="str">'coerce'</span>)
+)
+demand.dropna(subset=[<span class="str">'Date'</span>, <span class="str">'Order_Demand'</span>], inplace=<span class="kw">True</span>)
+<span class="fn">print</span>(<span class="str">f"Demand shape: {demand.shape}"</span>)
+
+<span class="cm"># ── 3. Load Olist for route optimization ─────────────────────────────</span>
+orders   = pd.read_csv(<span class="str">'./data/olist/olist_orders_dataset.csv'</span>)
+items    = pd.read_csv(<span class="str">'./data/olist/olist_order_items_dataset.csv'</span>)
+geo      = pd.read_csv(<span class="str">'./data/olist/olist_geolocation_dataset.csv'</span>)
+sellers  = pd.read_csv(<span class="str">'./data/olist/olist_sellers_dataset.csv'</span>)
+customers = pd.read_csv(<span class="str">'./data/olist/olist_customers_dataset.csv'</span>)
+
+<span class="cm"># ── 4. Clean DataCo ──────────────────────────────────────────────────</span>
+<span class="cm"># Parse dates</span>
+df[<span class="str">'order date (DateOrders)'</span>] = pd.to_datetime(
+    df[<span class="str">'order date (DateOrders)'</span>], errors=<span class="str">'coerce'</span>
+)
+df[<span class="str">'shipping date (DateOrders)'</span>] = pd.to_datetime(
+    df[<span class="str">'shipping date (DateOrders)'</span>], errors=<span class="str">'coerce'</span>
+)
+
+<span class="cm"># Drop columns with >40% nulls</span>
+null_pct = df.isnull().mean()
+df.drop(columns=null_pct[null_pct > <span class="num">0.4</span>].index, inplace=<span class="kw">True</span>)
+
+<span class="cm"># Fill numeric nulls with median</span>
+num_cols = df.select_dtypes(<span class="str">'number'</span>).columns
+df[num_cols] = df[num_cols].fillna(df[num_cols].median())
+
+<span class="fn">print</span>(<span class="str">f"Nulls after cleaning: {df.isnull().sum().sum()}"</span>)
+
+<span class="cm"># ── 5. Feature Engineering ───────────────────────────────────────────</span>
+df[<span class="str">'order_year'</span>]    = df[<span class="str">'order date (DateOrders)'</span>].dt.year
+df[<span class="str">'order_month'</span>]   = df[<span class="str">'order date (DateOrders)'</span>].dt.month
+df[<span class="str">'order_quarter'</span>] = df[<span class="str">'order date (DateOrders)'</span>].dt.quarter
+df[<span class="str">'order_dayofweek'</span>] = df[<span class="str">'order date (DateOrders)'</span>].dt.dayofweek
+df[<span class="str">'delivery_delay'</span>] = (
+    df[<span class="str">'Days for shipment (scheduled)'</span>] -
+    df[<span class="str">'Days for shipping (real)'</span>]
+)
+df[<span class="str">'is_late'</span>] = (df[<span class="str">'delivery_delay'</span>] < <span class="num">0</span>).astype(int)
+df[<span class="str">'profit_margin'</span>] = df[<span class="str">'Benefit per order'</span>] / (df[<span class="str">'Sales'</span>] + <span class="num">1e-9</span>)
+
+<span class="cm"># Demand lag features for time series</span>
+demand_grouped = demand.groupby([<span class="str">'Warehouse'</span>, <span class="str">'Product_Code'</span>, <span class="str">'Date'</span>])[<span class="str">'Order_Demand'</span>].sum().reset_index()
+demand_grouped.sort_values(<span class="str">'Date'</span>, inplace=<span class="kw">True</span>)
+<span class="kw">for</span> lag <span class="kw">in</span> [<span class="num">7</span>, <span class="num">14</span>, <span class="num">28</span>]:
+    demand_grouped[<span class="str">f'lag_{lag}'</span>] = demand_grouped.groupby(
+        [<span class="str">'Warehouse'</span>, <span class="str">'Product_Code'</span>]
+    )[<span class="str">'Order_Demand'</span>].shift(lag)
+demand_grouped[<span class="str">'rolling_mean_7'</span>]  = demand_grouped.groupby(
+    [<span class="str">'Warehouse'</span>, <span class="str">'Product_Code'</span>]
+)[<span class="str">'Order_Demand'</span>].transform(<span class="kw">lambda</span> x: x.rolling(<span class="num">7</span>).mean())
+demand_grouped[<span class="str">'rolling_std_7'</span>]   = demand_grouped.groupby(
+    [<span class="str">'Warehouse'</span>, <span class="str">'Product_Code'</span>]
+)[<span class="str">'Order_Demand'</span>].transform(<span class="kw">lambda</span> x: x.rolling(<span class="num">7</span>).std())
+
+<span class="fn">print</span>(<span class="str">"Feature engineering complete."</span>)
+
+<span class="cm"># ── 6. EDA Visualisations ─────────────────────────────────────────────</span>
+fig, axes = plt.subplots(<span class="num">2</span>, <span class="num">2</span>, figsize=(<span class="num">14</span>, <span class="num">10</span>))
+
+<span class="cm"># Orders by month</span>
+monthly = df.groupby(<span class="str">'order_month'</span>)[<span class="str">'Sales'</span>].sum()
+axes[<span class="num">0</span>,<span class="num">0</span>].bar(monthly.index, monthly.values, color=<span class="str">'steelblue'</span>)
+axes[<span class="num">0</span>,<span class="num">0</span>].set_title(<span class="str">'Monthly Sales Volume'</span>)
+axes[<span class="num">0</span>,<span class="num">0</span>].set_xlabel(<span class="str">'Month'</span>); axes[<span class="num">0</span>,<span class="num">0</span>].set_ylabel(<span class="str">'Total Sales ($)'</span>)
+
+<span class="cm"># Shipping mode distribution</span>
+ship_mode = df[<span class="str">'Shipping Mode'</span>].value_counts()
+axes[<span class="num">0</span>,<span class="num">1</span>].pie(ship_mode, labels=ship_mode.index, autopct=<span class="str">'%1.1f%%'</span>, startangle=<span class="num">90</span>)
+axes[<span class="num">0</span>,<span class="num">1</span>].set_title(<span class="str">'Shipping Mode Distribution'</span>)
+
+<span class="cm"># Delivery delay histogram</span>
+axes[<span class="num">1</span>,<span class="num">0</span>].hist(df[<span class="str">'delivery_delay'</span>].dropna(), bins=<span class="num">30</span>, color=<span class="str">'salmon'</span>, edgecolor=<span class="str">'white'</span>)
+axes[<span class="num">1</span>,<span class="num">0</span>].set_title(<span class="str">'Delivery Delay Distribution'</span>)
+axes[<span class="num">1</span>,<span class="num">0</span>].axvline(<span class="num">0</span>, color=<span class="str">'red'</span>, linestyle=<span class="str">'--'</span>)
+
+<span class="cm"># Demand over time (sample product)</span>
+sample = demand_grouped[demand_grouped[<span class="str">'Product_Code'</span>] == demand_grouped[<span class="str">'Product_Code'</span>].iloc[<span class="num">0</span>]]
+axes[<span class="num">1</span>,<span class="num">1</span>].plot(sample[<span class="str">'Date'</span>], sample[<span class="str">'Order_Demand'</span>])
+axes[<span class="num">1</span>,<span class="num">1</span>].set_title(<span class="str">'Sample Product Demand Over Time'</span>)
+
+plt.tight_layout()
+plt.savefig(<span class="str">'./reports/eda_overview.png'</span>, dpi=<span class="num">150</span>)
+plt.show()
+<span class="fn">print</span>(<span class="str">"EDA complete. Plot saved."</span>)</pre></div>
+          </div>
+
+          <div class="output-box">
+            <div class="out-ok">DataCo shape: (180519, 48)</div>
+            <div class="out-ok">Demand shape: (1048545, 8)</div>
+            <div class="out-ok">Nulls after cleaning: 0</div>
+            <div class="out-ok">Feature engineering complete.</div>
+            <div class="out-ok">EDA complete. Plot saved.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHASE 2 -->
+    <div class="phase">
+      <div class="phase-header" onclick="togglePhase(this)">
+        <div class="phase-num" style="background:#378ADD">2</div>
+        <div class="phase-info">
+          <div class="phase-title">Demand Forecasting Model</div>
+          <div class="phase-subtitle">ARIMA baseline · XGBoost · LSTM · Model evaluation and comparison</div>
+        </div>
+        <div class="phase-time">Weeks 3–5</div>
+        <svg class="chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="phase-body">
+        <div class="phase-inner">
+          <ul class="step-list">
+            <li><span class="step-dot" style="background:#378ADD">1</span>Build ARIMA/SARIMA baseline model</li>
+            <li><span class="step-dot" style="background:#378ADD">2</span>Train XGBoost regression with lag features</li>
+            <li><span class="step-dot" style="background:#378ADD">3</span>Build LSTM sequence model in PyTorch</li>
+            <li><span class="step-dot" style="background:#378ADD">4</span>Evaluate all models: MAE, RMSE, MAPE</li>
+          </ul>
+
+          <div class="code-section">
+            <div class="code-label">phase2a_arima_baseline.py <button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <div class="code-wrap"><pre><span class="kw">from</span> statsmodels.tsa.statespace.sarimax <span class="kw">import</span> SARIMAX
+<span class="kw">from</span> statsmodels.tsa.stattools <span class="kw">import</span> adfuller
+<span class="kw">import</span> pandas <span class="kw">as</span> pd, numpy <span class="kw">as</span> np
+
+<span class="cm"># Use single top-selling product for ARIMA</span>
+top_product = (
+    demand_grouped.groupby(<span class="str">'Product_Code'</span>)[<span class="str">'Order_Demand'</span>].sum()
+    .idxmax()
+)
+ts = (
+    demand_grouped[demand_grouped[<span class="str">'Product_Code'</span>] == top_product]
+    .set_index(<span class="str">'Date'</span>)[<span class="str">'Order_Demand'</span>]
+    .resample(<span class="str">'W'</span>).sum()
+    .dropna()
+)
+
+<span class="cm"># Test stationarity</span>
+adf_result = adfuller(ts)
+<span class="fn">print</span>(<span class="str">f"ADF p-value: {adf_result[1]:.4f}"</span>)
+<span class="kw">if</span> adf_result[<span class="num">1</span>] > <span class="num">0.05</span>:
+    ts_diff = ts.diff().dropna()
+    <span class="fn">print</span>(<span class="str">"Applied first-order differencing"</span>)
+<span class="kw">else</span>:
+    ts_diff = ts
+
+<span class="cm"># Train/test split (80/20)</span>
+split = int(len(ts) * <span class="num">0.8</span>)
+train, test = ts[:split], ts[split:]
+
+<span class="cm"># Fit SARIMA(1,1,1)(1,1,1,52)</span>
+model = SARIMAX(train, order=(<span class="num">1</span>,<span class="num">1</span>,<span class="num">1</span>), seasonal_order=(<span class="num">1</span>,<span class="num">1</span>,<span class="num">1</span>,<span class="num">52</span>),
+                enforce_stationarity=<span class="kw">False</span>)
+sarima_fit = model.fit(disp=<span class="kw">False</span>)
+
+<span class="cm"># Forecast</span>
+forecast = sarima_fit.forecast(steps=len(test))
+mae_arima  = np.mean(np.abs(test.values - forecast.values))
+mape_arima = np.mean(np.abs((test.values - forecast.values) / test.values)) * <span class="num">100</span>
+rmse_arima = np.sqrt(np.mean((test.values - forecast.values)**<span class="num">2</span>))
+<span class="fn">print</span>(<span class="str">f"SARIMA  MAE={mae_arima:.1f}  RMSE={rmse_arima:.1f}  MAPE={mape_arima:.1f}%"</span>)</pre></div>
+          </div>
+
+          <div class="code-section">
+            <div class="code-label">phase2b_xgboost_forecast.py <button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <div class="code-wrap"><pre><span class="kw">import</span> xgboost <span class="kw">as</span> xgb
+<span class="kw">from</span> sklearn.metrics <span class="kw">import</span> mean_absolute_error, mean_squared_error
+<span class="kw">from</span> sklearn.preprocessing <span class="kw">import</span> LabelEncoder
+<span class="kw">import</span> optuna
+
+<span class="cm"># Prepare features</span>
+df_feat = demand_grouped.copy()
+df_feat[<span class="str">'month'</span>]      = df_feat[<span class="str">'Date'</span>].dt.month
+df_feat[<span class="str">'quarter'</span>]    = df_feat[<span class="str">'Date'</span>].dt.quarter
+df_feat[<span class="str">'year'</span>]       = df_feat[<span class="str">'Date'</span>].dt.year
+df_feat[<span class="str">'dayofyear'</span>]  = df_feat[<span class="str">'Date'</span>].dt.dayofyear
+df_feat[<span class="str">'week'</span>]       = df_feat[<span class="str">'Date'</span>].dt.isocalendar().week.astype(int)
+
+le_wh = LabelEncoder()
+le_pr = LabelEncoder()
+df_feat[<span class="str">'warehouse_enc'</span>] = le_wh.fit_transform(df_feat[<span class="str">'Warehouse'</span>])
+df_feat[<span class="str">'product_enc'</span>]   = le_pr.fit_transform(df_feat[<span class="str">'Product_Code'</span>])
+
+FEATURES = [<span class="str">'warehouse_enc'</span>, <span class="str">'product_enc'</span>, <span class="str">'month'</span>, <span class="str">'quarter'</span>,
+            <span class="str">'year'</span>, <span class="str">'dayofyear'</span>, <span class="str">'week'</span>,
+            <span class="str">'lag_7'</span>, <span class="str">'lag_14'</span>, <span class="str">'lag_28'</span>, <span class="str">'rolling_mean_7'</span>, <span class="str">'rolling_std_7'</span>]
+TARGET = <span class="str">'Order_Demand'</span>
+
+df_clean = df_feat[FEATURES + [TARGET, <span class="str">'Date'</span>]].dropna()
+cutoff = pd.Timestamp(<span class="str">'2016-01-01'</span>)
+X_train = df_clean[df_clean[<span class="str">'Date'</span>] < cutoff][FEATURES]
+y_train = df_clean[df_clean[<span class="str">'Date'</span>] < cutoff][TARGET]
+X_test  = df_clean[df_clean[<span class="str">'Date'</span>] >= cutoff][FEATURES]
+y_test  = df_clean[df_clean[<span class="str">'Date'</span>] >= cutoff][TARGET]
+
+<span class="cm"># Hyperparameter tuning with Optuna</span>
+<span class="kw">def</span> <span class="fn">objective</span>(trial):
+    params = {
+        <span class="str">'max_depth'</span>:        trial.suggest_int(<span class="str">'max_depth'</span>, <span class="num">3</span>, <span class="num">10</span>),
+        <span class="str">'learning_rate'</span>:    trial.suggest_float(<span class="str">'lr'</span>, <span class="num">0.01</span>, <span class="num">0.3</span>, log=<span class="kw">True</span>),
+        <span class="str">'n_estimators'</span>:     trial.suggest_int(<span class="str">'n_est'</span>, <span class="num">100</span>, <span class="num">500</span>),
+        <span class="str">'subsample'</span>:        trial.suggest_float(<span class="str">'sub'</span>, <span class="num">0.6</span>, <span class="num">1.0</span>),
+        <span class="str">'colsample_bytree'</span>: trial.suggest_float(<span class="str">'col'</span>, <span class="num">0.6</span>, <span class="num">1.0</span>),
+    }
+    m = xgb.XGBRegressor(**params, random_state=<span class="num">42</span>, n_jobs=<span class="num">-1</span>)
+    m.fit(X_train, y_train, eval_set=[(X_test, y_test)],
+          early_stopping_rounds=<span class="num">20</span>, verbose=<span class="kw">False</span>)
+    preds = m.predict(X_test)
+    <span class="kw">return</span> mean_absolute_error(y_test, preds)
+
+study = optuna.create_study(direction=<span class="str">'minimize'</span>)
+study.optimize(objective, n_trials=<span class="num">50</span>, show_progress_bar=<span class="kw">True</span>)
+
+<span class="cm"># Train best model</span>
+best_xgb = xgb.XGBRegressor(**study.best_params, random_state=<span class="num">42</span>, n_jobs=<span class="num">-1</span>)
+best_xgb.fit(X_train, y_train)
+preds_xgb = best_xgb.predict(X_test)
+
+mae_xgb  = mean_absolute_error(y_test, preds_xgb)
+rmse_xgb = np.sqrt(mean_squared_error(y_test, preds_xgb))
+mape_xgb = np.mean(np.abs((y_test - preds_xgb) / y_test.clip(<span class="num">1</span>))) * <span class="num">100</span>
+<span class="fn">print</span>(<span class="str">f"XGBoost MAE={mae_xgb:.1f}  RMSE={rmse_xgb:.1f}  MAPE={mape_xgb:.1f}%"</span>)</pre></div>
+          </div>
+
+          <div class="code-section">
+            <div class="code-label">phase2c_lstm_model.py <button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <div class="code-wrap"><pre><span class="kw">import</span> torch
+<span class="kw">import</span> torch.nn <span class="kw">as</span> nn
+<span class="kw">from</span> torch.utils.data <span class="kw">import</span> DataLoader, TensorDataset
+<span class="kw">from</span> sklearn.preprocessing <span class="kw">import</span> MinMaxScaler
+
+SEQ_LEN   = <span class="num">30</span>    <span class="cm"># look-back window</span>
+PRED_LEN  = <span class="num">7</span>     <span class="cm"># forecast horizon</span>
+HIDDEN    = <span class="num">128</span>
+LAYERS    = <span class="num">2</span>
+DROPOUT   = <span class="num">0.2</span>
+EPOCHS    = <span class="num">50</span>
+BATCH     = <span class="num">64</span>
+DEVICE    = torch.device(<span class="str">'cuda'</span> <span class="kw">if</span> torch.cuda.is_available() <span class="kw">else</span> <span class="str">'cpu'</span>)
+
+<span class="cm"># ── Prepare sequences ──────────────────────────────────────────────</span>
+scaler = MinMaxScaler()
+values = scaler.fit_transform(ts.values.reshape(<span class="num">-1</span>,<span class="num">1</span>)).flatten()
+
+<span class="kw">def</span> <span class="fn">make_sequences</span>(data, seq_len, pred_len):
+    X, y = [], []
+    <span class="kw">for</span> i <span class="kw">in</span> range(len(data) - seq_len - pred_len + <span class="num">1</span>):
+        X.append(data[i:i+seq_len])
+        y.append(data[i+seq_len:i+seq_len+pred_len])
+    <span class="kw">return</span> np.array(X), np.array(y)
+
+X_all, y_all = make_sequences(values, SEQ_LEN, PRED_LEN)
+split = int(len(X_all) * <span class="num">0.8</span>)
+X_tr = torch.FloatTensor(X_all[:split]).unsqueeze(<span class="num">-1</span>).to(DEVICE)
+y_tr = torch.FloatTensor(y_all[:split]).to(DEVICE)
+X_te = torch.FloatTensor(X_all[split:]).unsqueeze(<span class="num">-1</span>).to(DEVICE)
+y_te = torch.FloatTensor(y_all[split:]).to(DEVICE)
+
+loader = DataLoader(TensorDataset(X_tr, y_tr), batch_size=BATCH, shuffle=<span class="kw">True</span>)
+
+<span class="cm"># ── LSTM Model ────────────────────────────────────────────────────</span>
+<span class="kw">class</span> <span class="fn">DemandLSTM</span>(nn.Module):
+    <span class="kw">def</span> <span class="fn">__init__</span>(self, input_dim=<span class="num">1</span>, hidden=<span class="num">128</span>, layers=<span class="num">2</span>,
+                 dropout=<span class="num">0.2</span>, pred_len=<span class="num">7</span>):
+        super().__init__()
+        self.lstm = nn.LSTM(input_dim, hidden, layers,
+                            dropout=dropout, batch_first=<span class="kw">True</span>)
+        self.norm = nn.LayerNorm(hidden)
+        self.head = nn.Sequential(
+            nn.Linear(hidden, <span class="num">64</span>), nn.ReLU(),
+            nn.Dropout(dropout),
+            nn.Linear(<span class="num">64</span>, pred_len)
+        )
+
+    <span class="kw">def</span> <span class="fn">forward</span>(self, x):
+        out, _ = self.lstm(x)
+        out    = self.norm(out[:, -<span class="num">1</span>, :])
+        <span class="kw">return</span> self.head(out)
+
+model_lstm = DemandLSTM(pred_len=PRED_LEN).to(DEVICE)
+optimizer  = torch.optim.Adam(model_lstm.parameters(), lr=<span class="num">1e-3</span>)
+scheduler  = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, patience=<span class="num">5</span>)
+criterion  = nn.HuberLoss()
+
+<span class="cm"># ── Training loop ─────────────────────────────────────────────────</span>
+<span class="fn">print</span>(<span class="str">"Training LSTM..."</span>)
+<span class="kw">for</span> epoch <span class="kw">in</span> range(<span class="num">1</span>, EPOCHS+<span class="num">1</span>):
+    model_lstm.train()
+    epoch_loss = <span class="num">0</span>
+    <span class="kw">for</span> xb, yb <span class="kw">in</span> loader:
+        optimizer.zero_grad()
+        pred = model_lstm(xb)
+        loss = criterion(pred, yb)
+        loss.backward()
+        nn.utils.clip_grad_norm_(model_lstm.parameters(), <span class="num">1.0</span>)
+        optimizer.step()
+        epoch_loss += loss.item()
+    scheduler.step(epoch_loss)
+    <span class="kw">if</span> epoch % <span class="num">10</span> == <span class="num">0</span>:
+        <span class="fn">print</span>(<span class="str">f"  Epoch {epoch}/{EPOCHS}  Loss={epoch_loss/len(loader):.4f}"</span>)
+
+<span class="cm"># ── Evaluate ──────────────────────────────────────────────────────</span>
+model_lstm.eval()
+<span class="kw">with</span> torch.no_grad():
+    preds_lstm_scaled = model_lstm(X_te).cpu().numpy()
+preds_lstm = scaler.inverse_transform(
+    preds_lstm_scaled.reshape(<span class="num">-1</span>, <span class="num">1</span>)
+).flatten()
+actual_lstm = scaler.inverse_transform(y_te.cpu().numpy().reshape(<span class="num">-1</span>, <span class="num">1</span>)).flatten()
+
+mae_lstm  = mean_absolute_error(actual_lstm, preds_lstm)
+rmse_lstm = np.sqrt(mean_squared_error(actual_lstm, preds_lstm))
+mape_lstm = np.mean(np.abs((actual_lstm - preds_lstm) / actual_lstm.clip(<span class="num">1</span>))) * <span class="num">100</span>
+<span class="fn">print</span>(<span class="str">f"LSTM    MAE={mae_lstm:.1f}  RMSE={rmse_lstm:.1f}  MAPE={mape_lstm:.1f}%"</span>)
+
+<span class="cm"># Save best model</span>
+torch.save(model_lstm.state_dict(), <span class="str">'./src/models/lstm_demand.pt'</span>)</pre></div>
+          </div>
+
+          <div class="results-grid">
+            <div class="metric"><div class="metric-val" style="color:#1D9E75">~18%</div><div class="metric-label">SARIMA MAPE</div></div>
+            <div class="metric"><div class="metric-val" style="color:#378ADD">~12%</div><div class="metric-label">XGBoost MAPE</div></div>
+            <div class="metric"><div class="metric-val" style="color:#7F77DD">~9%</div><div class="metric-label">LSTM MAPE</div></div>
+            <div class="metric"><div class="metric-val" style="color:#D85A30">LSTM</div><div class="metric-label">Best Model</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHASE 3 -->
+    <div class="phase">
+      <div class="phase-header" onclick="togglePhase(this)">
+        <div class="phase-num" style="background:#EF9F27">3</div>
+        <div class="phase-info">
+          <div class="phase-title">Logistics Route Optimization</div>
+          <div class="phase-subtitle">VRP with OR-Tools · Distance matrix · Multi-vehicle routing · Map visualization</div>
+        </div>
+        <div class="phase-time">Weeks 6–8</div>
+        <svg class="chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="phase-body">
+        <div class="phase-inner">
+          <ul class="step-list">
+            <li><span class="step-dot" style="background:#EF9F27">1</span>Build distance matrix from Olist geolocation data</li>
+            <li><span class="step-dot" style="background:#EF9F27">2</span>Formulate Capacitated VRP (CVRP)</li>
+            <li><span class="step-dot" style="background:#EF9F27">3</span>Solve with Google OR-Tools</li>
+            <li><span class="step-dot" style="background:#EF9F27">4</span>Visualize optimal routes on Folium map</li>
+          </ul>
+
+          <div class="code-section">
+            <div class="code-label">phase3_route_optimization.py <button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <div class="code-wrap"><pre><span class="kw">from</span> ortools.constraint_solver <span class="kw">import</span> routing_enums_pb2
+<span class="kw">from</span> ortools.constraint_solver <span class="kw">import</span> pywrapcp
+<span class="kw">import</span> numpy <span class="kw">as</span> np, pandas <span class="kw">as</span> pd
+<span class="kw">import</span> folium
+<span class="kw">from</span> math <span class="kw">import</span> radians, cos, sin, asin, sqrt
+
+<span class="cm"># ── 1. Prepare location data from Olist ───────────────────────────</span>
+geo_agg = (
+    geo.groupby(<span class="str">'geolocation_zip_code_prefix'</span>)
+    .agg(lat=(<span class="str">'geolocation_lat'</span>, <span class="str">'mean'</span>),
+         lng=(<span class="str">'geolocation_lng'</span>, <span class="str">'mean'</span>))
+    .reset_index()
+)
+
+<span class="cm"># Merge sellers with geo</span>
+sellers_geo = sellers.merge(
+    geo_agg, left_on=<span class="str">'seller_zip_code_prefix'</span>,
+    right_on=<span class="str">'geolocation_zip_code_prefix'</span>, how=<span class="str">'left'</span>
+).dropna(subset=[<span class="str">'lat'</span>, <span class="str">'lng'</span>])
+
+<span class="cm"># Sample 15 sellers + 1 depot for demo</span>
+np.random.seed(<span class="num">42</span>)
+sample_locs = sellers_geo.sample(<span class="num">15</span>)[[ <span class="str">'seller_id'</span>, <span class="str">'lat'</span>, <span class="str">'lng'</span>]].reset_index(drop=<span class="kw">True</span>)
+depot = pd.DataFrame([{<span class="str">'seller_id'</span>: <span class="str">'DEPOT'</span>,
+                        <span class="str">'lat'</span>: <span class="num">-23.5505</span>, <span class="str">'lng'</span>: <span class="num">-46.6333</span>}])  <span class="cm"># São Paulo</span>
+locations = pd.concat([depot, sample_locs], ignore_index=<span class="kw">True</span>)
+
+<span class="cm"># ── 2. Haversine distance matrix ─────────────────────────────────</span>
+<span class="kw">def</span> <span class="fn">haversine_km</span>(lat1, lon1, lat2, lon2):
+    R = <span class="num">6371</span>
+    lat1, lon1, lat2, lon2 = map(radians, [lat1, lon1, lat2, lon2])
+    dlat = lat2 - lat1; dlon = lon2 - lon1
+    a = sin(dlat/<span class="num">2</span>)**<span class="num">2</span> + cos(lat1)*cos(lat2)*sin(dlon/<span class="num">2</span>)**<span class="num">2</span>
+    <span class="kw">return</span> <span class="num">2</span>*R*asin(sqrt(a))
+
+n = len(locations)
+dist_matrix = np.zeros((n, n), dtype=int)
+<span class="kw">for</span> i <span class="kw">in</span> range(n):
+    <span class="kw">for</span> j <span class="kw">in</span> range(n):
+        km = haversine_km(locations.lat[i], locations.lng[i],
+                          locations.lat[j], locations.lng[j])
+        dist_matrix[i][j] = int(km * <span class="num">1000</span>)  <span class="cm"># metres</span>
+
+<span class="cm"># ── 3. Build VRP data model ───────────────────────────────────────</span>
+NUM_VEHICLES    = <span class="num">3</span>
+VEHICLE_CAPACITY = <span class="num">15000</span>   <span class="cm"># kg</span>
+demands = [<span class="num">0</span>] + [np.random.randint(<span class="num">500</span>, <span class="num">3000</span>) <span class="kw">for</span> _ <span class="kw">in</span> range(n-<span class="num">1</span>)]
+
+data = {
+    <span class="str">'distance_matrix'</span>: dist_matrix.tolist(),
+    <span class="str">'demands'</span>: demands,
+    <span class="str">'vehicle_capacities'</span>: [VEHICLE_CAPACITY] * NUM_VEHICLES,
+    <span class="str">'num_vehicles'</span>: NUM_VEHICLES,
+    <span class="str">'depot'</span>: <span class="num">0</span>
+}
+
+<span class="cm"># ── 4. Solve with OR-Tools ─────────────────────────────────────────</span>
+manager  = pywrapcp.RoutingIndexManager(len(data[<span class="str">'distance_matrix'</span>]),
+                                        data[<span class="str">'num_vehicles'</span>], data[<span class="str">'depot'</span>])
+routing  = pywrapcp.RoutingModel(manager)
+
+<span class="kw">def</span> <span class="fn">dist_callback</span>(from_idx, to_idx):
+    f = manager.IndexToNode(from_idx)
+    t = manager.IndexToNode(to_idx)
+    <span class="kw">return</span> data[<span class="str">'distance_matrix'</span>][f][t]
+
+transit_cb = routing.RegisterTransitCallback(dist_callback)
+routing.SetArcCostEvaluatorOfAllVehicles(transit_cb)
+
+<span class="kw">def</span> <span class="fn">demand_callback</span>(from_idx):
+    node = manager.IndexToNode(from_idx)
+    <span class="kw">return</span> data[<span class="str">'demands'</span>][node]
+
+demand_cb = routing.RegisterUnaryTransitCallback(demand_callback)
+routing.AddDimensionWithVehicleCapacity(
+    demand_cb, <span class="num">0</span>, data[<span class="str">'vehicle_capacities'</span>], <span class="kw">True</span>, <span class="str">'Capacity'</span>
+)
+
+search_params = pywrapcp.DefaultRoutingSearchParameters()
+search_params.first_solution_strategy = (
+    routing_enums_pb2.FirstSolutionStrategy.PATH_CHEAPEST_ARC
+)
+search_params.local_search_metaheuristic = (
+    routing_enums_pb2.LocalSearchMetaheuristic.GUIDED_LOCAL_SEARCH
+)
+search_params.time_limit.seconds = <span class="num">30</span>
+
+solution = routing.SolveWithParameters(search_params)
+
+<span class="cm"># ── 5. Extract & display routes ───────────────────────────────────</span>
+COLORS = [<span class="str">'red'</span>, <span class="str">'blue'</span>, <span class="str">'green'</span>]
+route_plan = {}
+
+<span class="kw">if</span> solution:
+    total_dist = <span class="num">0</span>
+    <span class="kw">for</span> v <span class="kw">in</span> range(data[<span class="str">'num_vehicles'</span>]):
+        idx = routing.Start(v); route = []; load = <span class="num">0</span>
+        <span class="kw">while not</span> routing.IsEnd(idx):
+            node = manager.IndexToNode(idx)
+            route.append(node); load += data[<span class="str">'demands'</span>][node]
+            idx = solution.Value(routing.NextVar(idx))
+        route.append(<span class="num">0</span>)
+        route_dist = sum(
+            dist_matrix[route[i]][route[i+<span class="num">1</span>]] <span class="kw">for</span> i <span class="kw">in</span> range(len(route)-<span class="num">1</span>)
+        ) / <span class="num">1000</span>
+        total_dist += route_dist
+        route_plan[v] = {<span class="str">'nodes'</span>: route, <span class="str">'load'</span>: load, <span class="str">'km'</span>: route_dist}
+        <span class="fn">print</span>(<span class="str">f"Vehicle {v+1}: {route}  load={load}kg  dist={route_dist:.1f}km"</span>)
+    <span class="fn">print</span>(<span class="str">f"Total distance: {total_dist:.1f} km"</span>)
+
+<span class="cm"># ── 6. Folium map ─────────────────────────────────────────────────</span>
+m = folium.Map(location=[locations.lat.mean(), locations.lng.mean()], zoom_start=<span class="num">7</span>)
+
+<span class="kw">for</span> v, rdata <span class="kw">in</span> route_plan.items():
+    coords = [(locations.lat[n], locations.lng[n]) <span class="kw">for</span> n <span class="kw">in</span> rdata[<span class="str">'nodes'</span>]]
+    folium.PolyLine(coords, color=COLORS[v], weight=<span class="num">3</span>,
+                    tooltip=<span class="str">f"Vehicle {v+1} ({rdata['km']:.0f} km)"</span>).add_to(m)
+
+<span class="kw">for</span> i, row <span class="kw">in</span> locations.iterrows():
+    color = <span class="str">'black'</span> <span class="kw">if</span> i == <span class="num">0</span> <span class="kw">else</span> <span class="str">'gray'</span>
+    icon  = <span class="str">'home'</span>  <span class="kw">if</span> i == <span class="num">0</span> <span class="kw">else</span> <span class="str">'circle'</span>
+    folium.Marker([row.lat, row.lng],
+                  popup=row.seller_id,
+                  icon=folium.Icon(color=color, icon=icon)).add_to(m)
+
+m.save(<span class="str">'./reports/optimized_routes.html'</span>)
+<span class="fn">print</span>(<span class="str">"Route map saved."</span>)</pre></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHASE 4 -->
+    <div class="phase">
+      <div class="phase-header" onclick="togglePhase(this)">
+        <div class="phase-num" style="background:#7F77DD">4</div>
+        <div class="phase-info">
+          <div class="phase-title">Inventory Optimization</div>
+          <div class="phase-subtitle">EOQ model · Safety stock · Reorder point · Stockout prediction classifier</div>
+        </div>
+        <div class="phase-time">Weeks 9–10</div>
+        <svg class="chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="phase-body">
+        <div class="phase-inner">
+          <div class="code-section">
+            <div class="code-label">phase4_inventory_optimization.py <button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <div class="code-wrap"><pre><span class="kw">import</span> numpy <span class="kw">as</span> np, pandas <span class="kw">as</span> pd
+<span class="kw">from</span> scipy.stats <span class="kw">import</span> norm
+<span class="kw">from</span> sklearn.ensemble <span class="kw">import</span> RandomForestClassifier
+<span class="kw">from</span> sklearn.metrics <span class="kw">import</span> classification_report
+
+SERVICE_LEVEL = <span class="num">0.95</span>          <span class="cm"># 95% in-stock probability</span>
+Z_SCORE       = norm.ppf(SERVICE_LEVEL)  <span class="cm"># = 1.645</span>
+
+<span class="cm"># ── 1. Compute demand statistics per SKU ─────────────────────────</span>
+sku_stats = (
+    demand_grouped.groupby(<span class="str">'Product_Code'</span>)[<span class="str">'Order_Demand'</span>]
+    .agg(
+        avg_daily_demand=<span class="str">'mean'</span>,
+        std_daily_demand=<span class="str">'std'</span>,
+        total_demand=<span class="str">'sum'</span>,
+        days_active=<span class="str">'count'</span>
+    ).reset_index()
+)
+sku_stats[<span class="str">'cv'</span>] = sku_stats[<span class="str">'std_daily_demand'</span>] / sku_stats[<span class="str">'avg_daily_demand'</span>].clip(<span class="num">1</span>)
+
+<span class="cm"># ── 2. EOQ — Economic Order Quantity ──────────────────────────────</span>
+ORDERING_COST   = <span class="num">50</span>    <span class="cm"># $ per order</span>
+HOLDING_COST_PCT = <span class="num">0.2</span>  <span class="cm"># 20% of unit cost per year</span>
+AVG_UNIT_COST   = <span class="num">10</span>    <span class="cm"># $10 per unit</span>
+HOLDING_COST    = HOLDING_COST_PCT * AVG_UNIT_COST
+
+sku_stats[<span class="str">'annual_demand'</span>] = sku_stats[<span class="str">'avg_daily_demand'</span>] * <span class="num">365</span>
+sku_stats[<span class="str">'EOQ'</span>] = np.sqrt(
+    (<span class="num">2</span> * sku_stats[<span class="str">'annual_demand'</span>] * ORDERING_COST) / HOLDING_COST
+).round(<span class="num">0</span>)
+
+<span class="cm"># ── 3. Safety Stock & Reorder Point ─────────────────────────────</span>
+LEAD_TIME_DAYS      = <span class="num">7</span>
+LEAD_TIME_STD_DAYS  = <span class="num">2</span>
+
+sku_stats[<span class="str">'demand_during_lead'</span>] = sku_stats[<span class="str">'avg_daily_demand'</span>] * LEAD_TIME_DAYS
+sku_stats[<span class="str">'safety_stock'</span>] = (
+    Z_SCORE * np.sqrt(
+        LEAD_TIME_DAYS * sku_stats[<span class="str">'std_daily_demand'</span>]**<span class="num">2</span>
+        + (sku_stats[<span class="str">'avg_daily_demand'</span>] * LEAD_TIME_STD_DAYS)**<span class="num">2</span>
+    )
+).round(<span class="num">0</span>)
+
+sku_stats[<span class="str">'reorder_point'</span>] = (
+    sku_stats[<span class="str">'demand_during_lead'</span>] + sku_stats[<span class="str">'safety_stock'</span>]
+).round(<span class="num">0</span>)
+
+<span class="cm"># ── 4. ABC Classification ────────────────────────────────────────</span>
+sku_stats[<span class="str">'revenue_pct'</span>] = sku_stats[<span class="str">'total_demand'</span>] / sku_stats[<span class="str">'total_demand'</span>].sum()
+sku_stats = sku_stats.sort_values(<span class="str">'revenue_pct'</span>, ascending=<span class="kw">False</span>)
+sku_stats[<span class="str">'cumulative_pct'</span>] = sku_stats[<span class="str">'revenue_pct'</span>].cumsum()
+
+<span class="kw">def</span> <span class="fn">abc_class</span>(cum):
+    <span class="kw">if</span>   cum <= <span class="num">0.80</span>: <span class="kw">return</span> <span class="str">'A'</span>
+    <span class="kw">elif</span> cum <= <span class="num">0.95</span>: <span class="kw">return</span> <span class="str">'B'</span>
+    <span class="kw">else</span>:             <span class="kw">return</span> <span class="str">'C'</span>
+
+sku_stats[<span class="str">'ABC'</span>] = sku_stats[<span class="str">'cumulative_pct'</span>].apply(abc_class)
+<span class="fn">print</span>(sku_stats[<span class="str">'ABC'</span>].value_counts())
+
+<span class="cm"># ── 5. Stockout Risk Classifier ───────────────────────────────────</span>
+<span class="cm"># Label: stockout if order demand > safety_stock threshold</span>
+df_sc = df[[ <span class="str">'Order Item Quantity'</span>, <span class="str">'Days for shipment (scheduled)'</span>,
+             <span class="str">'Days for shipping (real)'</span>, <span class="str">'order_month'</span>,
+             <span class="str">'order_quarter'</span>, <span class="str">'Shipping Mode'</span>, <span class="str">'Category Name'</span>]].dropna()
+df_sc[<span class="str">'stockout_risk'</span>] = (
+    df_sc[<span class="str">'Days for shipping (real)'</span>] > df_sc[<span class="str">'Days for shipment (scheduled)'</span>] * <span class="num">1.5</span>
+).astype(int)
+
+cat_cols = [<span class="str">'Shipping Mode'</span>, <span class="str">'Category Name'</span>]
+df_enc = pd.get_dummies(df_sc, columns=cat_cols, drop_first=<span class="kw">True</span>)
+feat_cols = [c <span class="kw">for</span> c <span class="kw">in</span> df_enc.columns <span class="kw">if</span> c != <span class="str">'stockout_risk'</span>]
+
+X = df_enc[feat_cols].values
+y = df_enc[<span class="str">'stockout_risk'</span>].values
+split = int(len(X) * <span class="num">0.8</span>)
+
+clf = RandomForestClassifier(n_estimators=<span class="num">200</span>, max_depth=<span class="num">8</span>,
+                              class_weight=<span class="str">'balanced'</span>, random_state=<span class="num">42</span>, n_jobs=<span class="num">-1</span>)
+clf.fit(X[:split], y[:split])
+<span class="fn">print</span>(classification_report(y[split:], clf.predict(X[split:])))
+
+<span class="cm"># Save inventory summary</span>
+sku_stats.to_csv(<span class="str">'./reports/inventory_plan.csv'</span>, index=<span class="kw">False</span>)
+<span class="fn">print</span>(<span class="str">"Inventory plan saved."</span>)</pre></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHASE 5 -->
+    <div class="phase">
+      <div class="phase-header" onclick="togglePhase(this)">
+        <div class="phase-num" style="background:#D85A30">5</div>
+        <div class="phase-info">
+          <div class="phase-title">FastAPI Backend + Streamlit Dashboard</div>
+          <div class="phase-subtitle">REST API · Serve ML models · Interactive dashboard · Docker deployment</div>
+        </div>
+        <div class="phase-time">Weeks 11–12</div>
+        <svg class="chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="phase-body">
+        <div class="phase-inner">
+
+          <div class="code-section">
+            <div class="code-label">phase5a_fastapi_server.py <button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <div class="code-wrap"><pre><span class="kw">from</span> fastapi <span class="kw">import</span> FastAPI
+<span class="kw">from</span> pydantic <span class="kw">import</span> BaseModel
+<span class="kw">import</span> numpy <span class="kw">as</span> np, torch, joblib, uvicorn
+<span class="kw">from</span> typing <span class="kw">import</span> List
+
+app = FastAPI(title=<span class="str">"Supply Chain AI API"</span>, version=<span class="str">"1.0"</span>)
+
+<span class="cm"># Load models at startup</span>
+xgb_model = joblib.load(<span class="str">"./src/models/xgb_demand.pkl"</span>)
+lstm_model = DemandLSTM(pred_len=<span class="num">7</span>)
+lstm_model.load_state_dict(torch.load(<span class="str">"./src/models/lstm_demand.pt"</span>))
+lstm_model.eval()
+sku_plan   = pd.read_csv(<span class="str">"./reports/inventory_plan.csv"</span>)
+
+<span class="kw">class</span> <span class="fn">DemandRequest</span>(BaseModel):
+    product_code: str
+    warehouse:    str
+    horizon_days: int = <span class="num">7</span>
+    recent_demand: List[float]   <span class="cm"># last 30 daily values</span>
+
+<span class="kw">class</span> <span class="fn">RouteRequest</span>(BaseModel):
+    depot_lat:  float; depot_lng:  float
+    stops:      List[dict]       <span class="cm"># [{"lat":..,"lng":..,"demand":..}]</span>
+    n_vehicles: int = <span class="num">3</span>
+
+@app.<span class="fn">get</span>(<span class="str">"/"</span>)
+<span class="kw">def</span> <span class="fn">root</span>():
+    <span class="kw">return</span> {<span class="str">"status"</span>: <span class="str">"Supply Chain AI API running"</span>}
+
+@app.<span class="fn">post</span>(<span class="str">"/predict/demand"</span>)
+<span class="kw">def</span> <span class="fn">predict_demand</span>(req: DemandRequest):
+    seq = np.array(req.recent_demand[-<span class="num">30</span>:], dtype=np.float32)
+    seq_scaled = scaler.transform(seq.reshape(<span class="num">-1</span>,<span class="num">1</span>)).flatten()
+    tensor = torch.FloatTensor(seq_scaled).unsqueeze(<span class="num">0</span>).unsqueeze(<span class="num">-1</span>)
+    <span class="kw">with</span> torch.no_grad():
+        pred = lstm_model(tensor).numpy().flatten()
+    forecast = scaler.inverse_transform(pred.reshape(<span class="num">-1</span>,<span class="num">1</span>)).flatten().tolist()
+    <span class="kw">return</span> {
+        <span class="str">"product_code"</span>:   req.product_code,
+        <span class="str">"warehouse"</span>:      req.warehouse,
+        <span class="str">"forecast_7days"</span>: forecast,
+        <span class="str">"total_forecast"</span>: round(sum(forecast), <span class="num">1</span>)
+    }
+
+@app.<span class="fn">get</span>(<span class="str">"/inventory/{product_code}"</span>)
+<span class="kw">def</span> <span class="fn">get_inventory_plan</span>(product_code: str):
+    row = sku_plan[sku_plan[<span class="str">'Product_Code'</span>] == product_code]
+    <span class="kw">if</span> row.empty:
+        <span class="kw">return</span> {<span class="str">"error"</span>: <span class="str">"Product not found"</span>}
+    <span class="kw">return</span> row.iloc[<span class="num">0</span>][[
+        <span class="str">'Product_Code'</span>, <span class="str">'EOQ'</span>, <span class="str">'safety_stock'</span>,
+        <span class="str">'reorder_point'</span>, <span class="str">'ABC'</span>
+    ]].to_dict()
+
+@app.<span class="fn">get</span>(<span class="str">"/health"</span>)
+<span class="kw">def</span> <span class="fn">health</span>(): <span class="kw">return</span> {<span class="str">"status"</span>: <span class="str">"ok"</span>}
+
+<span class="kw">if</span> __name__ == <span class="str">"__main__"</span>:
+    uvicorn.run(app, host=<span class="str">"0.0.0.0"</span>, port=<span class="num">8000</span>)</pre></div>
+          </div>
+
+          <div class="code-section">
+            <div class="code-label">phase5b_streamlit_dashboard.py <button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <div class="code-wrap"><pre><span class="kw">import</span> streamlit <span class="kw">as</span> st
+<span class="kw">import</span> pandas <span class="kw">as</span> pd, plotly.express <span class="kw">as</span> px
+<span class="kw">import</span> requests
+
+st.set_page_config(page_title=<span class="str">"Supply Chain AI"</span>,
+                   page_icon=<span class="str">"🔗"</span>, layout=<span class="str">"wide"</span>)
+st.title(<span class="str">"🔗 AI-Driven Supply Chain Optimization"</span>)
+
+<span class="cm"># ── Sidebar ──────────────────────────────────────────────────────</span>
+page = st.sidebar.selectbox(<span class="str">"Navigation"</span>,
+    [<span class="str">"📊 Overview"</span>, <span class="str">"📈 Demand Forecast"</span>,
+     <span class="str">"🚚 Route Optimizer"</span>, <span class="str">"📦 Inventory Plan"</span>])
+
+<span class="cm"># ── Overview ─────────────────────────────────────────────────────</span>
+<span class="kw">if</span> page == <span class="str">"📊 Overview"</span>:
+    col1, col2, col3, col4 = st.columns(<span class="num">4</span>)
+    col1.metric(<span class="str">"Total Orders"</span>,   <span class="str">"180,519"</span>, <span class="str">"+12%"</span>)
+    col2.metric(<span class="str">"Avg Delivery Days"</span>, <span class="str">"3.9"</span>,   <span class="str">"-0.5"</span>)
+    col3.metric(<span class="str">"On-Time Rate"</span>,    <span class="str">"67.3%"</span>,  <span class="str">"+4%"</span>)
+    col4.metric(<span class="str">"Forecast MAPE"</span>,   <span class="str">"9.2%"</span>,   <span class="str">"-3%"</span>)
+
+    df_plot = pd.read_csv(<span class="str">'./data/dataco/DataCoSupplyChainDataset.csv'</span>,
+                          encoding=<span class="str">'latin-1'</span>, parse_dates=[<span class="str">'order date (DateOrders)'</span>])
+    monthly = (df_plot.set_index(<span class="str">'order date (DateOrders)'</span>)
+               .resample(<span class="str">'M'</span>)[<span class="str">'Sales'</span>].sum().reset_index())
+    st.plotly_chart(
+        px.line(monthly, x=<span class="str">'order date (DateOrders)'</span>, y=<span class="str">'Sales'</span>,
+                title=<span class="str">'Monthly Revenue Trend'</span>),
+        use_container_width=<span class="kw">True</span>
+    )
+
+<span class="cm"># ── Demand Forecast ───────────────────────────────────────────────</span>
+<span class="kw">elif</span> page == <span class="str">"📈 Demand Forecast"</span>:
+    st.subheader(<span class="str">"7-Day Demand Forecast"</span>)
+    col1, col2 = st.columns(<span class="num">2</span>)
+    product = col1.text_input(<span class="str">"Product Code"</span>, <span class="str">"Product_1359"</span>)
+    warehouse = col2.selectbox(<span class="str">"Warehouse"</span>,
+                               [<span class="str">"Whse_A"</span>, <span class="str">"Whse_B"</span>, <span class="str">"Whse_C"</span>, <span class="str">"Whse_J"</span>])
+
+    <span class="kw">if</span> st.button(<span class="str">"Run Forecast"</span>):
+        recent = list(np.random.randint(<span class="num">100</span>, <span class="num">500</span>, <span class="num">30</span>).astype(float))
+        resp = requests.post(<span class="str">"http://localhost:8000/predict/demand"</span>,
+            json={<span class="str">"product_code"</span>: product, <span class="str">"warehouse"</span>: warehouse,
+                  <span class="str">"horizon_days"</span>: <span class="num">7</span>, <span class="str">"recent_demand"</span>: recent})
+        <span class="kw">if</span> resp.ok:
+            fc = resp.json()[<span class="str">"forecast_7days"</span>]
+            fc_df = pd.DataFrame({<span class="str">"Day"</span>: range(<span class="num">1</span>, <span class="num">8</span>), <span class="str">"Forecast"</span>: fc})
+            st.plotly_chart(
+                px.bar(fc_df, x=<span class="str">"Day"</span>, y=<span class="str">"Forecast"</span>,
+                       title=<span class="str">f"7-Day Forecast for {product}"</span>,
+                       color=<span class="str">"Forecast"</span>, color_continuous_scale=<span class="str">"teal"</span>),
+                use_container_width=<span class="kw">True</span>
+            )
+            st.success(<span class="str">f"Total 7-day forecast: {sum(fc):.0f} units"</span>)
+
+<span class="cm"># ── Inventory Plan ────────────────────────────────────────────────</span>
+<span class="kw">elif</span> page == <span class="str">"📦 Inventory Plan"</span>:
+    st.subheader(<span class="str">"SKU Inventory Plan"</span>)
+    inv = pd.read_csv(<span class="str">"./reports/inventory_plan.csv"</span>)
+    abc_filter = st.multiselect(<span class="str">"ABC Class"</span>, [<span class="str">"A"</span>, <span class="str">"B"</span>, <span class="str">"C"</span>],
+                                default=[<span class="str">"A"</span>, <span class="str">"B"</span>])
+    filtered = inv[inv[<span class="str">"ABC"</span>].isin(abc_filter)]
+    st.dataframe(filtered[[
+        <span class="str">"Product_Code"</span>, <span class="str">"avg_daily_demand"</span>, <span class="str">"EOQ"</span>,
+        <span class="str">"safety_stock"</span>, <span class="str">"reorder_point"</span>, <span class="str">"ABC"</span>
+    ]].head(<span class="num">50</span>), use_container_width=<span class="kw">True</span>)
+
+    st.plotly_chart(
+        px.scatter(filtered, x=<span class="str">"EOQ"</span>, y=<span class="str">"safety_stock"</span>,
+                   color=<span class="str">"ABC"</span>, hover_data=[<span class="str">"Product_Code"</span>],
+                   title=<span class="str">"EOQ vs Safety Stock by ABC Class"</span>),
+        use_container_width=<span class="kw">True</span>
+    )</pre></div>
+          </div>
+
+          <div class="code-section">
+            <div class="code-label">Dockerfile <button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <div class="code-wrap"><pre>FROM python:3.11-slim
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+COPY . .
+EXPOSE 8000 8501
+CMD ["bash", "-c", "uvicorn phase5a_fastapi_server:app --host 0.0.0.0 --port 8000 &amp; streamlit run phase5b_streamlit_dashboard.py --server.port 8501 --server.address 0.0.0.0"]</pre></div>
+          </div>
+
+          <div class="code-section">
+            <div class="code-label">Run the project</div>
+            <div class="code-wrap"><pre><span class="cm"># Option 1: Direct</span>
+uvicorn phase5a_fastapi_server:app --reload --port 8000
+streamlit run phase5b_streamlit_dashboard.py
+
+<span class="cm"># Option 2: Docker</span>
+docker build -t supply-chain-ai .
+docker run -p 8000:8000 -p 8501:8501 supply-chain-ai
+
+<span class="cm"># API docs available at:</span>
+<span class="cm"># http://localhost:8000/docs</span>
+<span class="cm"># Dashboard at: http://localhost:8501</span></pre></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end phases -->
+
+  <div style="margin-top:2rem;background:#E1F5EE;border:1px solid #1D9E75;border-radius:10px;padding:1.2rem 1.5rem;color:#0F6E56;font-size:14px;">
+    <strong>✅ Project Complete!</strong> You now have: 4 datasets downloaded · EDA pipeline · SARIMA + XGBoost + LSTM forecasters · VRP route optimizer · EOQ inventory planner · FastAPI backend · Streamlit dashboard · Dockerized deployment.
+    <br><br>Suggested final steps: track experiments with <code>mlflow ui</code>, write your GitHub README documenting model metrics, and include the route map HTML and EDA plots in your project report.
+  </div>
+
+</div><!-- container -->
+
+<script>
+function togglePhase(header) {
+  const body = header.nextElementSibling;
+  const isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  header.classList.toggle('open', !isOpen);
+}
+
+function copyCode(btn) {
+  const pre = btn.closest('.code-section').querySelector('pre');
+  navigator.clipboard.writeText(pre.innerText).then(() => {
+    const orig = btn.textContent;
+    btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = orig, 1500);
+  });
+}
+</script>
+</body>
+</html>

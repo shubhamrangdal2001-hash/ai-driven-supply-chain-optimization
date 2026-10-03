@@ -1,0 +1,14 @@
+table Fact_Routes
+	lineageTag: fact_routes-001
+
+	partition Fact_Routes = m
+		mode: import
+		source =
+				let
+			    Source = Csv.Document(
+			        File.Contents(PBI_DataPath & "\\fact_routes.csv"),
+			        [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.None]
+			    ),
+			    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true])
+		in
+			#Promoted Headers

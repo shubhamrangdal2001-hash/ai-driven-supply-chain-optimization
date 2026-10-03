@@ -1,0 +1,14 @@
+table Data_Source_Manifest
+	lineageTag: data_source_manifest-001
+
+	partition Data_Source_Manifest = m
+		mode: import
+		source =
+				let
+			    Source = Csv.Document(
+			        File.Contents(PBI_DataPath & "\\data_source_manifest.csv"),
+			        [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.None]
+			    ),
+			    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true])
+		in
+			#Promoted Headers

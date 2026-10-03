@@ -1,0 +1,42 @@
+table Dim_Date
+	lineageTag: dim-date-001
+
+	column Date
+		dataType: dateTime
+		formatString: Short Date
+		sourceColumn: Date
+		isKey
+
+	column DateKey
+		dataType: int64
+		formatString: 0
+		sourceColumn: DateKey
+		isHidden
+		summarizeBy: none
+
+	column Year
+		dataType: int64
+		formatString: 0
+		sourceColumn: Year
+		summarizeBy: none
+
+	column Month_Name
+		dataType: string
+		sourceColumn: Month_Name
+
+	column YearMonth
+		dataType: string
+		sourceColumn: YearMonth
+
+	partition Dim_Date = m
+		mode: import
+		source =
+				let
+			    Source = Csv.Document(
+			        File.Contents(PBI_DataPath & "\\dim_date.csv"),
+			        [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.None]
+			    ),
+			    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+			    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers", {{"Date", type date}, {"DateKey", Int64.Type}}),
+		in
+			    #"Changed Type"

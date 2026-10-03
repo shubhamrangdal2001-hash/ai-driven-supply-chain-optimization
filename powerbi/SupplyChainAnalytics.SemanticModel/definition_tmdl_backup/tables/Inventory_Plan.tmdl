@@ -1,0 +1,22 @@
+table Inventory_Plan
+
+	measure 'SKU Count' = COUNTROWS(Inventory_Plan)
+		formatString: "#,0"
+		displayFolder: Inventory
+
+	measure 'Avg Safety Stock' = AVERAGE(Inventory_Plan[safety_stock])
+		formatString: "#,0"
+		displayFolder: Inventory
+	lineageTag: inventory_plan-001
+
+	partition Inventory_Plan = m
+		mode: import
+		source =
+				let
+			    Source = Csv.Document(
+			        File.Contents(PBI_DataPath & "\\inventory_plan.csv"),
+			        [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.None]
+			    ),
+			    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true])
+		in
+			#Promoted Headers

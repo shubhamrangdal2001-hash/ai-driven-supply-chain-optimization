@@ -1,0 +1,14 @@
+table Supplier_Performance
+	lineageTag: supplier_performance-001
+
+	partition Supplier_Performance = m
+		mode: import
+		source =
+				let
+			    Source = Csv.Document(
+			        File.Contents(PBI_DataPath & "\\supplier_performance.csv"),
+			        [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.None]
+			    ),
+			    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true])
+		in
+			#Promoted Headers

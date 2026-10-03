@@ -1,0 +1,29 @@
+{
+  "data_provenance": "real_inventory_plan",
+  "source_file": "reports/inventory_plan.csv",
+  "source_sku_count": 2160,
+  "n_skus_simulated": 500,
+  "n_monte_carlo_iterations": 10000,
+  "service_level_target": 0.95,
+  "lead_time_days_mean": 7,
+  "baseline_avg_overstock_units": 23772.94,
+  "optimised_avg_overstock_units": 98255.08,
+  "overstock_reduction_pct": -313.3,
+  "baseline_avg_stockout_prob": 0.5511,
+  "optimised_avg_stockout_prob": 0.0623,
+  "stockout_reduction_pct": 88.7,
+  "abc_breakdown": {
+    "A": {
+      "overstock_reduction_pct": -440.1,
+      "stockout_reduction_pct": 88.7
+    },
+    "B": {
+      "overstock_reduction_pct": -312.7,
+      "stockout_reduction_pct": 88.8
+    },
+    "C": {
+      "overstock_reduction_pct": -202.1,
+      "stockout_reduction_pct": 88.9
+    }
+  }
+}

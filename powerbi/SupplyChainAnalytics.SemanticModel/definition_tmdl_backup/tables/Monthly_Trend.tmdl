@@ -1,0 +1,14 @@
+table Monthly_Trend
+	lineageTag: monthly_trend-001
+
+	partition Monthly_Trend = m
+		mode: import
+		source =
+				let
+			    Source = Csv.Document(
+			        File.Contents(PBI_DataPath & "\\monthly_trend.csv"),
+			        [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.None]
+			    ),
+			    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true])
+		in
+			#Promoted Headers

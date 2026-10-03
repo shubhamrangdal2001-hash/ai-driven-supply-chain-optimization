@@ -1,0 +1,16 @@
+{
+  "certified_real_data_only": true,
+  "synthetic_data_allowed": false,
+  "validated_at": "2026-06-11T22:24:35.080779",
+  "sources": {
+    "dataco_raw_csv": "D:\\AI-Driven Supply Chain\\DataCo Smart Supply Chain\\DataCoSupplyChainDataset.csv",
+    "dataco_rows": 180519,
+    "demand_raw_csv": "D:\\AI-Driven Supply Chain\\Product Demand Forecasting\\Historical Product Demand.csv",
+    "demand_monthly_rows": 136026,
+    "inventory_skus": 2160,
+    "inventory_verified_against_demand": true,
+    "simulation_provenance": "real_inventory_plan",
+    "olist_states": 27
+  },
+  "note": "simulation_* tables are Monte Carlo projections on real SKU demand statistics \u2014 not synthetic order transactions."
+}

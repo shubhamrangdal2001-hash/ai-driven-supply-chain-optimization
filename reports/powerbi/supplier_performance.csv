@@ -1,0 +1,200 @@
+Shipping_Mode,Category,Orders,Revenue,Profit,On_Time_Pct,Avg_Delay
+First Class,Accessories,290,22890.84,3970.29,0.0,-1.0
+First Class,As Seen on  TV!,10,3399.66,612.41,0.0,-1.0
+First Class,Baby ,34,2008.72,376.62,0.0,-1.0
+First Class,Baseball & Softball,105,14802.22,1192.6,0.0,-1.0
+First Class,Basketball,16,6199.84,-62.04,0.0,-1.0
+First Class,Books ,53,1647.24,129.43,0.0,-1.0
+First Class,Boxing & MMA,67,12825.44,661.37,0.0,-1.0
+First Class,CDs ,45,508.05,61.14,0.0,-1.0
+First Class,Cameras ,152,68710.08,6943.91,0.0,-1.0
+First Class,Camping & Hiking,2057,617058.88,62623.64,0.0,-1.0
+First Class,Cardio Equipment,1923,568243.56,59156.45,0.0,-1.0
+First Class,Children's Clothing,78,27853.8,4896.09,0.0,-1.0
+First Class,Cleats,3745,671888.26,87060.65,0.0,-1.0
+First Class,Computers,55,82500.0,12574.65,0.0,-1.0
+First Class,Consumer Electronics,62,15678.56,1881.6,0.0,-1.0
+First Class,Crafts,85,39225.8,6018.58,0.0,-1.0
+First Class,DVDs,62,10191.56,610.95,0.0,-1.0
+First Class,Electronics,499,58401.04,6049.87,0.0,-1.0
+First Class,Fishing,2715,1085945.73,121127.03,0.0,-1.0
+First Class,Fitness Accessories,50,6978.49,1237.07,0.0,-1.0
+First Class,Garden,73,38878.34,7523.31,0.0,-1.0
+First Class,Girls' Apparel,200,25293.65,3717.62,0.0,-1.0
+First Class,Golf Apparel,58,4758.79,623.59,0.0,-1.0
+First Class,Golf Bags & Carts,19,3229.81,779.85,0.0,-1.0
+First Class,Golf Balls,209,11160.67,658.93,0.0,-1.0
+First Class,Golf Gloves,160,19775.46,2087.76,0.0,-1.0
+First Class,Golf Shoes,78,15064.0,2303.42,0.0,-1.0
+First Class,Health and Beauty,67,19633.68,1383.54,0.0,-1.0
+First Class,Hockey,98,7576.95,911.88,0.0,-1.0
+First Class,Hunting & Shooting,57,6967.69,465.59,0.0,-1.0
+First Class,Indoor/Outdoor Games,2927,441373.38,50124.2,0.0,-1.0
+First Class,Kids' Golf Clubs,53,14777.45,1807.51,0.0,-1.0
+First Class,Lacrosse,51,7073.4,61.74,0.0,-1.0
+First Class,Men's Clothing,37,7801.45,142.26,0.0,-1.0
+First Class,Men's Footwear,3366,437546.36,46887.77,0.0,-1.0
+First Class,Men's Golf Clubs,35,5939.47,1527.18,0.0,-1.0
+First Class,Music,73,19027.45,3832.3,0.0,-1.0
+First Class,Pet Supplies,84,7089.6,751.73,0.0,-1.0
+First Class,Shop By Sport,1725,205789.88,19910.12,0.0,-1.0
+First Class,Soccer,15,2999.67,618.75,0.0,-1.0
+First Class,Sporting Goods,59,19337.25,2825.16,0.0,-1.0
+First Class,Strength Training,14,6900.95,1895.98,0.0,-1.0
+First Class,Tennis & Racquet,53,6838.48,1572.04,0.0,-1.0
+First Class,Toys,85,980.9,180.43,0.0,-1.0
+First Class,Trade-In,146,10613.64,1426.72,0.0,-1.0
+First Class,Video Games,96,3816.0,496.77,0.0,-1.0
+First Class,Water Sports,2408,482775.93,52519.41,0.0,-1.0
+First Class,Women's Apparel,3351,499900.0,56035.97,0.0,-1.0
+First Class,Women's Clothing,88,18992.16,2847.62,0.0,-1.0
+First Class,Women's Golf Clubs,26,5499.52,80.46,0.0,-1.0
+Same Day,Accessories,88,6472.41,551.11,51.1,-0.49
+Same Day,As Seen on  TV!,3,1299.87,-59.24,66.7,-0.33
+Same Day,Baby ,27,1595.16,140.89,44.4,-0.56
+Same Day,Baseball & Softball,30,4339.16,776.36,46.7,-0.53
+Same Day,Books ,44,1367.52,28.82,25.0,-0.75
+Same Day,Boxing & MMA,29,5558.22,25.73,44.8,-0.55
+Same Day,CDs ,18,203.22,20.66,55.6,-0.44
+Same Day,Cameras ,22,9944.88,506.46,63.6,-0.36
+Same Day,Camping & Hiking,738,221385.25,29141.48,52.7,-0.47
+Same Day,Cardio Equipment,661,190931.07,17924.2,54.2,-0.46
+Same Day,Children's Clothing,27,9641.7,672.94,55.6,-0.44
+Same Day,Cleats,1353,250758.25,28738.14,53.2,-0.47
+Same Day,Computers,16,24000.0,4193.54,81.2,-0.19
+Same Day,Consumer Electronics,33,8345.04,1144.51,42.4,-0.58
+Same Day,Crafts,14,6460.72,-144.4,57.1,-0.43
+Same Day,DVDs,16,2630.08,510.69,18.8,-0.81
+Same Day,Electronics,176,20070.88,1746.61,48.9,-0.51
+Same Day,Fishing,868,347182.65,29718.64,50.9,-0.49
+Same Day,Fitness Accessories,13,1084.69,244.66,38.5,-0.62
+Same Day,Garden,29,15444.82,1522.81,48.3,-0.52
+Same Day,Girls' Apparel,59,8399.53,826.04,49.2,-0.51
+Same Day,Golf Apparel,22,1609.5,-360.69,63.6,-0.36
+Same Day,Golf Bags & Carts,1,169.99,12.27,0.0,-1.0
+Same Day,Golf Balls,88,4998.22,594.56,47.7,-0.52
+Same Day,Golf Gloves,59,5838.44,2.06,54.2,-0.46
+Same Day,Golf Shoes,33,7041.0,1007.33,45.5,-0.55
+Same Day,Health and Beauty,14,4102.56,748.46,64.3,-0.36
+Same Day,Hockey,41,2790.0,431.17,48.8,-0.51
+Same Day,Hunting & Shooting,38,5162.08,505.72,36.8,-0.63
+Same Day,Indoor/Outdoor Games,1087,163634.52,15635.64,50.8,-0.49
+Same Day,Kids' Golf Clubs,21,4976.15,1229.76,57.1,-0.43
+Same Day,Lacrosse,16,1674.45,334.65,43.8,-0.56
+Same Day,Men's Clothing,13,2741.05,562.92,53.8,-0.46
+Same Day,Men's Footwear,1182,153648.19,16545.28,52.6,-0.47
+Same Day,Men's Golf Clubs,11,1364.89,186.44,72.7,-0.27
+Same Day,Music,22,5734.3,1500.05,45.5,-0.55
+Same Day,Pet Supplies,40,3376.0,266.47,42.5,-0.57
+Same Day,Shop By Sport,598,70662.87,6838.32,52.5,-0.47
+Same Day,Soccer,8,1254.86,210.45,62.5,-0.38
+Same Day,Sporting Goods,21,6882.75,1586.36,42.9,-0.57
+Same Day,Strength Training,4,1177.98,78.31,50.0,-0.5
+Same Day,Tennis & Racquet,16,2249.5,209.87,75.0,-0.25
+Same Day,Toys,24,276.96,2.24,58.3,-0.42
+Same Day,Trade-In,42,2600.7,425.26,57.1,-0.43
+Same Day,Video Games,47,1868.25,309.62,48.9,-0.51
+Same Day,Water Sports,860,172141.4,15592.65,54.3,-0.46
+Same Day,Women's Apparel,1120,167550.0,19062.75,52.6,-0.47
+Same Day,Women's Clothing,39,8416.98,1405.34,48.7,-0.51
+Same Day,Women's Golf Clubs,6,1469.85,-135.48,66.7,-0.33
+Second Class,Accessories,360,27189.12,2374.4,19.2,-1.97
+Second Class,As Seen on  TV!,14,4599.54,-505.69,7.1,-2.36
+Second Class,Baby ,29,1713.32,92.1,24.1,-1.93
+Second Class,Baseball & Softball,133,18651.32,3615.71,19.5,-2.11
+Second Class,Basketball,10,4399.9,1405.33,0.0,-3.1
+Second Class,Books ,64,1989.12,337.85,25.0,-1.92
+Second Class,Boxing & MMA,95,20023.22,1397.64,21.1,-2.01
+Second Class,CDs ,33,372.57,20.81,27.3,-2.03
+Second Class,Cameras ,115,51984.6,4771.19,18.3,-2.12
+Second Class,Camping & Hiking,2668,800346.67,75097.16,22.1,-1.93
+Second Class,Cardio Equipment,2406,724418.04,67100.03,20.6,-1.97
+Second Class,Children's Clothing,146,52136.6,5447.13,19.9,-2.01
+Second Class,Cleats,4816,861936.62,92972.29,20.0,-2.0
+Second Class,Computers,71,106500.0,14055.68,16.9,-2.17
+Second Class,Consumer Electronics,101,25540.88,4250.9,13.9,-2.2
+Second Class,Crafts,100,46148.0,5601.47,22.0,-1.95
+Second Class,DVDs,89,14629.82,618.31,23.6,-1.97
+Second Class,Electronics,599,69526.21,7426.96,19.0,-1.98
+Second Class,Fishing,3314,1325533.76,149098.17,20.0,-2.0
+Second Class,Fitness Accessories,60,6763.39,1104.89,13.3,-2.07
+Second Class,Garden,87,46334.46,7030.86,14.9,-2.24
+Second Class,Girls' Apparel,229,28143.45,2999.79,19.2,-2.08
+Second Class,Golf Apparel,77,5867.9,1017.8,20.8,-1.99
+Second Class,Golf Bags & Carts,13,2209.87,606.94,23.1,-2.15
+Second Class,Golf Balls,277,13883.06,1412.57,16.6,-2.06
+Second Class,Golf Gloves,211,21534.36,2281.55,17.1,-2.08
+Second Class,Golf Shoes,108,22689.0,2055.28,13.0,-2.11
+Second Class,Health and Beauty,66,19340.64,2235.78,19.7,-1.8
+Second Class,Hockey,93,7754.96,994.76,16.1,-2.1
+Second Class,Hunting & Shooting,88,10041.54,521.32,21.6,-1.86
+Second Class,Indoor/Outdoor Games,3750,555727.62,57400.68,20.2,-1.99
+Second Class,Kids' Golf Clubs,68,17614.1,1285.7,17.6,-2.1
+Second Class,Lacrosse,70,6772.95,948.85,17.1,-1.93
+Second Class,Men's Clothing,32,6747.2,530.07,18.8,-2.03
+Second Class,Men's Footwear,4410,573255.92,63738.32,20.3,-1.98
+Second Class,Men's Golf Clubs,50,8549.23,686.52,28.0,-1.78
+Second Class,Music,83,21633.95,1529.37,19.3,-1.9
+Second Class,Pet Supplies,119,10043.6,1364.37,20.2,-1.92
+Second Class,Shop By Sport,2157,259226.96,29443.74,19.9,-2.04
+Second Class,Soccer,31,5759.37,895.55,22.6,-2.32
+Second Class,Sporting Goods,71,23270.25,1620.55,15.5,-2.17
+Second Class,Strength Training,22,8834.93,-2966.06,13.6,-2.18
+Second Class,Tennis & Racquet,70,9582.87,1181.4,24.3,-1.84
+Second Class,Toys,98,1130.92,203.49,20.4,-1.89
+Second Class,Trade-In,214,15093.93,2291.04,18.7,-2.13
+Second Class,Video Games,175,6956.25,490.72,21.1,-1.98
+Second Class,Water Sports,3095,620169.07,65053.75,20.4,-1.97
+Second Class,Women's Apparel,4038,610450.0,62423.01,21.0,-1.99
+Second Class,Women's Clothing,152,32804.64,3291.88,19.7,-2.02
+Second Class,Women's Golf Clubs,39,9619.11,1456.24,20.5,-2.15
+Standard Class,Accessories,1042,77119.14,9747.72,58.8,-0.01
+Standard Class,As Seen on  TV!,41,11298.87,666.95,61.0,-0.02
+Standard Class,Baby ,117,6912.36,915.42,64.1,0.11
+Standard Class,Baseball & Softball,364,56264.45,7177.46,64.6,0.09
+Standard Class,Basketball,41,16499.59,502.38,65.9,0.37
+Standard Class,Books ,244,7583.52,386.91,59.4,-0.03
+Standard Class,Boxing & MMA,232,46798.53,6556.63,59.9,-0.03
+Standard Class,CDs ,175,1975.75,281.24,60.0,-0.03
+Standard Class,Cameras ,303,136968.12,18068.24,62.7,0.07
+Standard Class,Camping & Hiking,8266,2479634.77,260593.29,59.8,-0.0
+Standard Class,Cardio Equipment,7497,2211250.53,238830.42,60.3,0.01
+Standard Class,Children's Clothing,401,143197.1,16161.94,59.6,0.01
+Standard Class,Cleats,14637,2647359.65,285865.84,60.1,-0.01
+Standard Class,Computers,300,450000.0,38832.94,61.3,0.04
+Standard Class,Consumer Electronics,235,59426.8,5946.39,63.0,0.12
+Standard Class,Crafts,285,131521.8,14055.52,58.2,-0.07
+Standard Class,DVDs,316,51944.08,4915.48,59.2,-0.02
+Standard Class,Electronics,1882,223036.51,25667.94,58.9,-0.02
+Standard Class,Fishing,10428,4170991.55,456276.92,60.3,0.01
+Standard Class,Fitness Accessories,186,20774.87,2671.77,60.2,-0.04
+Standard Class,Garden,295,157111.11,17366.03,61.4,0.06
+Standard Class,Girls' Apparel,713,89869.57,9745.12,59.5,0.01
+Standard Class,Golf Apparel,284,22733.56,2215.61,62.0,0.04
+Standard Class,Golf Bags & Carts,28,4759.72,411.01,57.1,0.04
+Standard Class,Golf Balls,901,47056.21,5676.61,59.9,0.02
+Standard Class,Golf Gloves,640,69547.13,8604.12,58.9,-0.05
+Standard Class,Golf Shoes,305,63204.0,7040.04,63.0,0.07
+Standard Class,Health and Beauty,215,63003.6,5125.85,59.5,-0.01
+Standard Class,Hockey,382,30238.82,3059.62,62.0,0.07
+Standard Class,Hunting & Shooting,257,34677.11,4487.37,58.4,-0.01
+Standard Class,Indoor/Outdoor Games,11534,1728258.4,195290.91,60.2,0.0
+Standard Class,Kids' Golf Clubs,242,61429.88,4722.87,56.2,-0.14
+Standard Class,Lacrosse,206,23943.99,3019.05,53.9,-0.15
+Standard Class,Men's Clothing,126,26567.1,770.79,61.1,0.01
+Standard Class,Men's Footwear,13288,1727307.19,184731.45,60.7,0.01
+Standard Class,Men's Golf Clubs,187,31182.21,3117.85,64.2,0.19
+Standard Class,Music,256,66726.4,7574.6,58.6,-0.02
+Standard Class,Pet Supplies,249,21015.6,1206.69,59.8,-0.06
+Standard Class,Shop By Sport,6504,773842.32,73621.78,60.2,0.01
+Standard Class,Soccer,84,16463.15,2177.2,58.3,-0.11
+Standard Class,Sporting Goods,206,67516.5,6486.54,59.7,0.02
+Standard Class,Strength Training,71,37981.67,1324.08,56.3,-0.14
+Standard Class,Tennis & Racquet,189,25914.24,2784.67,57.7,-0.14
+Standard Class,Toys,322,3715.88,514.55,57.8,-0.04
+Standard Class,Trade-In,572,40413.51,3772.35,59.6,0.01
+Standard Class,Video Games,520,20670.0,1420.41,58.8,-0.03
+Standard Class,Water Sports,9177,1838758.28,191981.15,60.5,0.01
+Standard Class,Women's Apparel,12526,1869900.0,212899.3,60.5,0.01
+Standard Class,Women's Clothing,371,80069.22,11558.01,59.3,-0.02
+Standard Class,Women's Golf Clubs,110,27957.49,3627.42,60.0,0.1

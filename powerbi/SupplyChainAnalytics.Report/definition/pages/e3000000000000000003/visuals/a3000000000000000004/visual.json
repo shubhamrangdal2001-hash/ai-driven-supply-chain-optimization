@@ -1,0 +1,240 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.7.0/schema.json",
+  "name": "a3000000000000000004",
+  "position": {
+    "x": 532,
+    "y": 332,
+    "z": 4000,
+    "height": 360,
+    "width": 732,
+    "tabOrder": 4000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Inventory_Plan"
+                    }
+                  },
+                  "Property": "Product_Code"
+                }
+              },
+              "queryRef": "Inventory_Plan.Product_Code",
+              "nativeQueryRef": "Product_Code"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Inventory_Plan"
+                    }
+                  },
+                  "Property": "annual_demand"
+                }
+              },
+              "queryRef": "Inventory_Plan.annual_demand",
+              "nativeQueryRef": "annual_demand"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Inventory_Plan"
+                    }
+                  },
+                  "Property": "safety_stock"
+                }
+              },
+              "queryRef": "Inventory_Plan.safety_stock",
+              "nativeQueryRef": "safety_stock"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Inventory_Plan"
+                    }
+                  },
+                  "Property": "ABC"
+                }
+              },
+              "queryRef": "Inventory_Plan.ABC",
+              "nativeQueryRef": "ABC"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Inventory_Plan"
+                  }
+                },
+                "Property": "Product_Code"
+              }
+            },
+            "direction": "Ascending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "objects": {
+      "categoryAxis": [
+        {
+          "properties": {
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "8D"
+                }
+              }
+            },
+            "fontFamily": {
+              "expr": {
+                "Literal": {
+                  "Value": "''Segoe UI', wf_segoe-ui_normal, helvetica, arial, sans-serif'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "valueAxis": [
+        {
+          "properties": {
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "8D"
+                }
+              }
+            },
+            "fontFamily": {
+              "expr": {
+                "Literal": {
+                  "Value": "''Segoe UI', wf_segoe-ui_normal, helvetica, arial, sans-serif'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "labels": [
+        {
+          "properties": {
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "8D"
+                }
+              }
+            },
+            "fontFamily": {
+              "expr": {
+                "Literal": {
+                  "Value": "''Segoe UI', wf_segoe-ui_normal, helvetica, arial, sans-serif'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "legend": [
+        {
+          "properties": {
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "8D"
+                }
+              }
+            },
+            "fontFamily": {
+              "expr": {
+                "Literal": {
+                  "Value": "''Segoe UI', wf_segoe-ui_normal, helvetica, arial, sans-serif'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "00000401",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Inventory_Plan"
+              }
+            },
+            "Property": "Product_Code"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "00000401",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Inventory_Plan"
+              }
+            },
+            "Property": "annual_demand"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "00000401",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Inventory_Plan"
+              }
+            },
+            "Property": "safety_stock"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "00000401",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Inventory_Plan"
+              }
+            },
+            "Property": "ABC"
+          }
+        },
+        "type": "Categorical"
+      }
+    ]
+  }
+}

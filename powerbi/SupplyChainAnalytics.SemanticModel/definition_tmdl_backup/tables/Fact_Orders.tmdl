@@ -1,0 +1,103 @@
+table Fact_Orders
+	lineageTag: fact-orders-001
+
+	measure 'Total Revenue' = SUM(Fact_Orders[Revenue])
+		formatString: "$#,0"
+		displayFolder: Orders
+
+	measure 'Total Profit' = SUM(Fact_Orders[Profit])
+		formatString: "$#,0"
+		displayFolder: Orders
+
+	measure 'Total Orders' = COUNTROWS(Fact_Orders)
+		formatString: "#,0"
+		displayFolder: Orders
+
+	measure 'On-Time Delivery %' = DIVIDE(SUM(Fact_Orders[On_Time]), COUNTROWS(Fact_Orders))
+		formatString: 0.0%
+		displayFolder: Logistics
+
+	measure 'Avg Order Value' = DIVIDE([Total Revenue], [Total Orders])
+		formatString: "$#,0.00"
+		displayFolder: Orders
+
+	measure 'Profit Margin %' = DIVIDE([Total Profit], [Total Revenue])
+		formatString: 0.0%
+		displayFolder: Orders
+
+	column Order_Date
+		dataType: dateTime
+		formatString: Short Date
+		sourceColumn: Order_Date
+
+	column Order_Year
+		dataType: int64
+		formatString: 0
+		sourceColumn: Order_Year
+		summarizeBy: none
+
+	column Order_Month
+		dataType: int64
+		formatString: 0
+		sourceColumn: Order_Month
+		summarizeBy: none
+
+	column Category
+		dataType: string
+		sourceColumn: Category
+
+	column Market
+		dataType: string
+		sourceColumn: Market
+
+	column Region
+		dataType: string
+		sourceColumn: Region
+
+	column Country
+		dataType: string
+		sourceColumn: Country
+		dataCategory: Country
+
+	column Shipping_Mode
+		dataType: string
+		sourceColumn: Shipping_Mode
+
+	column Revenue
+		dataType: double
+		formatString: "$#,0.00"
+		sourceColumn: Revenue
+
+	column Profit
+		dataType: double
+		formatString: "$#,0.00"
+		sourceColumn: Profit
+
+	column Quantity
+		dataType: int64
+		formatString: "#,0"
+		sourceColumn: Quantity
+
+	column On_Time
+		dataType: int64
+		formatString: 0
+		sourceColumn: On_Time
+		summarizeBy: none
+
+	column Delay_Days
+		dataType: double
+		formatString: "0.00"
+		sourceColumn: Delay_Days
+
+	partition Fact_Orders = m
+		mode: import
+		source =
+				let
+			    Source = Csv.Document(
+			        File.Contents(PBI_DataPath & "\\fact_orders.csv"),
+			        [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.None]
+			    ),
+			    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+			    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers", {{"Order_Date", type date}, {"Order_Year", Int64.Type}, {"Order_Month", Int64.Type}, {"Revenue", type number}, {"Profit", type number}, {"Quantity", Int64.Type}, {"On_Time", Int64.Type}}),
+		in
+			    #"Changed Type"

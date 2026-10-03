@@ -1,0 +1,1710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI-Driven Supply Chain — Power BI Dashboard</title>
+  <meta name="description" content="Interactive supply chain optimization dashboard showing demand forecasting, inventory intelligence, and supplier KPIs." />
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <!-- Chart.js annotation plugin -->
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1/dist/chartjs-plugin-annotation.min.js"></script>
+
+  <style>
+    /* ═══════════════════════════════════════════════════════════════
+       DESIGN TOKENS
+    ═══════════════════════════════════════════════════════════════ */
+    :root {
+      --bg-primary:    #0d1117;
+      --bg-secondary:  #161b22;
+      --bg-tertiary:   #1c2333;
+      --bg-card:       #1e2736;
+      --bg-hover:      #243044;
+
+      --accent-blue:   #2f80ed;
+      --accent-cyan:   #00d4ff;
+      --accent-green:  #00e676;
+      --accent-amber:  #ffb300;
+      --accent-red:    #ff5252;
+      --accent-purple: #7c4dff;
+      --accent-teal:   #1de9b6;
+
+      --text-primary:  #e6edf3;
+      --text-secondary:#8b949e;
+      --text-muted:    #484f58;
+
+      --border:        rgba(255,255,255,0.06);
+      --border-active: rgba(47,128,237,0.5);
+
+      --glow-blue:     0 0 30px rgba(47,128,237,0.25);
+      --glow-green:    0 0 30px rgba(0,230,118,0.2);
+
+      --sidebar-w:     230px;
+      --header-h:      64px;
+      --radius:        12px;
+      --radius-sm:     8px;
+      --transition:    0.2s ease;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       RESET & BASE
+    ═══════════════════════════════════════════════════════════════ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       SIDEBAR
+    ═══════════════════════════════════════════════════════════════ */
+    .sidebar {
+      width: var(--sidebar-w);
+      background: var(--bg-secondary);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      padding: 0;
+      z-index: 100;
+    }
+
+    .sidebar-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 20px 18px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .logo-icon {
+      width: 34px; height: 34px;
+      background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px;
+    }
+
+    .logo-text {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-primary);
+      line-height: 1.3;
+    }
+    .logo-sub { font-size: 10px; color: var(--text-secondary); font-weight: 400; }
+
+    /* Nav */
+    .sidebar-nav { padding: 12px 8px; flex: 1; }
+
+    .nav-section-label {
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      padding: 8px 10px 4px;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 12px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: background var(--transition), color var(--transition);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      margin-bottom: 2px;
+      user-select: none;
+    }
+    .nav-item .nav-icon { font-size: 15px; width: 20px; text-align: center; }
+    .nav-item:hover { background: var(--bg-hover); color: var(--text-primary); }
+    .nav-item.active {
+      background: linear-gradient(90deg, rgba(47,128,237,0.18), rgba(47,128,237,0.05));
+      color: var(--accent-cyan);
+      border-left: 2px solid var(--accent-blue);
+    }
+
+    /* Sidebar KPIs */
+    .sidebar-kpis {
+      padding: 12px;
+      border-top: 1px solid var(--border);
+    }
+    .mini-kpi {
+      background: var(--bg-tertiary);
+      border-radius: var(--radius-sm);
+      padding: 10px 12px;
+      margin-bottom: 8px;
+    }
+    .mini-kpi-label { font-size: 10px; color: var(--text-muted); font-weight: 500; }
+    .mini-kpi-value { font-size: 18px; font-weight: 700; color: var(--accent-green); font-family: 'DM Mono', monospace; }
+    .mini-kpi-delta { font-size: 10px; color: var(--accent-green); }
+
+    /* ═══════════════════════════════════════════════════════════════
+       MAIN AREA
+    ═══════════════════════════════════════════════════════════════ */
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* Header */
+    .header {
+      height: var(--header-h);
+      background: var(--bg-secondary);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      flex-shrink: 0;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .page-title { font-size: 16px; font-weight: 600; }
+    .page-subtitle { font-size: 12px; color: var(--text-secondary); }
+
+    .header-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(0,230,118,0.12);
+      border: 1px solid rgba(0,230,118,0.25);
+      border-radius: 20px;
+      padding: 4px 12px;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--accent-green);
+    }
+    .badge-dot {
+      width: 6px; height: 6px;
+      background: var(--accent-green);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    .header-filters {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .filter-select {
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      padding: 6px 10px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      outline: none;
+      transition: border-color var(--transition);
+    }
+    .filter-select:hover, .filter-select:focus { border-color: var(--accent-blue); color: var(--text-primary); }
+
+    /* Content */
+    .content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px 24px;
+    }
+
+    .content::-webkit-scrollbar { width: 6px; }
+    .content::-webkit-scrollbar-track { background: transparent; }
+    .content::-webkit-scrollbar-thumb { background: var(--text-muted); border-radius: 3px; }
+
+    /* Pages */
+    .page { display: none; }
+    .page.active { display: block; animation: fadeIn 0.3s ease; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       KPI CARDS ROW
+    ═══════════════════════════════════════════════════════════════ */
+    .kpi-row { display: grid; gap: 14px; margin-bottom: 20px; }
+    .kpi-row-4 { grid-template-columns: repeat(4, 1fr); }
+    .kpi-row-3 { grid-template-columns: repeat(3, 1fr); }
+    .kpi-row-2 { grid-template-columns: repeat(2, 1fr); }
+
+    .kpi-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px 20px;
+      position: relative;
+      overflow: hidden;
+      transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+    }
+    .kpi-card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(47,128,237,0.3);
+      box-shadow: var(--glow-blue);
+    }
+    .kpi-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+    }
+    .kpi-card.blue::before  { background: linear-gradient(90deg, var(--accent-blue), var(--accent-cyan)); }
+    .kpi-card.green::before { background: linear-gradient(90deg, var(--accent-green), var(--accent-teal)); }
+    .kpi-card.amber::before { background: linear-gradient(90deg, var(--accent-amber), #ff9800); }
+    .kpi-card.purple::before{ background: linear-gradient(90deg, var(--accent-purple), #e040fb); }
+    .kpi-card.red::before   { background: linear-gradient(90deg, var(--accent-red), #ff6e40); }
+    .kpi-card.teal::before  { background: linear-gradient(90deg, var(--accent-teal), var(--accent-cyan)); }
+
+    .kpi-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; }
+    .kpi-icon { font-size: 20px; }
+    .kpi-trend-badge {
+      font-size: 11px; font-weight: 600;
+      padding: 2px 8px; border-radius: 20px;
+    }
+    .kpi-trend-badge.up   { background: rgba(0,230,118,0.15); color: var(--accent-green); }
+    .kpi-trend-badge.down { background: rgba(255,82,82,0.15); color: var(--accent-red); }
+    .kpi-trend-badge.good-down { background: rgba(0,230,118,0.15); color: var(--accent-green); }
+
+    .kpi-value {
+      font-size: 28px;
+      font-weight: 700;
+      font-family: 'DM Mono', monospace;
+      letter-spacing: -0.5px;
+      margin-bottom: 4px;
+    }
+    .kpi-label { font-size: 12px; color: var(--text-secondary); font-weight: 500; }
+    .kpi-sub   { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+
+    .kpi-sparkline { margin-top: 12px; height: 40px; }
+
+    /* ═══════════════════════════════════════════════════════════════
+       CHART CARDS
+    ═══════════════════════════════════════════════════════════════ */
+    .chart-grid { display: grid; gap: 14px; margin-bottom: 20px; }
+    .chart-grid-2    { grid-template-columns: repeat(2, 1fr); }
+    .chart-grid-3    { grid-template-columns: repeat(3, 1fr); }
+    .chart-grid-6040 { grid-template-columns: 60fr 40fr; }
+    .chart-grid-4060 { grid-template-columns: 40fr 60fr; }
+
+    .chart-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      transition: border-color var(--transition);
+    }
+    .chart-card:hover { border-color: rgba(47,128,237,0.2); }
+
+    .chart-card.span-2 { grid-column: span 2; }
+
+    .chart-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+    .chart-title { font-size: 13px; font-weight: 600; }
+    .chart-subtitle { font-size: 11px; color: var(--text-secondary); margin-top: 2px; }
+    .chart-legend {
+      display: flex; gap: 12px; flex-wrap: wrap;
+    }
+    .legend-item {
+      display: flex; align-items: center; gap: 5px;
+      font-size: 11px; color: var(--text-secondary);
+    }
+    .legend-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+    .chart-container { position: relative; }
+
+    /* ═══════════════════════════════════════════════════════════════
+       ABC TREEMAP (CSS-only)
+    ═══════════════════════════════════════════════════════════════ */
+    .treemap {
+      display: flex;
+      height: 200px;
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      gap: 3px;
+    }
+    .treemap-col { display: flex; flex-direction: column; gap: 3px; }
+    .treemap-cell {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: filter var(--transition), transform var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+    .treemap-cell:hover { filter: brightness(1.15); transform: scale(1.01); }
+    .treemap-cell .tc-label { font-size: 12px; font-weight: 600; }
+    .treemap-cell .tc-val   { font-size: 10px; opacity: 0.8; }
+    .tc-a { background: linear-gradient(135deg, #e53935, #f44336); }
+    .tc-b { background: linear-gradient(135deg, #f9a825, #ffb300); }
+    .tc-c { background: linear-gradient(135deg, #2e7d32, #43a047); }
+    .tc-b2{ background: linear-gradient(135deg, #1565c0, #1976d2); }
+    .tc-c2{ background: linear-gradient(135deg, #00695c, #00897b); }
+
+    /* ═══════════════════════════════════════════════════════════════
+       WATERFALL / REDUCTION VISUAL
+    ═══════════════════════════════════════════════════════════════ */
+    .reduction-bars {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 8px;
+    }
+
+    .reduction-item { }
+    .reduction-label {
+      font-size: 11px;
+      color: var(--text-secondary);
+      font-weight: 500;
+      margin-bottom: 6px;
+      display: flex;
+      justify-content: space-between;
+    }
+    .reduction-track {
+      height: 12px;
+      background: rgba(255,255,255,0.06);
+      border-radius: 6px;
+      overflow: hidden;
+      margin-bottom: 4px;
+    }
+    .reduction-fill {
+      height: 100%;
+      border-radius: 6px;
+      transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .fill-baseline { background: rgba(255,82,82,0.7); }
+    .fill-optimised{ background: linear-gradient(90deg, var(--accent-green), var(--accent-teal)); }
+    .reduction-values {
+      display: flex;
+      justify-content: space-between;
+      font-size: 10px;
+    }
+    .rv-baseline  { color: var(--accent-red); font-family: 'DM Mono', monospace; }
+    .rv-optimised { color: var(--accent-green); font-family: 'DM Mono', monospace; }
+
+    /* ═══════════════════════════════════════════════════════════════
+       SUPPLIER TABLE
+    ═══════════════════════════════════════════════════════════════ */
+    .perf-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0 4px;
+      font-size: 12px;
+    }
+    .perf-table th {
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-muted);
+      padding: 6px 12px;
+      text-align: left;
+    }
+    .perf-table td {
+      padding: 10px 12px;
+      background: var(--bg-tertiary);
+      color: var(--text-primary);
+    }
+    .perf-table tr td:first-child { border-radius: var(--radius-sm) 0 0 var(--radius-sm); }
+    .perf-table tr td:last-child  { border-radius: 0 var(--radius-sm) var(--radius-sm) 0; }
+    .perf-table tr:hover td { background: var(--bg-hover); cursor: pointer; }
+
+    .perf-bar-wrap { display: flex; align-items: center; gap: 8px; }
+    .perf-bar {
+      height: 6px;
+      border-radius: 3px;
+      min-width: 4px;
+    }
+
+    .badge-abc {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+    .badge-A { background: rgba(229,57,53,0.2); color: #ef9a9a; }
+    .badge-B { background: rgba(249,168,37,0.2); color: #ffe082; }
+    .badge-C { background: rgba(46,125,50,0.2);  color: #a5d6a7; }
+
+    /* Gauge */
+    .gauge-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       SECTION SEPARATOR
+    ═══════════════════════════════════════════════════════════════ */
+    .section-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 1.4px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin: 8px 0 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* Tab pills (inside pages) */
+    .tab-pills { display: flex; gap: 6px; margin-bottom: 18px; }
+    .tab-pill {
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      background: var(--bg-tertiary);
+      color: var(--text-secondary);
+      border: 1px solid var(--border);
+      transition: all var(--transition);
+    }
+    .tab-pill:hover { color: var(--text-primary); border-color: var(--accent-blue); }
+    .tab-pill.active {
+      background: var(--accent-blue);
+      color: #fff;
+      border-color: var(--accent-blue);
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       ANIMATIONS
+    ═══════════════════════════════════════════════════════════════ */
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.4; }
+    }
+
+    @keyframes countUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .kpi-value { animation: countUp 0.6s ease both; }
+
+    /* Scrollbar */
+    * { scrollbar-width: thin; scrollbar-color: var(--text-muted) transparent; }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     SIDEBAR
+═══════════════════════════════════════════════════════════════════ -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-icon">🔗</div>
+    <div>
+      <div class="logo-text">Supply Chain AI</div>
+      <div class="logo-sub">Optimization Dashboard</div>
+    </div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">Reports</div>
+    <div class="nav-item active" onclick="showPage('overview', this)">
+      <span class="nav-icon">📊</span> Executive Overview
+    </div>
+    <div class="nav-item" onclick="showPage('forecast', this)">
+      <span class="nav-icon">📈</span> Demand Forecasting
+    </div>
+    <div class="nav-item" onclick="showPage('inventory', this)">
+      <span class="nav-icon">📦</span> Inventory Intelligence
+    </div>
+    <div class="nav-item" onclick="showPage('supplier', this)">
+      <span class="nav-icon">🚚</span> Supplier & Logistics
+    </div>
+
+    <div class="nav-section-label" style="margin-top:12px">Quick Stats</div>
+    <div class="nav-item" onclick="showPage('overview', this)">
+      <span class="nav-icon">🎯</span> KPI Summary
+    </div>
+  </nav>
+
+  <div class="sidebar-kpis">
+    <div class="mini-kpi">
+      <div class="mini-kpi-label">OVERSTOCK REDUCTION</div>
+      <div class="mini-kpi-value" style="color:var(--accent-green)">−15.2%</div>
+      <div class="mini-kpi-delta">↓ vs baseline (Monte Carlo)</div>
+    </div>
+    <div class="mini-kpi">
+      <div class="mini-kpi-label">STOCKOUT RISK REDUCTION</div>
+      <div class="mini-kpi-value" style="color:var(--accent-cyan)">−20.4%</div>
+      <div class="mini-kpi-delta">↓ probability (95% SL)</div>
+    </div>
+  </div>
+</aside>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     MAIN
+═══════════════════════════════════════════════════════════════════ -->
+<main class="main">
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-left">
+      <div>
+        <div class="page-title" id="pageTitleEl">Executive Overview</div>
+        <div class="page-subtitle">Last refreshed: Jun 2025 · DataCo + Product Demand Datasets</div>
+      </div>
+      <div class="header-badge">
+        <div class="badge-dot"></div>
+        ML Pipeline Active
+      </div>
+    </div>
+    <div class="header-filters">
+      <select class="filter-select" id="yearFilter" onchange="applyFilters()">
+        <option value="all">All Years</option>
+        <option value="2023">2023</option>
+        <option value="2024">2024</option>
+        <option value="2025" selected>2025</option>
+      </select>
+      <select class="filter-select" id="abcFilter" onchange="applyFilters()">
+        <option value="all">All SKU Classes</option>
+        <option value="A">Class A</option>
+        <option value="B">Class B</option>
+        <option value="C">Class C</option>
+      </select>
+      <select class="filter-select" id="categoryFilter" onchange="applyFilters()">
+        <option value="all">All Categories</option>
+        <option value="tech">Technology</option>
+        <option value="furniture">Furniture</option>
+        <option value="supplies">Office Supplies</option>
+      </select>
+    </div>
+  </header>
+
+  <!-- Content -->
+  <div class="content">
+
+    <!-- ══════════════════════════════════════════════════════════════
+         PAGE 1 — EXECUTIVE OVERVIEW
+    ══════════════════════════════════════════════════════════════ -->
+    <div class="page active" id="page-overview">
+
+      <div class="kpi-row kpi-row-4">
+        <div class="kpi-card blue">
+          <div class="kpi-header">
+            <span class="kpi-icon">📋</span>
+            <span class="kpi-trend-badge up">+12%</span>
+          </div>
+          <div class="kpi-value">180,519</div>
+          <div class="kpi-label">Total Orders Processed</div>
+          <div class="kpi-sub">FY 2023–2025 · DataCo dataset</div>
+        </div>
+        <div class="kpi-card green">
+          <div class="kpi-header">
+            <span class="kpi-icon">⏱️</span>
+            <span class="kpi-trend-badge good-down">−0.5d</span>
+          </div>
+          <div class="kpi-value">3.9d</div>
+          <div class="kpi-label">Avg Delivery Time</div>
+          <div class="kpi-sub">Scheduled vs actual (real days)</div>
+        </div>
+        <div class="kpi-card amber">
+          <div class="kpi-header">
+            <span class="kpi-icon">✅</span>
+            <span class="kpi-trend-badge up">+4%</span>
+          </div>
+          <div class="kpi-value">67.3%</div>
+          <div class="kpi-label">On-Time Delivery Rate</div>
+          <div class="kpi-sub">Across all shipping modes</div>
+        </div>
+        <div class="kpi-card purple">
+          <div class="kpi-header">
+            <span class="kpi-icon">🎯</span>
+            <span class="kpi-trend-badge up">−3pp</span>
+          </div>
+          <div class="kpi-value">9.2%</div>
+          <div class="kpi-label">Forecast MAPE (LSTM)</div>
+          <div class="kpi-sub">vs 18% SARIMA baseline</div>
+        </div>
+      </div>
+
+      <div class="kpi-row kpi-row-4">
+        <div class="kpi-card teal">
+          <div class="kpi-header">
+            <span class="kpi-icon">📉</span>
+            <span class="kpi-trend-badge up">−15.2%</span>
+          </div>
+          <div class="kpi-value">−15.2%</div>
+          <div class="kpi-label">Simulated Overstock Reduction</div>
+          <div class="kpi-sub">EOQ + Z-score safety stock (95% SL)</div>
+        </div>
+        <div class="kpi-card green">
+          <div class="kpi-header">
+            <span class="kpi-icon">🛡️</span>
+            <span class="kpi-trend-badge up">−20.4%</span>
+          </div>
+          <div class="kpi-value">−20.4%</div>
+          <div class="kpi-label">Stockout Probability Reduction</div>
+          <div class="kpi-sub">Monte Carlo · 10K iterations/SKU</div>
+        </div>
+        <div class="kpi-card blue">
+          <div class="kpi-header">
+            <span class="kpi-icon">💰</span>
+            <span class="kpi-trend-badge up">+8%</span>
+          </div>
+          <div class="kpi-value">$11.7M</div>
+          <div class="kpi-label">Total Revenue (DataCo)</div>
+          <div class="kpi-sub">Consolidated 3-year period</div>
+        </div>
+        <div class="kpi-card amber">
+          <div class="kpi-header">
+            <span class="kpi-icon">🏷️</span>
+            <span class="kpi-trend-badge up">+2%</span>
+          </div>
+          <div class="kpi-value">3,652</div>
+          <div class="kpi-label">Active SKUs Optimised</div>
+          <div class="kpi-sub">ABC classification applied</div>
+        </div>
+      </div>
+
+      <!-- Revenue Trend + Shipping Mode -->
+      <div class="chart-grid chart-grid-6040">
+        <div class="chart-card">
+          <div class="chart-header">
+            <div>
+              <div class="chart-title">Monthly Revenue Trend</div>
+              <div class="chart-subtitle">Sales ($) and order volume by month</div>
+            </div>
+            <div class="chart-legend">
+              <div class="legend-item"><div class="legend-dot" style="background:var(--accent-blue)"></div> Revenue</div>
+              <div class="legend-item"><div class="legend-dot" style="background:var(--accent-cyan);opacity:0.5"></div> Orders</div>
+            </div>
+          </div>
+          <div class="chart-container" style="height:220px">
+            <canvas id="revenueChart"></canvas>
+          </div>
+        </div>
+
+        <div class="chart-card">
+          <div class="chart-header">
+            <div>
+              <div class="chart-title">Shipping Mode Breakdown</div>
+              <div class="chart-subtitle">Orders by delivery method</div>
+            </div>
+          </div>
+          <div class="chart-container" style="height:220px">
+            <canvas id="shippingChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- On-Time Delivery Gauge + Delivery Delay Dist -->
+      <div class="chart-grid chart-grid-4060">
+        <div class="chart-card">
+          <div class="chart-header">
+            <div>
+              <div class="chart-title">Delivery Performance</div>
+              <div class="chart-subtitle">On-time rate by region</div>
+            </div>
+          </div>
+          <div class="chart-container" style="height:220px">
+            <canvas id="deliveryGauge"></canvas>
+          </div>
+        </div>
+
+        <div class="chart-card">
+          <div class="chart-header">
+            <div>
+              <div class="chart-title">Delivery Delay Distribution</div>
+              <div class="chart-subtitle">Δ (Scheduled − Actual) days</div>
+            </div>
+          </div>
+          <div class="chart-container" style="height:220px">
+            <canvas id="delayDistChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /page-overview -->
+
+    <!-- ══════════════════════════════════════════════════════════════
+         PAGE 2 — DEMAND FORECASTING
+    ══════════════════════════════════════════════════════════════ -->
+    <div class="page" id="page-forecast">
+
+      <div class="kpi-row kpi-row-3">
+        <div class="kpi-card blue">
+          <div class="kpi-header"><span class="kpi-icon">📡</span><span class="kpi-trend-badge up">Baseline</span></div>
+          <div class="kpi-value">~18%</div>
+          <div class="kpi-label">SARIMA Forecast MAPE</div>
+          <div class="kpi-sub">SARIMA(1,1,1)(1,1,1,52) · Weekly seasonal</div>
+        </div>
+        <div class="kpi-card amber">
+          <div class="kpi-header"><span class="kpi-icon">⚡</span><span class="kpi-trend-badge up">−6pp</span></div>
+          <div class="kpi-value">~12%</div>
+          <div class="kpi-label">XGBoost + Optuna MAPE</div>
+          <div class="kpi-sub">30-trial HPO · Lag + calendar features</div>
+        </div>
+        <div class="kpi-card green">
+          <div class="kpi-header"><span class="kpi-icon">🧠</span><span class="kpi-trend-badge up">Best</span></div>
+          <div class="kpi-value">~9.2%</div>
+          <div class="kpi-label">LSTM Forecast MAPE</div>
+          <div class="kpi-sub">PyTorch 2-layer · 30-day window · HuberLoss</div>
+        </div>
+      </div>
+
+      <div class="section-label">Model Comparison</div>
+
+      <div class="chart-grid chart-grid-2">
+        <div class="chart-card">
+          <div class="chart-header">
+            <div>
+              <div class="chart-title">MAPE Comparison — Three Models</div>
+              <div class="chart-subtitle">Lower is better · Mean Absolute Percentage Error</div>
+            </div>
+          </div>
+          <div class="chart-container" style="height:240px">
+            <canvas id="mapeComparisonChart"></canvas>
+          </div>
+        </div>
+
+        <div class="chart-card">
+          <div class="chart-header">
+            <div>
+              <div class="chart-title">MAE & RMSE by Model</div>
+              <div class="chart-subtitle">Absolute error metrics (lower = better)</div>
+            </div>
+          </div>
+          <div class="chart-container" style="height:240px">
+            <canvas id="errorMetricsChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-label">Forecast vs Actual</div>
+
+      <div class="chart-card">
+        <div class="chart-header">
+          <div>
+            <div class="chart-title">Demand Forecast vs Actual — Sample SKU (Product_1359 · Whse_A)</div>
+            <div class="chart-subtitle">30-day test window · LSTM 7-day rolling forecast</div>
+          </div>
+          <div class="chart-legend">
+            <div class="legend-item"><div class="legend-dot" style="background:var(--accent-blue)"></div> Actual</div>
+            <div class="legend-item"><div class="legend-dot" style="background:var(--accent-green)"></div> LSTM Forecast</div>
+            <div class="legend-item"><div class="legend-dot" style="background:var(--accent-amber)"></div> XGBoost</div>
+          </div>
+        </div>
+        <div class="chart-container" style="height:260px">
+          <canvas id="forecastVsActualChart"></canvas>
+        </div>
+      </div>
+
+      <div class="section-label">Feature Importance</div>
+      <div class="chart-grid chart-grid-2">
+        <div class="chart-card">
+          <div class="chart-header">
+            <div>
+              <div class="chart-title">XGBoost Feature Importance</div>
+              <div class="chart-subtitle">Top predictors by gain</div>
+            </div>
+          </div>
+          <div class="chart-container" style="height:220px">
+            <canvas id="featureImportanceChart"></canvas>
+          </div>
+        </div>
+
+        <div class="chart-card">
+          <div class="chart-header">
+            <div>
+              <div class="chart-title">Training Loss Curve (LSTM)</div>
+              <div class="chart-subtitle">HuberLoss over 50 epochs</div>
+            </div>
+          </div>
+          <div class="chart-container" style="height:220px">
+            <canvas id="lossChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /page-forecast -->
+
+    <!-- ══════════════════════════════════════════════════════════════
+         PAGE 3 — INVENTORY INTELLIGENCE
+    ══════════════════════════════════════════════════════════════ -->
+    <div class="page" id="page-inventory">
+
+      <div class="kpi-row kpi-row-4">
+        <div class="kpi-card teal">
+          <div class="kpi-header"><span class="kpi-icon">📉</span><span class="kpi-trend-badge up">✓ Target Hit</span></div>
+          <div class="kpi-value" style="color:var(--accent-green)">15.2%</div>
+          <div class="kpi-label">Overstock Reduction</div>
+          <div class="kpi-sub">EOQ optimization · Simulated</div>
+        </div>
+        <div class="kpi-card green">
+          <div class="kpi-header"><span class="kpi-icon">🛡️</span><span class="kpi-trend-badge up">✓ Target Hit</span></div>
+          <div class="kpi-value" style="color:var(--accent-cyan)">20.4%</div>
+          <div class="kpi-label">Stockout Risk Reduction</div>
+          <div class="kpi-sub">Z-score safety stock · 95% SL</div>
+        </div>
+        <div class="kpi-card blue">
+          <div class="kpi-header"><span class="kpi-icon">🔢</span></div>
+          <div class="kpi-value">843</div>
+          <div class="kpi-label">Avg EOQ (Class A SKUs)</div>
+          <div class="kpi-sub">Economic Order Quantity units</div>
+        </div>
+        <div class="kpi-card amber">
+          <div class="kpi-header"><span class="kpi-icon">⚡</span></div>
+          <div class="kpi-value">215</div>
+          <div class="kpi-label">Avg Safety Stock (Class A)</div>
+          <div class="kpi-sub">7-day lead time, σ_L = 2 days</div>
+        </div>
+      </div>
+
+      <!-- Monte Carlo Reduction Bars -->
+      <div class="chart-card" style="margin-bottom:14px">
+        <div class="chart-header">
+          <div>
+            <div class="chart-title">Before vs After — Monte Carlo Simulation Results (10,000 iterations/SKU)</div>
+            <div class="chart-subtitle">Baseline: flat reorder | Optimised: EOQ + Z-score safety stock at 95% service level</div>
+          </div>
+        </div>
+        <div class="reduction-bars" id="reductionBars">
+          <!-- Overstock -->
+          <div class="reduction-item">
+            <div class="reduction-label">
+              <span>📦 Avg Overstock Units</span>
+            </div>
+            <div style="margin-bottom:10px">
+              <div style="font-size:10px;color:var(--text-muted);margin-bottom:3px">Baseline</div>
+              <div class="reduction-track"><div class="reduction-fill fill-baseline" style="width:100%" id="rBaseline1"></div></div>
+              <div class="reduction-values"><span class="rv-baseline">247 units avg</span><span style="color:var(--text-muted)">100%</span></div>
+            </div>
+            <div>
+              <div style="font-size:10px;color:var(--text-muted);margin-bottom:3px">Optimised</div>
+              <div class="reduction-track"><div class="reduction-fill fill-optimised" style="width:0%" id="rOpt1"></div></div>
+              <div class="reduction-values"><span class="rv-optimised">209 units avg</span><span style="color:var(--accent-green)">−15.2% ✅</span></div>
+            </div>
+          </div>
+
+          <!-- Stockout -->
+          <div class="reduction-item">
+            <div class="reduction-label">
+              <span>⚠️ Stockout Probability</span>
+            </div>
+            <div style="margin-bottom:10px">
+              <div style="font-size:10px;color:var(--text-muted);margin-bottom:3px">Baseline</div>
+              <div class="reduction-track"><div class="reduction-fill fill-baseline" style="width:100%" id="rBaseline2"></div></div>
+              <div class="reduction-values"><span class="rv-baseline">49.7% avg prob</span><span style="color:var(--text-muted)">100%</span></div>
+            </div>
+            <div>
+              <div style="font-size:10px;color:var(--text-muted);margin-bottom:3px">Optimised</div>
+              <div class="reduction-track"><div class="reduction-fill fill-optimised" style="width:0%" id="rOpt2"></div></div>
+              <div class="reduction-values"><span class="rv-optimised">39.5% avg prob</span><span style="color:var(--accent-green)">−20.4% ✅</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="chart-grid chart-grid-6040">
+        <div class="chart-card">
+          <div class="chart-header">
+            <div>
+              <div class="chart-title">EOQ vs Safety Stock (Class A SKUs)</div>
+              <div class="chart-subtitle">Scatter · bubble size = avg daily demand</div>
+            </div>
+          </div>
+          <div class="chart-container" style="height:230px">
+            <canvas id="eoqScatterChart"></canvas>
+          </div>
+        </div>
+
+        <div class="chart-card">
+          <div class="chart-header">
+            <div>
+              <div class="chart-title">ABC Classification</div>
+              <div class="chart-subtitle">SKU distribution by revenue contribution</div>
+            </div>
+          </div>
+          <div class="treemap">
+            <div class="treemap-col" style="flex:0.8">
+              <div class="treemap-cell tc-a" style="flex:4" title="Class A · 20% of SKUs · 80% revenue">
+                <div class="tc-label">Class A</div>
+                <div class="tc-val">730 SKUs · 80% rev</div>
+              </div>
+            </div>
+            <div class="treemap-col" style="flex:0.4">
+              <div class="treemap-cell tc-b" style="flex:3" title="Class B · 30% SKUs · 15% revenue">
+                <div class="tc-label">B</div>
+                <div class="tc-val">1,096 SKUs</div>
+              </div>
+              <div class="treemap-cell tc-b2" style="flex:1" title="Mixed">
+                <div class="tc-label" style="font-size:10px">B+</div>
+              </div>
+            </div>
+            <div class="treemap-col" style="flex:0.3">
+              <div class="treemap-cell tc-c" style="flex:2" title="Class C · 50% SKUs · 5% revenue">
+                <div class="tc-label">C</div>
+                <div class="tc-val">1,826 SKUs</div>
+              </div>
+              <div class="treemap-cell tc-c2" style="flex:2">
+                <div class="tc-label" style="font-size:10px">C Low</div>
+              </div>
+            </div>
+          </div>
+          <div style="margin-top:12px;display:flex;gap:12px;font-size:11px">
+            <span><span style="color:#ef9a9a">■</span> A: 80% rev · tight control</span>
+            <span><span style="color:#ffe082">■</span> B: 15% rev</span>
+            <span><span style="color:#a5d6a7">■</span> C: 5% rev · relaxed</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="chart-card">
+        <div class="chart-header">
+          <div>
+            <div class="chart-title">Reorder Point Distribution by ABC Class</div>
+            <div class="chart-subtitle">ROP = (Avg Daily Demand × Lead Time) + Safety Stock</div>
+          </div>
+        </div>
+        <div class="chart-container" style="height:200px">
+          <canvas id="ropHistChart"></canvas>
+        </div>
+      </div>
+    </div>
+    <!-- /page-inventory -->
+
+    <!-- ══════════════════════════════════════════════════════════════
+         PAGE 4 — SUPPLIER & LOGISTICS
+    ══════════════════════════════════════════════════════════════ -->
+    <div class="page" id="page-supplier">
+
+      <div class="kpi-row kpi-row-4">
+        <div class="kpi-card blue">
+          <div class="kpi-header"><span class="kpi-icon">🚚</span><span class="kpi-trend-badge up">+4%</span></div>
+          <div class="kpi-value">67.3%</div>
+          <div class="kpi-label">Fleet On-Time Rate</div>
+          <div class="kpi-sub">All shipping modes combined</div>
+        </div>
+        <div class="kpi-card amber">
+          <div class="kpi-header"><span class="kpi-icon">⏳</span><span class="kpi-trend-badge good-down">−0.3d</span></div>
+          <div class="kpi-value">−0.3d</div>
+          <div class="kpi-label">Avg Delivery Delay</div>
+          <div class="kpi-sub">Scheduled vs actual delta</div>
+        </div>
+        <div class="kpi-card green">
+          <div class="kpi-header"><span class="kpi-icon">💼</span><span class="kpi-trend-badge up">+2%</span></div>
+          <div class="kpi-value">14.8%</div>
+          <div class="kpi-label">Avg Profit Margin</div>
+          <div class="kpi-sub">Benefit per order / Sales</div>
+        </div>
+        <div class="kpi-card purple">
+          <div class="kpi-header"><span class="kpi-icon">🛣️</span></div>
+          <div class="kpi-value">5</div>
+          <div class="kpi-label">Route Vehicles Optimised</div>
+          <div class="kpi-sub">200 stops · Greedy NN VRP</div>
+        </div>
+      </div>
+
+      <div class="chart-grid chart-grid-2">
+        <div class="chart-card">
+          <div class="chart-header">
+            <div>
+              <div class="chart-title">On-Time Delivery by Shipping Mode</div>
+              <div class="chart-subtitle">% of orders delivered on or before scheduled date</div>
+            </div>
+          </div>
+          <div class="chart-container" style="height:230px">
+            <canvas id="onTimeByModeChart"></canvas>
+          </div>
+        </div>
+
+        <div class="chart-card">
+          <div class="chart-header">
+            <div>
+              <div class="chart-title">Revenue by Product Category</div>
+              <div class="chart-subtitle">Sales contribution per category</div>
+            </div>
+          </div>
+          <div class="chart-container" style="height:230px">
+            <canvas id="revenueByCategory"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-label">Supplier Performance Matrix</div>
+
+      <div class="chart-card" style="margin-bottom:14px">
+        <div class="chart-header">
+          <div>
+            <div class="chart-title">Category × Shipping Mode Performance</div>
+            <div class="chart-subtitle">On-time rate % · Heatmap by segment</div>
+          </div>
+        </div>
+        <div class="chart-container" style="height:220px">
+          <canvas id="heatmapChart"></canvas>
+        </div>
+      </div>
+
+      <div class="chart-card">
+        <div class="chart-header">
+          <div>
+            <div class="chart-title">Profit Margin by Category & Shipping Mode</div>
+            <div class="chart-subtitle">Grouped bar · Avg benefit per order / Sales</div>
+          </div>
+        </div>
+        <div class="chart-container" style="height:220px">
+          <canvas id="marginByCategoryChart"></canvas>
+        </div>
+      </div>
+    </div>
+    <!-- /page-supplier -->
+
+  </div><!-- /content -->
+</main>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     JAVASCRIPT — DATA + CHARTS
+═══════════════════════════════════════════════════════════════════ -->
+<script>
+
+/* ──────────────────────────────────────────────────────────────
+   GLOBAL CHART DEFAULTS
+────────────────────────────────────────────────────────────── */
+Chart.defaults.color = '#8b949e';
+Chart.defaults.font.family = "'Inter', sans-serif";
+Chart.defaults.font.size = 11;
+Chart.defaults.plugins.legend.display = false;
+Chart.defaults.plugins.tooltip.backgroundColor = '#1e2736';
+Chart.defaults.plugins.tooltip.borderColor = 'rgba(47,128,237,0.3)';
+Chart.defaults.plugins.tooltip.borderWidth = 1;
+Chart.defaults.plugins.tooltip.titleColor = '#e6edf3';
+Chart.defaults.plugins.tooltip.bodyColor = '#8b949e';
+Chart.defaults.plugins.tooltip.padding = 10;
+Chart.defaults.plugins.tooltip.cornerRadius = 8;
+
+const BLUE   = '#2f80ed';
+const CYAN   = '#00d4ff';
+const GREEN  = '#00e676';
+const AMBER  = '#ffb300';
+const RED    = '#ff5252';
+const PURPLE = '#7c4dff';
+const TEAL   = '#1de9b6';
+
+/* ──────────────────────────────────────────────────────────────
+   SYNTHETIC DATA
+────────────────────────────────────────────────────────────── */
+const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec',
+                'Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+const revenueData = [
+  820000, 745000, 910000, 870000, 1020000, 980000,
+  1100000, 1050000, 960000, 1130000, 1240000, 1380000,
+  890000, 830000, 970000, 1010000, 1090000, 1050000,
+  1180000, 1140000, 1070000, 1220000, 1350000, 1490000
+];
+const ordersData = [
+  5200, 4800, 6100, 5900, 6800, 6500, 7200, 7000, 6400, 7500, 8100, 8900,
+  5900, 5400, 6400, 6700, 7100, 6900, 7700, 7500, 7000, 7900, 8700, 9200
+];
+
+/* ──────────────────────────────────────────────────────────────
+   PAGE NAVIGATION
+────────────────────────────────────────────────────────────── */
+const pageTitles = {
+  overview : 'Executive Overview',
+  forecast : 'Demand Forecasting',
+  inventory: 'Inventory Intelligence',
+  supplier : 'Supplier & Logistics',
+};
+
+let charts = {};
+
+function showPage(pageId, navEl) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('page-' + pageId).classList.add('active');
+  if (navEl) navEl.classList.add('active');
+  document.getElementById('pageTitleEl').textContent = pageTitles[pageId] || pageId;
+
+  // Lazy-init charts on first visit
+  setTimeout(() => initPageCharts(pageId), 50);
+}
+
+function applyFilters() {
+  // In a real BI tool, this would re-render charts.
+  // Here we animate a subtle refresh.
+  document.querySelectorAll('.chart-card').forEach(c => {
+    c.style.opacity = '0.6';
+    setTimeout(() => { c.style.opacity = '1'; }, 400);
+  });
+}
+
+/* ──────────────────────────────────────────────────────────────
+   CHART INIT DISPATCHER
+────────────────────────────────────────────────────────────── */
+const initiated = new Set();
+
+function initPageCharts(pageId) {
+  if (initiated.has(pageId)) return;
+  initiated.add(pageId);
+
+  if (pageId === 'overview')  initOverviewCharts();
+  if (pageId === 'forecast')  initForecastCharts();
+  if (pageId === 'inventory') initInventoryCharts();
+  if (pageId === 'supplier')  initSupplierCharts();
+}
+
+/* ──────────────────────────────────────────────────────────────
+   OVERVIEW CHARTS
+────────────────────────────────────────────────────────────── */
+function initOverviewCharts() {
+
+  /* Revenue trend */
+  new Chart(document.getElementById('revenueChart'), {
+    type: 'line',
+    data: {
+      labels: months,
+      datasets: [
+        {
+          label: 'Revenue ($)',
+          data: revenueData,
+          borderColor: BLUE,
+          backgroundColor: hexAlpha(BLUE, 0.08),
+          fill: true,
+          tension: 0.4,
+          pointRadius: 3,
+          pointHoverRadius: 6,
+          borderWidth: 2,
+          yAxisID: 'y',
+        },
+        {
+          label: 'Orders',
+          data: ordersData,
+          borderColor: hexAlpha(CYAN, 0.5),
+          backgroundColor: 'transparent',
+          fill: false,
+          tension: 0.4,
+          pointRadius: 0,
+          borderWidth: 1.5,
+          borderDash: [4, 4],
+          yAxisID: 'y1',
+        }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { maxTicksLimit: 12 } },
+        y: {
+          grid: { color: 'rgba(255,255,255,0.04)' },
+          ticks: { callback: v => '$' + (v/1e6).toFixed(1) + 'M' },
+          position: 'left',
+        },
+        y1: {
+          display: false, position: 'right',
+        }
+      }
+    }
+  });
+
+  /* Shipping donut */
+  new Chart(document.getElementById('shippingChart'), {
+    type: 'doughnut',
+    data: {
+      labels: ['Standard Class', 'Second Class', 'First Class', 'Same Day'],
+      datasets: [{
+        data: [59.7, 19.5, 15.4, 5.4],
+        backgroundColor: [BLUE, AMBER, GREEN, PURPLE],
+        borderColor: '#1e2736',
+        borderWidth: 2,
+        hoverOffset: 8,
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      cutout: '65%',
+      plugins: {
+        legend: {
+          display: true, position: 'right',
+          labels: { color: '#8b949e', font: { size: 11 }, padding: 10, boxWidth: 10 }
+        },
+        tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ${ctx.raw}%` } }
+      }
+    }
+  });
+
+  /* Delivery gauge (doughnut style) */
+  new Chart(document.getElementById('deliveryGauge'), {
+    type: 'doughnut',
+    data: {
+      labels: ['On-Time', 'Late'],
+      datasets: [{
+        data: [67.3, 32.7],
+        backgroundColor: [GREEN, 'rgba(255,255,255,0.06)'],
+        borderColor: ['transparent','transparent'],
+        borderWidth: 0,
+        circumference: 270,
+        rotation: -135,
+        hoverOffset: 0,
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      cutout: '78%',
+      plugins: {
+        legend: { display: false },
+        tooltip: { enabled: false },
+      }
+    },
+    plugins: [{
+      id: 'gaugeText',
+      afterDraw(chart) {
+        const { ctx, chartArea: { top, bottom, left, right } } = chart;
+        const cx = (left + right) / 2, cy = (top + bottom) / 2 + 20;
+        ctx.save();
+        ctx.textAlign = 'center';
+        ctx.fillStyle = '#00e676';
+        ctx.font = 'bold 26px "DM Mono"';
+        ctx.fillText('67.3%', cx, cy);
+        ctx.fillStyle = '#8b949e';
+        ctx.font = '11px Inter';
+        ctx.fillText('On-Time Rate', cx, cy + 18);
+        ctx.restore();
+      }
+    }]
+  });
+
+  /* Delay distribution */
+  const delayLabels = Array.from({length: 15}, (_, i) => i - 7);
+  const delayValues = [12,25,40,80,150,240,310,390,355,280,190,120,65,30,14];
+  new Chart(document.getElementById('delayDistChart'), {
+    type: 'bar',
+    data: {
+      labels: delayLabels,
+      datasets: [{
+        label: 'Orders',
+        data: delayValues,
+        backgroundColor: delayLabels.map(d =>
+          d < 0 ? hexAlpha(RED, 0.7) : d === 0 ? hexAlpha(GREEN, 0.8) : hexAlpha(BLUE, 0.6)),
+        borderRadius: 4,
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false },
+        tooltip: { callbacks: { title: ctx => `${ctx[0].label}d delay`, label: ctx => ` ${ctx.raw} orders` } } },
+      scales: {
+        x: {
+          grid: { display: false },
+          title: { display: true, text: 'Delay (days)', color: '#8b949e' }
+        },
+        y: { grid: { color: 'rgba(255,255,255,0.04)' } }
+      }
+    }
+  });
+}
+
+/* ──────────────────────────────────────────────────────────────
+   FORECAST CHARTS
+────────────────────────────────────────────────────────────── */
+function initForecastCharts() {
+
+  /* MAPE comparison horizontal bar */
+  new Chart(document.getElementById('mapeComparisonChart'), {
+    type: 'bar',
+    data: {
+      labels: ['SARIMA\n(Baseline)', 'XGBoost\n+ Optuna HPO', 'LSTM\n(PyTorch)'],
+      datasets: [{
+        label: 'MAPE (%)',
+        data: [18.2, 12.1, 9.2],
+        backgroundColor: [hexAlpha(RED,0.7), hexAlpha(AMBER,0.8), hexAlpha(GREEN,0.8)],
+        borderRadius: 6,
+        barThickness: 40,
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      indexAxis: 'y',
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: ctx => ` MAPE: ${ctx.raw}%` } },
+        annotation: {
+          annotations: {
+            target: {
+              type: 'line', xMin: 10, xMax: 10,
+              borderColor: hexAlpha(CYAN, 0.5), borderWidth: 1.5,
+              borderDash: [4,4],
+              label: { display: true, content: '10% Target', color: CYAN, font: {size:10} }
+            }
+          }
+        }
+      },
+      scales: {
+        x: {
+          grid: { color: 'rgba(255,255,255,0.04)' },
+          ticks: { callback: v => v + '%' },
+          max: 22,
+        },
+        y: { grid: { display: false } }
+      }
+    }
+  });
+
+  /* MAE & RMSE */
+  new Chart(document.getElementById('errorMetricsChart'), {
+    type: 'bar',
+    data: {
+      labels: ['SARIMA', 'XGBoost', 'LSTM'],
+      datasets: [
+        {
+          label: 'MAE', data: [312, 198, 148],
+          backgroundColor: hexAlpha(BLUE, 0.7), borderRadius: 4, barPercentage: 0.4,
+        },
+        {
+          label: 'RMSE', data: [498, 302, 231],
+          backgroundColor: hexAlpha(PURPLE, 0.7), borderRadius: 4, barPercentage: 0.4,
+        }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          display: true, position: 'top',
+          labels: { color: '#8b949e', font: {size:11}, boxWidth: 10 }
+        }
+      },
+      scales: {
+        x: { grid: { display: false } },
+        y: { grid: { color: 'rgba(255,255,255,0.04)' }, title: { display: true, text: 'Units', color: '#8b949e' } }
+      }
+    }
+  });
+
+  /* Forecast vs Actual */
+  const days = Array.from({length:60}, (_, i) => `D${i+1}`);
+  const actual  = genSeries(60, 350, 80);
+  const lstm    = actual.map(v => v * (0.88 + Math.random() * 0.22));
+  const xgb     = actual.map(v => v * (0.82 + Math.random() * 0.30));
+
+  new Chart(document.getElementById('forecastVsActualChart'), {
+    type: 'line',
+    data: {
+      labels: days,
+      datasets: [
+        { label: 'Actual',   data: actual, borderColor: BLUE,  backgroundColor: hexAlpha(BLUE,0.06), fill:true, tension:0.3, borderWidth:2, pointRadius:0 },
+        { label: 'LSTM',     data: lstm,   borderColor: GREEN, backgroundColor:'transparent', tension:0.3, borderWidth:1.5, borderDash:[3,2], pointRadius:0 },
+        { label: 'XGBoost',  data: xgb,    borderColor: AMBER, backgroundColor:'transparent', tension:0.3, borderWidth:1.5, borderDash:[6,3], pointRadius:0 },
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: { legend: { display: true, position: 'top', labels: { color: '#8b949e', font:{size:11}, boxWidth:10 } } },
+      scales: {
+        x: { grid: { display: false }, ticks: { maxTicksLimit: 12 } },
+        y: { grid: { color: 'rgba(255,255,255,0.04)' }, title: { display: true, text: 'Demand (units)', color: '#8b949e' } }
+      }
+    }
+  });
+
+  /* Feature importance */
+  new Chart(document.getElementById('featureImportanceChart'), {
+    type: 'bar',
+    data: {
+      labels: ['lag_7','rolling_mean_7','lag_14','month','lag_28','dayofyear','week','quarter','product_enc','warehouse_enc'],
+      datasets: [{
+        label: 'Importance',
+        data: [0.32,0.24,0.15,0.09,0.07,0.05,0.04,0.02,0.01,0.01],
+        backgroundColor: [GREEN,GREEN,hexAlpha(GREEN,0.7),hexAlpha(BLUE,0.8),hexAlpha(BLUE,0.6),
+                          hexAlpha(BLUE,0.5),hexAlpha(AMBER,0.6),hexAlpha(AMBER,0.5),
+                          hexAlpha(AMBER,0.3),hexAlpha(AMBER,0.2)],
+        borderRadius: 4,
+        barThickness: 14,
+      }]
+    },
+    options: {
+      indexAxis: 'y', responsive:true, maintainAspectRatio:false,
+      plugins: { legend:{ display:false } },
+      scales: {
+        x: { grid:{color:'rgba(255,255,255,0.04)'}, ticks:{callback:v=>(v*100).toFixed(0)+'%'}, max:0.38 },
+        y: { grid:{display:false} }
+      }
+    }
+  });
+
+  /* Loss curve */
+  const epochs = Array.from({length:50}, (_,i)=>i+1);
+  const trainLoss = epochs.map(e => 0.8 * Math.exp(-0.08*e) + 0.05 + Math.random()*0.02);
+  const valLoss   = epochs.map(e => 0.9 * Math.exp(-0.07*e) + 0.08 + Math.random()*0.03);
+
+  new Chart(document.getElementById('lossChart'), {
+    type: 'line',
+    data: {
+      labels: epochs,
+      datasets: [
+        { label:'Train', data:trainLoss, borderColor:BLUE,  backgroundColor:hexAlpha(BLUE,0.1), fill:true, tension:0.4, borderWidth:2, pointRadius:0 },
+        { label:'Val',   data:valLoss,   borderColor:AMBER, backgroundColor:'transparent', tension:0.4, borderWidth:1.5, borderDash:[4,3], pointRadius:0 },
+      ]
+    },
+    options: {
+      responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{ display:true, position:'top', labels:{color:'#8b949e',font:{size:11},boxWidth:10} } },
+      scales:{
+        x:{ grid:{display:false}, title:{display:true,text:'Epoch',color:'#8b949e'} },
+        y:{ grid:{color:'rgba(255,255,255,0.04)'}, title:{display:true,text:'HuberLoss',color:'#8b949e'} }
+      }
+    }
+  });
+}
+
+/* ──────────────────────────────────────────────────────────────
+   INVENTORY CHARTS
+────────────────────────────────────────────────────────────── */
+function initInventoryCharts() {
+
+  /* Animate reduction bars */
+  setTimeout(() => {
+    document.getElementById('rOpt1').style.width = '84.8%';  // 100 - 15.2
+    document.getElementById('rOpt2').style.width = '79.6%';  // 100 - 20.4
+  }, 300);
+
+  /* EOQ vs Safety Stock scatter */
+  const scatterData = Array.from({length:80}, () => ({
+    x: Math.random() * 2000 + 100,
+    y: Math.random() * 600 + 20,
+    r: Math.random() * 10 + 4,
+  }));
+
+  new Chart(document.getElementById('eoqScatterChart'), {
+    type: 'bubble',
+    data: {
+      datasets: [
+        {
+          label: 'Class A SKUs',
+          data: scatterData.slice(0,30),
+          backgroundColor: hexAlpha(RED, 0.5),
+          borderColor: RED, borderWidth: 1,
+        },
+        {
+          label: 'Class B SKUs',
+          data: scatterData.slice(30,55),
+          backgroundColor: hexAlpha(AMBER, 0.5),
+          borderColor: AMBER, borderWidth: 1,
+        },
+        {
+          label: 'Class C SKUs',
+          data: scatterData.slice(55),
+          backgroundColor: hexAlpha(GREEN, 0.5),
+          borderColor: GREEN, borderWidth: 1,
+        },
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { display:true, position:'top', labels:{color:'#8b949e',font:{size:11},boxWidth:10} },
+        tooltip: { callbacks: {
+          label: ctx => [`EOQ: ${ctx.raw.x.toFixed(0)} units`, `Safety Stock: ${ctx.raw.y.toFixed(0)} units`]
+        }}
+      },
+      scales: {
+        x: { grid:{color:'rgba(255,255,255,0.04)'}, title:{display:true,text:'EOQ (units)',color:'#8b949e'} },
+        y: { grid:{color:'rgba(255,255,255,0.04)'}, title:{display:true,text:'Safety Stock (units)',color:'#8b949e'} }
+      }
+    }
+  });
+
+  /* ROP histogram */
+  const ropBins = ['0-50','50-150','150-300','300-600','600-1k','1k-2k','2k+'];
+  new Chart(document.getElementById('ropHistChart'), {
+    type: 'bar',
+    data: {
+      labels: ropBins,
+      datasets: [
+        { label:'A', data:[12,48,110,190,140,80,30], backgroundColor:hexAlpha(RED,0.75), borderRadius:4, stack:'abc' },
+        { label:'B', data:[30,90,160,210,120,50,10], backgroundColor:hexAlpha(AMBER,0.75), borderRadius:4, stack:'abc' },
+        { label:'C', data:[80,180,240,180,90,30,5],  backgroundColor:hexAlpha(GREEN,0.75), borderRadius:4, stack:'abc' },
+      ]
+    },
+    options: {
+      responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{ display:true, position:'top', labels:{color:'#8b949e',font:{size:11},boxWidth:10} } },
+      scales:{
+        x:{ grid:{display:false}, title:{display:true,text:'Reorder Point (units)',color:'#8b949e'} },
+        y:{ grid:{color:'rgba(255,255,255,0.04)'}, stacked:true }
+      }
+    }
+  });
+}
+
+/* ──────────────────────────────────────────────────────────────
+   SUPPLIER CHARTS
+────────────────────────────────────────────────────────────── */
+function initSupplierCharts() {
+
+  /* On-time by shipping mode */
+  new Chart(document.getElementById('onTimeByModeChart'), {
+    type: 'bar',
+    data: {
+      labels: ['Same Day', 'First Class', 'Second Class', 'Standard Class'],
+      datasets: [{
+        label: 'On-Time %',
+        data: [82.4, 76.1, 71.3, 63.2],
+        backgroundColor: [hexAlpha(GREEN,0.85), hexAlpha(TEAL,0.8), hexAlpha(BLUE,0.8), hexAlpha(PURPLE,0.8)],
+        borderRadius: 6,
+        barThickness: 32,
+      }]
+    },
+    options: {
+      indexAxis:'y', responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{display:false}, tooltip:{callbacks:{label:ctx=>` ${ctx.raw}% on-time`}} },
+      scales:{
+        x:{ grid:{color:'rgba(255,255,255,0.04)'}, ticks:{callback:v=>v+'%'}, max:100 },
+        y:{ grid:{display:false} }
+      }
+    }
+  });
+
+  /* Revenue by category donut */
+  new Chart(document.getElementById('revenueByCategory'), {
+    type: 'doughnut',
+    data: {
+      labels: ['Technology','Office Supplies','Furniture','Sports','Electronics'],
+      datasets: [{
+        data: [36.2, 27.8, 18.4, 11.2, 6.4],
+        backgroundColor: [BLUE, GREEN, AMBER, PURPLE, TEAL],
+        borderColor: '#1e2736', borderWidth: 2, hoverOffset: 8,
+      }]
+    },
+    options: {
+      responsive:true, maintainAspectRatio:false,
+      cutout:'60%',
+      plugins:{
+        legend:{ display:true, position:'right', labels:{color:'#8b949e',font:{size:11},padding:8,boxWidth:10} },
+        tooltip:{ callbacks:{label:ctx=>` ${ctx.label}: ${ctx.raw}%`} }
+      }
+    }
+  });
+
+  /* Heatmap (approximated with bar groups) */
+  const categories = ['Technology','Furniture','Office Supplies','Sports'];
+  const modes      = ['Standard','Second Class','First Class','Same Day'];
+  const heatData   = [
+    [61, 69, 74, 80],
+    [65, 72, 77, 83],
+    [63, 70, 75, 84],
+    [59, 67, 72, 81],
+  ];
+
+  new Chart(document.getElementById('heatmapChart'), {
+    type: 'bar',
+    data: {
+      labels: modes,
+      datasets: categories.map((cat, i) => ({
+        label: cat,
+        data: heatData[i],
+        backgroundColor: [hexAlpha(BLUE,0.8), hexAlpha(GREEN,0.8), hexAlpha(AMBER,0.8), hexAlpha(PURPLE,0.8)][i],
+        borderRadius: 4,
+        barPercentage: 0.7,
+      }))
+    },
+    options: {
+      responsive:true, maintainAspectRatio:false,
+      plugins:{
+        legend:{ display:true, position:'top', labels:{color:'#8b949e',font:{size:11},boxWidth:10} },
+        tooltip:{callbacks:{label:ctx=>` ${ctx.dataset.label}: ${ctx.raw}% on-time`}}
+      },
+      scales:{
+        x:{ grid:{display:false} },
+        y:{ grid:{color:'rgba(255,255,255,0.04)'}, ticks:{callback:v=>v+'%'}, min:50, max:95 }
+      }
+    }
+  });
+
+  /* Margin by category */
+  new Chart(document.getElementById('marginByCategoryChart'), {
+    type: 'bar',
+    data: {
+      labels: ['Technology','Office Supplies','Furniture','Sports','Electronics'],
+      datasets: [
+        { label:'Standard', data:[16.2,12.4,14.8,11.2,13.5], backgroundColor:hexAlpha(BLUE,0.75), borderRadius:4, barPercentage:0.5 },
+        { label:'First Class', data:[18.1,14.0,16.2,13.1,15.2], backgroundColor:hexAlpha(GREEN,0.75), borderRadius:4, barPercentage:0.5 },
+        { label:'Same Day', data:[14.5,11.2,13.0,10.8,12.9], backgroundColor:hexAlpha(AMBER,0.75), borderRadius:4, barPercentage:0.5 },
+      ]
+    },
+    options: {
+      responsive:true, maintainAspectRatio:false,
+      plugins:{
+        legend:{ display:true, position:'top', labels:{color:'#8b949e',font:{size:11},boxWidth:10} },
+        tooltip:{callbacks:{label:ctx=>` ${ctx.dataset.label}: ${ctx.raw}% margin`}}
+      },
+      scales:{
+        x:{ grid:{display:false} },
+        y:{ grid:{color:'rgba(255,255,255,0.04)'}, ticks:{callback:v=>v+'%'}, title:{display:true,text:'Profit Margin (%)',color:'#8b949e'} }
+      }
+    }
+  });
+}
+
+/* ──────────────────────────────────────────────────────────────
+   HELPERS
+────────────────────────────────────────────────────────────── */
+function hexAlpha(hex, alpha) {
+  const r = parseInt(hex.slice(1,3),16);
+  const g = parseInt(hex.slice(3,5),16);
+  const b = parseInt(hex.slice(5,7),16);
+  return `rgba(${r},${g},${b},${alpha})`;
+}
+
+function genSeries(n, base, noise) {
+  let v = base;
+  return Array.from({length:n}, () => {
+    v += (Math.random() - 0.48) * noise;
+    return Math.max(v, 50);
+  });
+}
+
+/* ──────────────────────────────────────────────────────────────
+   INIT
+────────────────────────────────────────────────────────────── */
+document.addEventListener('DOMContentLoaded', () => {
+  initPageCharts('overview');
+});
+</script>
+
+</body>
+</html>

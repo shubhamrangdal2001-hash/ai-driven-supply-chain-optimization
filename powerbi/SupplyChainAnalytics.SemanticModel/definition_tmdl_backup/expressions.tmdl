@@ -1,0 +1,1 @@
+expression PBI_DataPath = "D:\AI-Driven Supply Chain\reports\powerbi" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]

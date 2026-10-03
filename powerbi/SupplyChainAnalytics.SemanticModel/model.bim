@@ -1,0 +1,1310 @@
+{
+  "name": "SupplyChainAnalytics",
+  "compatibilityLevel": 1567,
+  "model": {
+    "culture": "en-US",
+    "defaultPowerBIDataSourceVersion": "powerBI_V3",
+    "annotations": [
+      {
+        "name": "__PBI_TimeIntelligenceEnabled",
+        "value": "1"
+      },
+      {
+        "name": "PBI_ProTooling",
+        "value": "[\"DevMode\"]"
+      }
+    ],
+    "tables": [
+      {
+        "name": "Fact_Orders",
+        "columns": [
+          {
+            "name": "Order_Date",
+            "dataType": "dateTime",
+            "sourceColumn": "Order_Date",
+            "formatString": "Short Date"
+          },
+          {
+            "name": "Order_Year",
+            "dataType": "int64",
+            "sourceColumn": "Order_Year",
+            "formatString": "0"
+          },
+          {
+            "name": "Order_Month",
+            "dataType": "int64",
+            "sourceColumn": "Order_Month",
+            "formatString": "0"
+          },
+          {
+            "name": "Order_Quarter",
+            "dataType": "int64",
+            "sourceColumn": "Order_Quarter",
+            "formatString": "0"
+          },
+          {
+            "name": "Day_of_Week",
+            "dataType": "int64",
+            "sourceColumn": "Day_of_Week",
+            "formatString": "0"
+          },
+          {
+            "name": "Category",
+            "dataType": "string",
+            "sourceColumn": "Category"
+          },
+          {
+            "name": "Department",
+            "dataType": "string",
+            "sourceColumn": "Department"
+          },
+          {
+            "name": "Product",
+            "dataType": "string",
+            "sourceColumn": "Product"
+          },
+          {
+            "name": "Customer_Segment",
+            "dataType": "string",
+            "sourceColumn": "Customer_Segment"
+          },
+          {
+            "name": "Market",
+            "dataType": "string",
+            "sourceColumn": "Market"
+          },
+          {
+            "name": "Region",
+            "dataType": "string",
+            "sourceColumn": "Region"
+          },
+          {
+            "name": "Country",
+            "dataType": "string",
+            "sourceColumn": "Country"
+          },
+          {
+            "name": "Shipping_Mode",
+            "dataType": "string",
+            "sourceColumn": "Shipping_Mode"
+          },
+          {
+            "name": "Delivery_Status",
+            "dataType": "string",
+            "sourceColumn": "Delivery_Status"
+          },
+          {
+            "name": "Scheduled_Days",
+            "dataType": "int64",
+            "sourceColumn": "Scheduled_Days",
+            "formatString": "0"
+          },
+          {
+            "name": "Actual_Days",
+            "dataType": "int64",
+            "sourceColumn": "Actual_Days",
+            "formatString": "0"
+          },
+          {
+            "name": "Delay_Days",
+            "dataType": "double",
+            "sourceColumn": "Delay_Days",
+            "formatString": "#,0.00"
+          },
+          {
+            "name": "Is_Late",
+            "dataType": "int64",
+            "sourceColumn": "Is_Late",
+            "formatString": "0"
+          },
+          {
+            "name": "Late_Risk",
+            "dataType": "int64",
+            "sourceColumn": "Late_Risk",
+            "formatString": "0"
+          },
+          {
+            "name": "Quantity",
+            "dataType": "int64",
+            "sourceColumn": "Quantity",
+            "formatString": "0"
+          },
+          {
+            "name": "Revenue",
+            "dataType": "double",
+            "sourceColumn": "Revenue",
+            "formatString": "#,0.00"
+          },
+          {
+            "name": "Profit",
+            "dataType": "double",
+            "sourceColumn": "Profit",
+            "formatString": "#,0.00"
+          },
+          {
+            "name": "Discount_Rate",
+            "dataType": "double",
+            "sourceColumn": "Discount_Rate",
+            "formatString": "#,0.00"
+          },
+          {
+            "name": "Profit_Ratio",
+            "dataType": "double",
+            "sourceColumn": "Profit_Ratio",
+            "formatString": "#,0.00"
+          },
+          {
+            "name": "Profit_Margin",
+            "dataType": "double",
+            "sourceColumn": "Profit_Margin",
+            "formatString": "#,0.00"
+          },
+          {
+            "name": "Order_Status",
+            "dataType": "string",
+            "sourceColumn": "Order_Status"
+          },
+          {
+            "name": "On_Time",
+            "dataType": "int64",
+            "sourceColumn": "On_Time",
+            "formatString": "0"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Fact_Orders",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = Csv.Document(File.Contents(\"D:\\\\AI-Driven Supply Chain\\\\reports\\\\powerbi\\\\fact_orders.csv\"), [Delimiter=\",\", Encoding=65001, QuoteStyle=QuoteStyle.None]),",
+                "    #\"Promoted Headers\" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),",
+                "    #\"Changed Type\" = Table.TransformColumnTypes(#\"Promoted Headers\", {{\"Order_Date\", type date}, {\"Order_Year\", Int64.Type}, {\"Order_Month\", Int64.Type}, {\"Order_Quarter\", Int64.Type}, {\"Day_of_Week\", Int64.Type}, {\"Scheduled_Days\", Int64.Type}, {\"Actual_Days\", Int64.Type}, {\"Delay_Days\", type number}, {\"Is_Late\", Int64.Type}, {\"Late_Risk\", Int64.Type}, {\"Quantity\", Int64.Type}, {\"Revenue\", type number}, {\"Profit\", type number}, {\"Discount_Rate\", type number}, {\"Profit_Ratio\", type number}, {\"Profit_Margin\", type number}, {\"On_Time\", Int64.Type}})",
+                "in",
+                "    #\"Changed Type\""
+              ]
+            }
+          }
+        ],
+        "measures": [
+          {
+            "name": "Total Revenue",
+            "expression": "SUM(Fact_Orders[Revenue])",
+            "formatString": "$#,0"
+          },
+          {
+            "name": "Total Profit",
+            "expression": "SUM(Fact_Orders[Profit])",
+            "formatString": "$#,0"
+          },
+          {
+            "name": "Total Orders",
+            "expression": "COUNTROWS(Fact_Orders)",
+            "formatString": "#,0"
+          },
+          {
+            "name": "On-Time Delivery %",
+            "expression": "DIVIDE(SUM(Fact_Orders[On_Time]), COUNTROWS(Fact_Orders))",
+            "formatString": "0.0%"
+          }
+        ]
+      },
+      {
+        "name": "Dim_Date",
+        "columns": [
+          {
+            "name": "Date",
+            "dataType": "dateTime",
+            "sourceColumn": "Date",
+            "formatString": "Short Date"
+          },
+          {
+            "name": "DateKey",
+            "dataType": "int64",
+            "sourceColumn": "DateKey",
+            "formatString": "0"
+          },
+          {
+            "name": "Year",
+            "dataType": "int64",
+            "sourceColumn": "Year",
+            "formatString": "0"
+          },
+          {
+            "name": "Month",
+            "dataType": "int64",
+            "sourceColumn": "Month",
+            "formatString": "0"
+          },
+          {
+            "name": "Month_Name",
+            "dataType": "string",
+            "sourceColumn": "Month_Name"
+          },
+          {
+            "name": "Quarter",
+            "dataType": "int64",
+            "sourceColumn": "Quarter",
+            "formatString": "0"
+          },
+          {
+            "name": "YearMonth",
+            "dataType": "string",
+            "sourceColumn": "YearMonth"
+          },
+          {
+            "name": "Day_of_Week",
+            "dataType": "int64",
+            "sourceColumn": "Day_of_Week",
+            "formatString": "0"
+          },
+          {
+            "name": "Day_Name",
+            "dataType": "string",
+            "sourceColumn": "Day_Name"
+          },
+          {
+            "name": "Is_Weekend",
+            "dataType": "int64",
+            "sourceColumn": "Is_Weekend",
+            "formatString": "0"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Dim_Date",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = Csv.Document(File.Contents(\"D:\\\\AI-Driven Supply Chain\\\\reports\\\\powerbi\\\\dim_date.csv\"), [Delimiter=\",\", Encoding=65001, QuoteStyle=QuoteStyle.None]),",
+                "    #\"Promoted Headers\" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),",
+                "    #\"Changed Type\" = Table.TransformColumnTypes(#\"Promoted Headers\", {{\"Date\", type date}, {\"DateKey\", Int64.Type}, {\"Year\", Int64.Type}, {\"Month\", Int64.Type}, {\"Quarter\", Int64.Type}, {\"Day_of_Week\", Int64.Type}, {\"Is_Weekend\", Int64.Type}})",
+                "in",
+                "    #\"Changed Type\""
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Dashboard_KPIs",
+        "columns": [
+          {
+            "name": "Total_Revenue",
+            "dataType": "double",
+            "sourceColumn": "Total_Revenue",
+            "formatString": "#,0.00"
+          },
+          {
+            "name": "Total_Orders",
+            "dataType": "int64",
+            "sourceColumn": "Total_Orders",
+            "formatString": "0"
+          },
+          {
+            "name": "Total_Profit",
+            "dataType": "double",
+            "sourceColumn": "Total_Profit",
+            "formatString": "#,0.00"
+          },
+          {
+            "name": "On_Time_Rate_Pct",
+            "dataType": "double",
+            "sourceColumn": "On_Time_Rate_Pct",
+            "formatString": "#,0.00"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Dashboard_KPIs",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = Csv.Document(File.Contents(\"D:\\\\AI-Driven Supply Chain\\\\reports\\\\powerbi\\\\dashboard_kpis.csv\"), [Delimiter=\",\", Encoding=65001, QuoteStyle=QuoteStyle.None]),",
+                "    #\"Promoted Headers\" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),",
+                "    #\"Changed Type\" = Table.TransformColumnTypes(#\"Promoted Headers\", {{\"Total_Revenue\", type number}, {\"Total_Orders\", Int64.Type}, {\"Total_Profit\", type number}, {\"On_Time_Rate_Pct\", type number}})",
+                "in",
+                "    #\"Changed Type\""
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "KPI_Summary",
+        "columns": [
+          {
+            "name": "KPI",
+            "dataType": "string",
+            "sourceColumn": "KPI"
+          },
+          {
+            "name": "Value",
+            "dataType": "double",
+            "sourceColumn": "Value",
+            "formatString": "#,0.00"
+          },
+          {
+            "name": "Unit",
+            "dataType": "string",
+            "sourceColumn": "Unit"
+          },
+          {
+            "name": "Format",
+            "dataType": "string",
+            "sourceColumn": "Format"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "KPI_Summary",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = Csv.Document(File.Contents(\"D:\\\\AI-Driven Supply Chain\\\\reports\\\\powerbi\\\\kpi_summary.csv\"), [Delimiter=\",\", Encoding=65001, QuoteStyle=QuoteStyle.None]),",
+                "    #\"Promoted Headers\" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),",
+                "    #\"Changed Type\" = Table.TransformColumnTypes(#\"Promoted Headers\", {{\"Value\", type number}})",
+                "in",
+                "    #\"Changed Type\""
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Monthly_Trend",
+        "columns": [
+          {
+            "name": "Order_Year",
+            "dataType": "int64",
+            "sourceColumn": "Order_Year",
+            "formatString": "0"
+          },
+          {
+            "name": "Order_Month",
+            "dataType": "int64",
+            "sourceColumn": "Order_Month",
+            "formatString": "0"
+          },
+          {
+            "name": "Revenue",
+            "dataType": "double",
+            "sourceColumn": "Revenue",
+            "formatString": "#,0.00"
+          },
+          {
+            "name": "Orders",
+            "dataType": "int64",
+            "sourceColumn": "Orders",
+            "formatString": "0"
+          },
+          {
+            "name": "Profit",
+            "dataType": "double",
+            "sourceColumn": "Profit",
+            "formatString": "#,0.00"
+          },
+          {
+            "name": "On_Time_Pct",
+            "dataType": "double",
+            "sourceColumn": "On_Time_Pct",
+            "formatString": "#,0.00"
+          },
+          {
+            "name": "Avg_Delay_Days",
+            "dataType": "double",
+            "sourceColumn": "Avg_Delay_Days",
+            "formatString": "#,0.00"
+          },
+          {
+            "name": "Units_Sold",
+            "dataType": "int64",
+            "sourceColumn": "Units_Sold",
+            "formatString": "0"
+          },
+          {
+            "name": "Avg_Discount",
+            "dataType": "double",
+            "sourceColumn": "Avg_Discount",
+            "formatString": "#,0.00"
+          },
+          {
+            "name": "YearMonth",
+            "dataType": "string",
+            "sourceColumn": "YearMonth"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Monthly_Trend",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = Csv.Document(File.Contents(\"D:\\\\AI-Driven Supply Chain\\\\reports\\\\powerbi\\\\monthly_trend.csv\"), [Delimiter=\",\", Encoding=65001, QuoteStyle=QuoteStyle.None]),",
+                "    #\"Promoted Headers\" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),",
+                "    #\"Changed Type\" = Table.TransformColumnTypes(#\"Promoted Headers\", {{\"Order_Year\", Int64.Type}, {\"Order_Month\", Int64.Type}, {\"Revenue\", type number}, {\"Orders\", Int64.Type}, {\"Profit\", type number}, {\"On_Time_Pct\", type number}, {\"Avg_Delay_Days\", type number}, {\"Units_Sold\", Int64.Type}, {\"Avg_Discount\", type number}})",
+                "in",
+                "    #\"Changed Type\""
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Category_KPIs",
+        "columns": [
+          {
+            "name": "Category",
+            "dataType": "string",
+            "sourceColumn": "Category"
+          },
+          {
+            "name": "Orders",
+            "dataType": "int64",
+            "sourceColumn": "Orders",
+            "formatString": "0"
+          },
+          {
+            "name": "Revenue",
+            "dataType": "double",
+            "sourceColumn": "Revenue",
+            "formatString": "#,0.00"
+          },
+          {
+            "name": "Profit",
+            "dataType": "double",
+            "sourceColumn": "Profit",
+            "formatString": "#,0.00"
+          },
+          {
+            "name": "Avg_Order_Value",
+            "dataType": "double",
+            "sourceColumn": "Avg_Order_Value",
+            "formatString": "#,0.00"
+          },
+          {
+            "name": "On_Time_Pct",
+            "dataType": "double",
+            "sourceColumn": "On_Time_Pct",
+            "formatString": "#,0.00"
+          },
+          {
+            "name": "Profit_Margin",
+            "dataType": "double",
+            "sourceColumn": "Profit_Margin",
+            "formatString": "#,0.00"
+          },
+          {
+            "name": "Units_Sold",
+            "dataType": "int64",
+            "sourceColumn": "Units_Sold",
+            "formatString": "0"
+          },
+          {
+            "name": "Avg_Discount",
+            "dataType": "double",
+            "sourceColumn": "Avg_Discount",
+            "formatString": "#,0.00"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Category_KPIs",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = Csv.Document(File.Contents(\"D:\\\\AI-Driven Supply Chain\\\\reports\\\\powerbi\\\\category_kpis.csv\"), [Delimiter=\",\", Encoding=65001, QuoteStyle=QuoteStyle.None]),",
+                "    #\"Promoted Headers\" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),",
+                "    #\"Changed Type\" = Table.TransformColumnTypes(#\"Promoted Headers\", {{\"Orders\", Int64.Type}, {\"Revenue\", type number}, {\"Profit\", type number}, {\"Avg_Order_Value\", type number}, {\"On_Time_Pct\", type number}, {\"Profit_Margin\", type number}, {\"Units_Sold\", Int64.Type}, {\"Avg_Discount\", type number}})",
+                "in",
+                "    #\"Changed Type\""
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Region_KPIs",
+        "columns": [
+          {
+            "name": "Market",
+            "dataType": "string",
+            "sourceColumn": "Market"
+          },
+          {
+            "name": "Region",
+            "dataType": "string",
+            "sourceColumn": "Region"
+          },
+          {
+            "name": "Orders",
+            "dataType": "int64",
+            "sourceColumn": "Orders",
+            "formatString": "0"
+          },
+          {
+            "name": "Revenue",
+            "dataType": "double",
+            "sourceColumn": "Revenue",
+            "formatString": "#,0.00"
+          },
+          {
+            "name": "Profit",
+            "dataType": "double",
+            "sourceColumn": "Profit",
+            "formatString": "#,0.00"
+          },
+          {
+            "name": "On_Time_Pct",
+            "dataType": "double",
+            "sourceColumn": "On_Time_Pct",
+            "formatString": "#,0.00"
+          },
+          {
+            "name": "Avg_Delay",
+            "dataType": "double",
+            "sourceColumn": "Avg_Delay",
+            "formatString": "#,0.00"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Region_KPIs",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = Csv.Document(File.Contents(\"D:\\\\AI-Driven Supply Chain\\\\reports\\\\powerbi\\\\region_kpis.csv\"), [Delimiter=\",\", Encoding=65001, QuoteStyle=QuoteStyle.None]),",
+                "    #\"Promoted Headers\" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),",
+                "    #\"Changed Type\" = Table.TransformColumnTypes(#\"Promoted Headers\", {{\"Orders\", Int64.Type}, {\"Revenue\", type number}, {\"Profit\", type number}, {\"On_Time_Pct\", type number}, {\"Avg_Delay\", type number}})",
+                "in",
+                "    #\"Changed Type\""
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Country_KPIs",
+        "columns": [
+          {
+            "name": "Market",
+            "dataType": "string",
+            "sourceColumn": "Market"
+          },
+          {
+            "name": "Region",
+            "dataType": "string",
+            "sourceColumn": "Region"
+          },
+          {
+            "name": "Country",
+            "dataType": "string",
+            "sourceColumn": "Country"
+          },
+          {
+            "name": "Orders",
+            "dataType": "int64",
+            "sourceColumn": "Orders",
+            "formatString": "0"
+          },
+          {
+            "name": "Revenue",
+            "dataType": "double",
+            "sourceColumn": "Revenue",
+            "formatString": "#,0.00"
+          },
+          {
+            "name": "Profit",
+            "dataType": "double",
+            "sourceColumn": "Profit",
+            "formatString": "#,0.00"
+          },
+          {
+            "name": "On_Time_Pct",
+            "dataType": "double",
+            "sourceColumn": "On_Time_Pct",
+            "formatString": "#,0.00"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Country_KPIs",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = Csv.Document(File.Contents(\"D:\\\\AI-Driven Supply Chain\\\\reports\\\\powerbi\\\\country_kpis.csv\"), [Delimiter=\",\", Encoding=65001, QuoteStyle=QuoteStyle.None]),",
+                "    #\"Promoted Headers\" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),",
+                "    #\"Changed Type\" = Table.TransformColumnTypes(#\"Promoted Headers\", {{\"Orders\", Int64.Type}, {\"Revenue\", type number}, {\"Profit\", type number}, {\"On_Time_Pct\", type number}})",
+                "in",
+                "    #\"Changed Type\""
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Shipping_KPIs",
+        "columns": [
+          {
+            "name": "Shipping_Mode",
+            "dataType": "string",
+            "sourceColumn": "Shipping_Mode"
+          },
+          {
+            "name": "Orders",
+            "dataType": "int64",
+            "sourceColumn": "Orders",
+            "formatString": "0"
+          },
+          {
+            "name": "Revenue",
+            "dataType": "double",
+            "sourceColumn": "Revenue",
+            "formatString": "#,0.00"
+          },
+          {
+            "name": "Profit",
+            "dataType": "double",
+            "sourceColumn": "Profit",
+            "formatString": "#,0.00"
+          },
+          {
+            "name": "On_Time_Pct",
+            "dataType": "double",
+            "sourceColumn": "On_Time_Pct",
+            "formatString": "#,0.00"
+          },
+          {
+            "name": "Avg_Delay_Days",
+            "dataType": "double",
+            "sourceColumn": "Avg_Delay_Days",
+            "formatString": "#,0.00"
+          },
+          {
+            "name": "Profit_Margin",
+            "dataType": "double",
+            "sourceColumn": "Profit_Margin",
+            "formatString": "#,0.00"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Shipping_KPIs",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = Csv.Document(File.Contents(\"D:\\\\AI-Driven Supply Chain\\\\reports\\\\powerbi\\\\shipping_kpis.csv\"), [Delimiter=\",\", Encoding=65001, QuoteStyle=QuoteStyle.None]),",
+                "    #\"Promoted Headers\" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),",
+                "    #\"Changed Type\" = Table.TransformColumnTypes(#\"Promoted Headers\", {{\"Orders\", Int64.Type}, {\"Revenue\", type number}, {\"Profit\", type number}, {\"On_Time_Pct\", type number}, {\"Avg_Delay_Days\", type number}, {\"Profit_Margin\", type number}})",
+                "in",
+                "    #\"Changed Type\""
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Supplier_Performance",
+        "columns": [
+          {
+            "name": "Shipping_Mode",
+            "dataType": "string",
+            "sourceColumn": "Shipping_Mode"
+          },
+          {
+            "name": "Category",
+            "dataType": "string",
+            "sourceColumn": "Category"
+          },
+          {
+            "name": "Orders",
+            "dataType": "int64",
+            "sourceColumn": "Orders",
+            "formatString": "0"
+          },
+          {
+            "name": "Revenue",
+            "dataType": "double",
+            "sourceColumn": "Revenue",
+            "formatString": "#,0.00"
+          },
+          {
+            "name": "Profit",
+            "dataType": "double",
+            "sourceColumn": "Profit",
+            "formatString": "#,0.00"
+          },
+          {
+            "name": "On_Time_Pct",
+            "dataType": "double",
+            "sourceColumn": "On_Time_Pct",
+            "formatString": "#,0.00"
+          },
+          {
+            "name": "Avg_Delay",
+            "dataType": "double",
+            "sourceColumn": "Avg_Delay",
+            "formatString": "#,0.00"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Supplier_Performance",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = Csv.Document(File.Contents(\"D:\\\\AI-Driven Supply Chain\\\\reports\\\\powerbi\\\\supplier_performance.csv\"), [Delimiter=\",\", Encoding=65001, QuoteStyle=QuoteStyle.None]),",
+                "    #\"Promoted Headers\" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),",
+                "    #\"Changed Type\" = Table.TransformColumnTypes(#\"Promoted Headers\", {{\"Orders\", Int64.Type}, {\"Revenue\", type number}, {\"Profit\", type number}, {\"On_Time_Pct\", type number}, {\"Avg_Delay\", type number}})",
+                "in",
+                "    #\"Changed Type\""
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Fact_Demand_Monthly",
+        "columns": [
+          {
+            "name": "YearMonth",
+            "dataType": "string",
+            "sourceColumn": "YearMonth"
+          },
+          {
+            "name": "Warehouse",
+            "dataType": "string",
+            "sourceColumn": "Warehouse"
+          },
+          {
+            "name": "Product_Code",
+            "dataType": "string",
+            "sourceColumn": "Product_Code"
+          },
+          {
+            "name": "Product_Category",
+            "dataType": "string",
+            "sourceColumn": "Product_Category"
+          },
+          {
+            "name": "Total_Demand",
+            "dataType": "double",
+            "sourceColumn": "Total_Demand",
+            "formatString": "#,0.00"
+          },
+          {
+            "name": "Days_Active",
+            "dataType": "int64",
+            "sourceColumn": "Days_Active",
+            "formatString": "0"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Fact_Demand_Monthly",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = Csv.Document(File.Contents(\"D:\\\\AI-Driven Supply Chain\\\\reports\\\\powerbi\\\\fact_demand_monthly.csv\"), [Delimiter=\",\", Encoding=65001, QuoteStyle=QuoteStyle.None]),",
+                "    #\"Promoted Headers\" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),",
+                "    #\"Changed Type\" = Table.TransformColumnTypes(#\"Promoted Headers\", {{\"Total_Demand\", type number}, {\"Days_Active\", Int64.Type}})",
+                "in",
+                "    #\"Changed Type\""
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Dim_Warehouse",
+        "columns": [
+          {
+            "name": "Warehouse",
+            "dataType": "string",
+            "sourceColumn": "Warehouse"
+          },
+          {
+            "name": "Total_Demand",
+            "dataType": "double",
+            "sourceColumn": "Total_Demand",
+            "formatString": "#,0.00"
+          },
+          {
+            "name": "Avg_Daily_Demand",
+            "dataType": "double",
+            "sourceColumn": "Avg_Daily_Demand",
+            "formatString": "#,0.00"
+          },
+          {
+            "name": "SKU_Count",
+            "dataType": "int64",
+            "sourceColumn": "SKU_Count",
+            "formatString": "0"
+          },
+          {
+            "name": "First_Date",
+            "dataType": "dateTime",
+            "sourceColumn": "First_Date",
+            "formatString": "Short Date"
+          },
+          {
+            "name": "Last_Date",
+            "dataType": "dateTime",
+            "sourceColumn": "Last_Date",
+            "formatString": "Short Date"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Dim_Warehouse",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = Csv.Document(File.Contents(\"D:\\\\AI-Driven Supply Chain\\\\reports\\\\powerbi\\\\dim_warehouse.csv\"), [Delimiter=\",\", Encoding=65001, QuoteStyle=QuoteStyle.None]),",
+                "    #\"Promoted Headers\" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),",
+                "    #\"Changed Type\" = Table.TransformColumnTypes(#\"Promoted Headers\", {{\"Total_Demand\", type number}, {\"Avg_Daily_Demand\", type number}, {\"SKU_Count\", Int64.Type}, {\"First_Date\", type date}, {\"Last_Date\", type date}})",
+                "in",
+                "    #\"Changed Type\""
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Inventory_Plan",
+        "columns": [
+          {
+            "name": "Product_Code",
+            "dataType": "string",
+            "sourceColumn": "Product_Code"
+          },
+          {
+            "name": "avg_daily_demand",
+            "dataType": "double",
+            "sourceColumn": "avg_daily_demand",
+            "formatString": "#,0.00"
+          },
+          {
+            "name": "std_daily_demand",
+            "dataType": "double",
+            "sourceColumn": "std_daily_demand",
+            "formatString": "#,0.00"
+          },
+          {
+            "name": "total_demand",
+            "dataType": "double",
+            "sourceColumn": "total_demand",
+            "formatString": "#,0.00"
+          },
+          {
+            "name": "days_active",
+            "dataType": "int64",
+            "sourceColumn": "days_active",
+            "formatString": "0"
+          },
+          {
+            "name": "cv",
+            "dataType": "string",
+            "sourceColumn": "cv"
+          },
+          {
+            "name": "annual_demand",
+            "dataType": "double",
+            "sourceColumn": "annual_demand",
+            "formatString": "#,0.00"
+          },
+          {
+            "name": "EOQ",
+            "dataType": "double",
+            "sourceColumn": "EOQ",
+            "formatString": "#,0.00"
+          },
+          {
+            "name": "demand_during_lead",
+            "dataType": "double",
+            "sourceColumn": "demand_during_lead",
+            "formatString": "#,0.00"
+          },
+          {
+            "name": "safety_stock",
+            "dataType": "double",
+            "sourceColumn": "safety_stock",
+            "formatString": "#,0.00"
+          },
+          {
+            "name": "reorder_point",
+            "dataType": "double",
+            "sourceColumn": "reorder_point",
+            "formatString": "#,0.00"
+          },
+          {
+            "name": "revenue_pct",
+            "dataType": "double",
+            "sourceColumn": "revenue_pct",
+            "formatString": "#,0.00"
+          },
+          {
+            "name": "cumulative_pct",
+            "dataType": "double",
+            "sourceColumn": "cumulative_pct",
+            "formatString": "#,0.00"
+          },
+          {
+            "name": "ABC",
+            "dataType": "string",
+            "sourceColumn": "ABC"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Inventory_Plan",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = Csv.Document(File.Contents(\"D:\\\\AI-Driven Supply Chain\\\\reports\\\\powerbi\\\\inventory_plan.csv\"), [Delimiter=\",\", Encoding=65001, QuoteStyle=QuoteStyle.None]),",
+                "    #\"Promoted Headers\" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),",
+                "    #\"Changed Type\" = Table.TransformColumnTypes(#\"Promoted Headers\", {{\"avg_daily_demand\", type number}, {\"std_daily_demand\", type number}, {\"total_demand\", type number}, {\"days_active\", Int64.Type}, {\"annual_demand\", type number}, {\"EOQ\", type number}, {\"demand_during_lead\", type number}, {\"safety_stock\", type number}, {\"reorder_point\", type number}, {\"revenue_pct\", type number}, {\"cumulative_pct\", type number}})",
+                "in",
+                "    #\"Changed Type\""
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Fact_Routes",
+        "columns": [
+          {
+            "name": "vehicle",
+            "dataType": "int64",
+            "sourceColumn": "vehicle",
+            "formatString": "0"
+          },
+          {
+            "name": "stops",
+            "dataType": "int64",
+            "sourceColumn": "stops",
+            "formatString": "0"
+          },
+          {
+            "name": "distance_km",
+            "dataType": "double",
+            "sourceColumn": "distance_km",
+            "formatString": "#,0.00"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Fact_Routes",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = Csv.Document(File.Contents(\"D:\\\\AI-Driven Supply Chain\\\\reports\\\\powerbi\\\\fact_routes.csv\"), [Delimiter=\",\", Encoding=65001, QuoteStyle=QuoteStyle.None]),",
+                "    #\"Promoted Headers\" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),",
+                "    #\"Changed Type\" = Table.TransformColumnTypes(#\"Promoted Headers\", {{\"vehicle\", Int64.Type}, {\"stops\", Int64.Type}, {\"distance_km\", type number}})",
+                "in",
+                "    #\"Changed Type\""
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Olist_Delivery_KPIs",
+        "columns": [
+          {
+            "name": "State",
+            "dataType": "string",
+            "sourceColumn": "State"
+          },
+          {
+            "name": "Orders",
+            "dataType": "int64",
+            "sourceColumn": "Orders",
+            "formatString": "0"
+          },
+          {
+            "name": "Avg_Delivery_Days",
+            "dataType": "double",
+            "sourceColumn": "Avg_Delivery_Days",
+            "formatString": "#,0.00"
+          },
+          {
+            "name": "Median_Delivery_Days",
+            "dataType": "double",
+            "sourceColumn": "Median_Delivery_Days",
+            "formatString": "#,0.00"
+          },
+          {
+            "name": "P90_Delivery_Days",
+            "dataType": "double",
+            "sourceColumn": "P90_Delivery_Days",
+            "formatString": "#,0.00"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Olist_Delivery_KPIs",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = Csv.Document(File.Contents(\"D:\\\\AI-Driven Supply Chain\\\\reports\\\\powerbi\\\\olist_delivery_kpis.csv\"), [Delimiter=\",\", Encoding=65001, QuoteStyle=QuoteStyle.None]),",
+                "    #\"Promoted Headers\" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),",
+                "    #\"Changed Type\" = Table.TransformColumnTypes(#\"Promoted Headers\", {{\"Orders\", Int64.Type}, {\"Avg_Delivery_Days\", type number}, {\"Median_Delivery_Days\", type number}, {\"P90_Delivery_Days\", type number}})",
+                "in",
+                "    #\"Changed Type\""
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Simulation_KPIs",
+        "columns": [
+          {
+            "name": "Metric",
+            "dataType": "string",
+            "sourceColumn": "Metric"
+          },
+          {
+            "name": "Value",
+            "dataType": "double",
+            "sourceColumn": "Value",
+            "formatString": "#,0.00"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Simulation_KPIs",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = Csv.Document(File.Contents(\"D:\\\\AI-Driven Supply Chain\\\\reports\\\\powerbi\\\\simulation_kpis.csv\"), [Delimiter=\",\", Encoding=65001, QuoteStyle=QuoteStyle.None]),",
+                "    #\"Promoted Headers\" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),",
+                "    #\"Changed Type\" = Table.TransformColumnTypes(#\"Promoted Headers\", {{\"Value\", type number}})",
+                "in",
+                "    #\"Changed Type\""
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "ABC_Breakdown",
+        "columns": [
+          {
+            "name": "ABC_Class",
+            "dataType": "string",
+            "sourceColumn": "ABC_Class"
+          },
+          {
+            "name": "Overstock_Reduction_Pct",
+            "dataType": "double",
+            "sourceColumn": "Overstock_Reduction_Pct",
+            "formatString": "#,0.00"
+          },
+          {
+            "name": "Stockout_Reduction_Pct",
+            "dataType": "double",
+            "sourceColumn": "Stockout_Reduction_Pct",
+            "formatString": "#,0.00"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "ABC_Breakdown",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = Csv.Document(File.Contents(\"D:\\\\AI-Driven Supply Chain\\\\reports\\\\powerbi\\\\abc_breakdown.csv\"), [Delimiter=\",\", Encoding=65001, QuoteStyle=QuoteStyle.None]),",
+                "    #\"Promoted Headers\" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),",
+                "    #\"Changed Type\" = Table.TransformColumnTypes(#\"Promoted Headers\", {{\"Overstock_Reduction_Pct\", type number}, {\"Stockout_Reduction_Pct\", type number}})",
+                "in",
+                "    #\"Changed Type\""
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Simulation_Results",
+        "columns": [
+          {
+            "name": "Product_Code",
+            "dataType": "string",
+            "sourceColumn": "Product_Code"
+          },
+          {
+            "name": "ABC",
+            "dataType": "string",
+            "sourceColumn": "ABC"
+          },
+          {
+            "name": "avg_daily_demand",
+            "dataType": "double",
+            "sourceColumn": "avg_daily_demand",
+            "formatString": "#,0.00"
+          },
+          {
+            "name": "base_avg_overstock",
+            "dataType": "double",
+            "sourceColumn": "base_avg_overstock",
+            "formatString": "#,0.00"
+          },
+          {
+            "name": "base_stockout_prob",
+            "dataType": "double",
+            "sourceColumn": "base_stockout_prob",
+            "formatString": "#,0.00"
+          },
+          {
+            "name": "base_avg_shortfall",
+            "dataType": "double",
+            "sourceColumn": "base_avg_shortfall",
+            "formatString": "#,0.00"
+          },
+          {
+            "name": "opt_avg_overstock",
+            "dataType": "double",
+            "sourceColumn": "opt_avg_overstock",
+            "formatString": "#,0.00"
+          },
+          {
+            "name": "opt_stockout_prob",
+            "dataType": "double",
+            "sourceColumn": "opt_stockout_prob",
+            "formatString": "#,0.00"
+          },
+          {
+            "name": "opt_avg_shortfall",
+            "dataType": "double",
+            "sourceColumn": "opt_avg_shortfall",
+            "formatString": "#,0.00"
+          },
+          {
+            "name": "overstock_reduction_pct",
+            "dataType": "double",
+            "sourceColumn": "overstock_reduction_pct",
+            "formatString": "#,0.00"
+          },
+          {
+            "name": "stockout_reduction_pct",
+            "dataType": "double",
+            "sourceColumn": "stockout_reduction_pct",
+            "formatString": "#,0.00"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Simulation_Results",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = Csv.Document(File.Contents(\"D:\\\\AI-Driven Supply Chain\\\\reports\\\\powerbi\\\\simulation_results.csv\"), [Delimiter=\",\", Encoding=65001, QuoteStyle=QuoteStyle.None]),",
+                "    #\"Promoted Headers\" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),",
+                "    #\"Changed Type\" = Table.TransformColumnTypes(#\"Promoted Headers\", {{\"avg_daily_demand\", type number}, {\"base_avg_overstock\", type number}, {\"base_stockout_prob\", type number}, {\"base_avg_shortfall\", type number}, {\"opt_avg_overstock\", type number}, {\"opt_stockout_prob\", type number}, {\"opt_avg_shortfall\", type number}, {\"overstock_reduction_pct\", type number}, {\"stockout_reduction_pct\", type number}})",
+                "in",
+                "    #\"Changed Type\""
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Data_Source_Manifest",
+        "columns": [
+          {
+            "name": "Table",
+            "dataType": "string",
+            "sourceColumn": "Table"
+          },
+          {
+            "name": "Source",
+            "dataType": "string",
+            "sourceColumn": "Source"
+          },
+          {
+            "name": "Rows",
+            "dataType": "int64",
+            "sourceColumn": "Rows",
+            "formatString": "0"
+          },
+          {
+            "name": "Type",
+            "dataType": "string",
+            "sourceColumn": "Type"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Data_Source_Manifest",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = Csv.Document(File.Contents(\"D:\\\\AI-Driven Supply Chain\\\\reports\\\\powerbi\\\\data_source_manifest.csv\"), [Delimiter=\",\", Encoding=65001, QuoteStyle=QuoteStyle.None]),",
+                "    #\"Promoted Headers\" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),",
+                "    #\"Changed Type\" = Table.TransformColumnTypes(#\"Promoted Headers\", {{\"Rows\", Int64.Type}})",
+                "in",
+                "    #\"Changed Type\""
+              ]
+            }
+          }
+        ]
+      }
+    ],
+    "relationships": [
+      {
+        "name": "Fact_Orders_Date",
+        "fromTable": "Fact_Orders",
+        "fromColumn": "Order_Date",
+        "toTable": "Dim_Date",
+        "toColumn": "Date"
+      },
+      {
+        "name": "Demand_Warehouse",
+        "fromTable": "Fact_Demand_Monthly",
+        "fromColumn": "Warehouse",
+        "toTable": "Dim_Warehouse",
+        "toColumn": "Warehouse"
+      }
+    ]
+  }
+}

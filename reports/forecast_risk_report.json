@@ -1,0 +1,872 @@
+{
+  "report_title": "Forecast Risk Analysis \u2013 Overstock & Stockout",
+  "generated_at": "2026-07-08T19:24:53",
+  "formula": {
+    "overstock_pct": "max(0, (forecast - actual) / actual) * 100",
+    "stockout_pct": "max(0, (actual - forecast) / actual) * 100",
+    "explanation": "overstock = forecast too HIGH vs actual \u2192 surplus units on shelf. stockout  = forecast too LOW  vs actual \u2192 not enough units ordered."
+  },
+  "models": [
+    {
+      "model": "LSTM",
+      "periods_evaluated": 46,
+      "date_range": {
+        "start": "2016-01-17",
+        "end": "2016-11-27"
+      },
+      "overstock": {
+        "avg_overstock_pct": 35.31,
+        "max_overstock_pct": 339.11,
+        "periods_overstocked": 29,
+        "overstock_frequency_pct": 63.0,
+        "risk_level": "HIGH RISK",
+        "meaning": "On average the forecast was 35.31% HIGHER than actual demand in 29 of 46 periods -> excess inventory risk."
+      },
+      "stockout": {
+        "avg_stockout_pct": 8.42,
+        "max_stockout_pct": 41.34,
+        "periods_stockout": 17,
+        "stockout_frequency_pct": 37.0,
+        "risk_level": "MEDIUM RISK",
+        "meaning": "On average the forecast was 8.42% LOWER than actual demand in 17 of 46 periods -> stockout / lost-sales risk."
+      },
+      "forecast_accuracy": {
+        "MAPE_pct": 43.73,
+        "mean_error": 93023.9,
+        "bias": "over-forecast (excess inventory bias)"
+      },
+      "period_detail": [
+        {
+          "date": "2016-01-17",
+          "actual": 1377000.0,
+          "forecast": 1798721.5,
+          "overstock_pct": 30.63,
+          "stockout_pct": 0.0,
+          "error_pct": 30.63
+        },
+        {
+          "date": "2016-01-24",
+          "actual": 1767000.0,
+          "forecast": 1799177.8,
+          "overstock_pct": 1.82,
+          "stockout_pct": 0.0,
+          "error_pct": 1.82
+        },
+        {
+          "date": "2016-01-31",
+          "actual": 2072000.0,
+          "forecast": 1791342.5,
+          "overstock_pct": 0.0,
+          "stockout_pct": 13.55,
+          "error_pct": -13.55
+        },
+        {
+          "date": "2016-02-07",
+          "actual": 2085000.0,
+          "forecast": 1775472.9,
+          "overstock_pct": 0.0,
+          "stockout_pct": 14.85,
+          "error_pct": -14.85
+        },
+        {
+          "date": "2016-02-14",
+          "actual": 1906000.0,
+          "forecast": 1760290.6,
+          "overstock_pct": 0.0,
+          "stockout_pct": 7.64,
+          "error_pct": -7.64
+        },
+        {
+          "date": "2016-02-21",
+          "actual": 1386000.0,
+          "forecast": 1752786.8,
+          "overstock_pct": 26.46,
+          "stockout_pct": 0.0,
+          "error_pct": 26.46
+        },
+        {
+          "date": "2016-02-28",
+          "actual": 1373000.0,
+          "forecast": 1761773.4,
+          "overstock_pct": 28.32,
+          "stockout_pct": 0.0,
+          "error_pct": 28.32
+        },
+        {
+          "date": "2016-03-06",
+          "actual": 2532000.0,
+          "forecast": 1773905.2,
+          "overstock_pct": 0.0,
+          "stockout_pct": 29.94,
+          "error_pct": -29.94
+        },
+        {
+          "date": "2016-03-13",
+          "actual": 1256000.0,
+          "forecast": 1756208.2,
+          "overstock_pct": 39.83,
+          "stockout_pct": 0.0,
+          "error_pct": 39.83
+        },
+        {
+          "date": "2016-03-20",
+          "actual": 2133000.0,
+          "forecast": 1765462.2,
+          "overstock_pct": 0.0,
+          "stockout_pct": 17.23,
+          "error_pct": -17.23
+        },
+        {
+          "date": "2016-03-27",
+          "actual": 1316000.0,
+          "forecast": 1758032.2,
+          "overstock_pct": 33.59,
+          "stockout_pct": 0.0,
+          "error_pct": 33.59
+        },
+        {
+          "date": "2016-04-03",
+          "actual": 1048000.0,
+          "forecast": 1768168.6,
+          "overstock_pct": 68.72,
+          "stockout_pct": 0.0,
+          "error_pct": 68.72
+        },
+        {
+          "date": "2016-04-10",
+          "actual": 2699000.0,
+          "forecast": 1787263.9,
+          "overstock_pct": 0.0,
+          "stockout_pct": 33.78,
+          "error_pct": -33.78
+        },
+        {
+          "date": "2016-04-17",
+          "actual": 1258000.0,
+          "forecast": 1764565.5,
+          "overstock_pct": 40.27,
+          "stockout_pct": 0.0,
+          "error_pct": 40.27
+        },
+        {
+          "date": "2016-04-24",
+          "actual": 1160000.0,
+          "forecast": 1770768.0,
+          "overstock_pct": 52.65,
+          "stockout_pct": 0.0,
+          "error_pct": 52.65
+        },
+        {
+          "date": "2016-05-01",
+          "actual": 941000.0,
+          "forecast": 1785155.9,
+          "overstock_pct": 89.71,
+          "stockout_pct": 0.0,
+          "error_pct": 89.71
+        },
+        {
+          "date": "2016-05-08",
+          "actual": 411000.0,
+          "forecast": 1804759.6,
+          "overstock_pct": 339.11,
+          "stockout_pct": 0.0,
+          "error_pct": 339.11
+        },
+        {
+          "date": "2016-05-15",
+          "actual": 2387000.0,
+          "forecast": 1834933.2,
+          "overstock_pct": 0.0,
+          "stockout_pct": 23.13,
+          "error_pct": -23.13
+        },
+        {
+          "date": "2016-05-22",
+          "actual": 859000.0,
+          "forecast": 1813140.6,
+          "overstock_pct": 111.08,
+          "stockout_pct": 0.0,
+          "error_pct": 111.08
+        },
+        {
+          "date": "2016-05-29",
+          "actual": 2494000.0,
+          "forecast": 1819345.4,
+          "overstock_pct": 0.0,
+          "stockout_pct": 27.05,
+          "error_pct": -27.05
+        },
+        {
+          "date": "2016-06-05",
+          "actual": 1634000.0,
+          "forecast": 1790484.6,
+          "overstock_pct": 9.58,
+          "stockout_pct": 0.0,
+          "error_pct": 9.58
+        },
+        {
+          "date": "2016-06-12",
+          "actual": 2736000.0,
+          "forecast": 1779896.0,
+          "overstock_pct": 0.0,
+          "stockout_pct": 34.95,
+          "error_pct": -34.95
+        },
+        {
+          "date": "2016-06-19",
+          "actual": 1375000.0,
+          "forecast": 1748679.6,
+          "overstock_pct": 27.18,
+          "stockout_pct": 0.0,
+          "error_pct": 27.18
+        },
+        {
+          "date": "2016-06-26",
+          "actual": 1615000.0,
+          "forecast": 1752408.9,
+          "overstock_pct": 8.51,
+          "stockout_pct": 0.0,
+          "error_pct": 8.51
+        },
+        {
+          "date": "2016-07-03",
+          "actual": 1913000.0,
+          "forecast": 1758620.8,
+          "overstock_pct": 0.0,
+          "stockout_pct": 8.07,
+          "error_pct": -8.07
+        },
+        {
+          "date": "2016-07-10",
+          "actual": 2316000.0,
+          "forecast": 1757627.5,
+          "overstock_pct": 0.0,
+          "stockout_pct": 24.11,
+          "error_pct": -24.11
+        },
+        {
+          "date": "2016-07-17",
+          "actual": 1041000.0,
+          "forecast": 1745037.2,
+          "overstock_pct": 67.63,
+          "stockout_pct": 0.0,
+          "error_pct": 67.63
+        },
+        {
+          "date": "2016-07-24",
+          "actual": 1563000.0,
+          "forecast": 1763035.0,
+          "overstock_pct": 12.8,
+          "stockout_pct": 0.0,
+          "error_pct": 12.8
+        },
+        {
+          "date": "2016-07-31",
+          "actual": 1488000.0,
+          "forecast": 1772661.4,
+          "overstock_pct": 19.13,
+          "stockout_pct": 0.0,
+          "error_pct": 19.13
+        },
+        {
+          "date": "2016-08-07",
+          "actual": 1945000.0,
+          "forecast": 1780415.8,
+          "overstock_pct": 0.0,
+          "stockout_pct": 8.46,
+          "error_pct": -8.46
+        },
+        {
+          "date": "2016-08-14",
+          "actual": 444000.0,
+          "forecast": 1774610.8,
+          "overstock_pct": 299.69,
+          "stockout_pct": 0.0,
+          "error_pct": 299.69
+        },
+        {
+          "date": "2016-08-21",
+          "actual": 1530000.0,
+          "forecast": 1803040.5,
+          "overstock_pct": 17.85,
+          "stockout_pct": 0.0,
+          "error_pct": 17.85
+        },
+        {
+          "date": "2016-08-28",
+          "actual": 2193000.0,
+          "forecast": 1808130.0,
+          "overstock_pct": 0.0,
+          "stockout_pct": 17.55,
+          "error_pct": -17.55
+        },
+        {
+          "date": "2016-09-04",
+          "actual": 1545000.0,
+          "forecast": 1789915.1,
+          "overstock_pct": 15.85,
+          "stockout_pct": 0.0,
+          "error_pct": 15.85
+        },
+        {
+          "date": "2016-09-11",
+          "actual": 1584000.0,
+          "forecast": 1784609.1,
+          "overstock_pct": 12.66,
+          "stockout_pct": 0.0,
+          "error_pct": 12.66
+        },
+        {
+          "date": "2016-09-18",
+          "actual": 1650000.0,
+          "forecast": 1782528.9,
+          "overstock_pct": 8.03,
+          "stockout_pct": 0.0,
+          "error_pct": 8.03
+        },
+        {
+          "date": "2016-09-25",
+          "actual": 872000.0,
+          "forecast": 1780419.1,
+          "overstock_pct": 104.18,
+          "stockout_pct": 0.0,
+          "error_pct": 104.18
+        },
+        {
+          "date": "2016-10-02",
+          "actual": 2131000.0,
+          "forecast": 1797956.2,
+          "overstock_pct": 0.0,
+          "stockout_pct": 15.63,
+          "error_pct": -15.63
+        },
+        {
+          "date": "2016-10-09",
+          "actual": 1614000.0,
+          "forecast": 1786276.9,
+          "overstock_pct": 10.67,
+          "stockout_pct": 0.0,
+          "error_pct": 10.67
+        },
+        {
+          "date": "2016-10-16",
+          "actual": 3038000.0,
+          "forecast": 1782102.2,
+          "overstock_pct": 0.0,
+          "stockout_pct": 41.34,
+          "error_pct": -41.34
+        },
+        {
+          "date": "2016-10-23",
+          "actual": 1605000.0,
+          "forecast": 1745126.1,
+          "overstock_pct": 8.73,
+          "stockout_pct": 0.0,
+          "error_pct": 8.73
+        },
+        {
+          "date": "2016-10-30",
+          "actual": 1062000.0,
+          "forecast": 1742555.5,
+          "overstock_pct": 64.08,
+          "stockout_pct": 0.0,
+          "error_pct": 64.08
+        },
+        {
+          "date": "2016-11-06",
+          "actual": 2872000.0,
+          "forecast": 1762535.5,
+          "overstock_pct": 0.0,
+          "stockout_pct": 38.63,
+          "error_pct": -38.63
+        },
+        {
+          "date": "2016-11-13",
+          "actual": 2543000.0,
+          "forecast": 1740813.8,
+          "overstock_pct": 0.0,
+          "stockout_pct": 31.54,
+          "error_pct": -31.54
+        },
+        {
+          "date": "2016-11-20",
+          "actual": 1493000.0,
+          "forecast": 1720850.0,
+          "overstock_pct": 15.26,
+          "stockout_pct": 0.0,
+          "error_pct": 15.26
+        },
+        {
+          "date": "2016-11-27",
+          "actual": 1081000.0,
+          "forecast": 1730488.8,
+          "overstock_pct": 60.08,
+          "stockout_pct": 0.0,
+          "error_pct": 60.08
+        }
+      ]
+    },
+    {
+      "model": "SARIMA",
+      "periods_evaluated": 53,
+      "date_range": {
+        "start": "2016-01-10",
+        "end": "2017-01-08"
+      },
+      "overstock": {
+        "avg_overstock_pct": 80.1,
+        "max_overstock_pct": 2312.8,
+        "periods_overstocked": 41,
+        "overstock_frequency_pct": 77.4,
+        "risk_level": "HIGH RISK",
+        "meaning": "On average the forecast was 80.10% HIGHER than actual demand in 41 of 53 periods -> excess inventory risk."
+      },
+      "stockout": {
+        "avg_stockout_pct": 5.89,
+        "max_stockout_pct": 50.52,
+        "periods_stockout": 12,
+        "stockout_frequency_pct": 22.6,
+        "risk_level": "MEDIUM RISK",
+        "meaning": "On average the forecast was 5.89% LOWER than actual demand in 12 of 53 periods -> stockout / lost-sales risk."
+      },
+      "forecast_accuracy": {
+        "MAPE_pct": 85.99,
+        "mean_error": 296780.79,
+        "bias": "over-forecast (excess inventory bias)"
+      },
+      "period_detail": [
+        {
+          "date": "2016-01-10",
+          "actual": 2123000.0,
+          "forecast": 2136103.21,
+          "overstock_pct": 0.62,
+          "stockout_pct": 0.0,
+          "error_pct": 0.62
+        },
+        {
+          "date": "2016-01-17",
+          "actual": 1377000.0,
+          "forecast": 2596502.03,
+          "overstock_pct": 88.56,
+          "stockout_pct": 0.0,
+          "error_pct": 88.56
+        },
+        {
+          "date": "2016-01-24",
+          "actual": 1767000.0,
+          "forecast": 2076874.5,
+          "overstock_pct": 17.54,
+          "stockout_pct": 0.0,
+          "error_pct": 17.54
+        },
+        {
+          "date": "2016-01-31",
+          "actual": 2072000.0,
+          "forecast": 2420896.45,
+          "overstock_pct": 16.84,
+          "stockout_pct": 0.0,
+          "error_pct": 16.84
+        },
+        {
+          "date": "2016-02-07",
+          "actual": 2085000.0,
+          "forecast": 2484357.4,
+          "overstock_pct": 19.15,
+          "stockout_pct": 0.0,
+          "error_pct": 19.15
+        },
+        {
+          "date": "2016-02-14",
+          "actual": 1906000.0,
+          "forecast": 1425518.48,
+          "overstock_pct": 0.0,
+          "stockout_pct": 25.21,
+          "error_pct": -25.21
+        },
+        {
+          "date": "2016-02-21",
+          "actual": 1386000.0,
+          "forecast": 1714211.64,
+          "overstock_pct": 23.68,
+          "stockout_pct": 0.0,
+          "error_pct": 23.68
+        },
+        {
+          "date": "2016-02-28",
+          "actual": 1373000.0,
+          "forecast": 1715090.13,
+          "overstock_pct": 24.92,
+          "stockout_pct": 0.0,
+          "error_pct": 24.92
+        },
+        {
+          "date": "2016-03-06",
+          "actual": 2532000.0,
+          "forecast": 2456387.84,
+          "overstock_pct": 0.0,
+          "stockout_pct": 2.99,
+          "error_pct": -2.99
+        },
+        {
+          "date": "2016-03-13",
+          "actual": 1256000.0,
+          "forecast": 1817697.77,
+          "overstock_pct": 44.72,
+          "stockout_pct": 0.0,
+          "error_pct": 44.72
+        },
+        {
+          "date": "2016-03-20",
+          "actual": 2133000.0,
+          "forecast": 1900406.59,
+          "overstock_pct": 0.0,
+          "stockout_pct": 10.9,
+          "error_pct": -10.9
+        },
+        {
+          "date": "2016-03-27",
+          "actual": 1316000.0,
+          "forecast": 1903374.59,
+          "overstock_pct": 44.63,
+          "stockout_pct": 0.0,
+          "error_pct": 44.63
+        },
+        {
+          "date": "2016-04-03",
+          "actual": 1048000.0,
+          "forecast": 2094369.28,
+          "overstock_pct": 99.84,
+          "stockout_pct": 0.0,
+          "error_pct": 99.84
+        },
+        {
+          "date": "2016-04-10",
+          "actual": 2699000.0,
+          "forecast": 1926800.61,
+          "overstock_pct": 0.0,
+          "stockout_pct": 28.61,
+          "error_pct": -28.61
+        },
+        {
+          "date": "2016-04-17",
+          "actual": 1258000.0,
+          "forecast": 1911234.96,
+          "overstock_pct": 51.93,
+          "stockout_pct": 0.0,
+          "error_pct": 51.93
+        },
+        {
+          "date": "2016-04-24",
+          "actual": 1160000.0,
+          "forecast": 1903887.35,
+          "overstock_pct": 64.13,
+          "stockout_pct": 0.0,
+          "error_pct": 64.13
+        },
+        {
+          "date": "2016-05-01",
+          "actual": 941000.0,
+          "forecast": 1760272.17,
+          "overstock_pct": 87.06,
+          "stockout_pct": 0.0,
+          "error_pct": 87.06
+        },
+        {
+          "date": "2016-05-08",
+          "actual": 411000.0,
+          "forecast": 1673231.92,
+          "overstock_pct": 307.11,
+          "stockout_pct": 0.0,
+          "error_pct": 307.11
+        },
+        {
+          "date": "2016-05-15",
+          "actual": 2387000.0,
+          "forecast": 1955687.83,
+          "overstock_pct": 0.0,
+          "stockout_pct": 18.07,
+          "error_pct": -18.07
+        },
+        {
+          "date": "2016-05-22",
+          "actual": 859000.0,
+          "forecast": 2170161.53,
+          "overstock_pct": 152.64,
+          "stockout_pct": 0.0,
+          "error_pct": 152.64
+        },
+        {
+          "date": "2016-05-29",
+          "actual": 2494000.0,
+          "forecast": 1866017.31,
+          "overstock_pct": 0.0,
+          "stockout_pct": 25.18,
+          "error_pct": -25.18
+        },
+        {
+          "date": "2016-06-05",
+          "actual": 1634000.0,
+          "forecast": 1994366.72,
+          "overstock_pct": 22.05,
+          "stockout_pct": 0.0,
+          "error_pct": 22.05
+        },
+        {
+          "date": "2016-06-12",
+          "actual": 2736000.0,
+          "forecast": 1684406.88,
+          "overstock_pct": 0.0,
+          "stockout_pct": 38.44,
+          "error_pct": -38.44
+        },
+        {
+          "date": "2016-06-19",
+          "actual": 1375000.0,
+          "forecast": 1514157.21,
+          "overstock_pct": 10.12,
+          "stockout_pct": 0.0,
+          "error_pct": 10.12
+        },
+        {
+          "date": "2016-06-26",
+          "actual": 1615000.0,
+          "forecast": 2232087.94,
+          "overstock_pct": 38.21,
+          "stockout_pct": 0.0,
+          "error_pct": 38.21
+        },
+        {
+          "date": "2016-07-03",
+          "actual": 1913000.0,
+          "forecast": 2251050.42,
+          "overstock_pct": 17.67,
+          "stockout_pct": 0.0,
+          "error_pct": 17.67
+        },
+        {
+          "date": "2016-07-10",
+          "actual": 2316000.0,
+          "forecast": 1426871.68,
+          "overstock_pct": 0.0,
+          "stockout_pct": 38.39,
+          "error_pct": -38.39
+        },
+        {
+          "date": "2016-07-17",
+          "actual": 1041000.0,
+          "forecast": 1838700.37,
+          "overstock_pct": 76.63,
+          "stockout_pct": 0.0,
+          "error_pct": 76.63
+        },
+        {
+          "date": "2016-07-24",
+          "actual": 1563000.0,
+          "forecast": 1791081.72,
+          "overstock_pct": 14.59,
+          "stockout_pct": 0.0,
+          "error_pct": 14.59
+        },
+        {
+          "date": "2016-07-31",
+          "actual": 1488000.0,
+          "forecast": 2461935.75,
+          "overstock_pct": 65.45,
+          "stockout_pct": 0.0,
+          "error_pct": 65.45
+        },
+        {
+          "date": "2016-08-07",
+          "actual": 1945000.0,
+          "forecast": 2188420.38,
+          "overstock_pct": 12.52,
+          "stockout_pct": 0.0,
+          "error_pct": 12.52
+        },
+        {
+          "date": "2016-08-14",
+          "actual": 444000.0,
+          "forecast": 662749.25,
+          "overstock_pct": 49.27,
+          "stockout_pct": 0.0,
+          "error_pct": 49.27
+        },
+        {
+          "date": "2016-08-21",
+          "actual": 1530000.0,
+          "forecast": 1853611.68,
+          "overstock_pct": 21.15,
+          "stockout_pct": 0.0,
+          "error_pct": 21.15
+        },
+        {
+          "date": "2016-08-28",
+          "actual": 2193000.0,
+          "forecast": 1798264.79,
+          "overstock_pct": 0.0,
+          "stockout_pct": 18.0,
+          "error_pct": -18.0
+        },
+        {
+          "date": "2016-09-04",
+          "actual": 1545000.0,
+          "forecast": 2409933.06,
+          "overstock_pct": 55.98,
+          "stockout_pct": 0.0,
+          "error_pct": 55.98
+        },
+        {
+          "date": "2016-09-11",
+          "actual": 1584000.0,
+          "forecast": 1783166.36,
+          "overstock_pct": 12.57,
+          "stockout_pct": 0.0,
+          "error_pct": 12.57
+        },
+        {
+          "date": "2016-09-18",
+          "actual": 1650000.0,
+          "forecast": 1908328.33,
+          "overstock_pct": 15.66,
+          "stockout_pct": 0.0,
+          "error_pct": 15.66
+        },
+        {
+          "date": "2016-09-25",
+          "actual": 872000.0,
+          "forecast": 1269054.55,
+          "overstock_pct": 45.53,
+          "stockout_pct": 0.0,
+          "error_pct": 45.53
+        },
+        {
+          "date": "2016-10-02",
+          "actual": 2131000.0,
+          "forecast": 2308918.41,
+          "overstock_pct": 8.35,
+          "stockout_pct": 0.0,
+          "error_pct": 8.35
+        },
+        {
+          "date": "2016-10-09",
+          "actual": 1614000.0,
+          "forecast": 2344297.13,
+          "overstock_pct": 45.25,
+          "stockout_pct": 0.0,
+          "error_pct": 45.25
+        },
+        {
+          "date": "2016-10-16",
+          "actual": 3038000.0,
+          "forecast": 1503231.4,
+          "overstock_pct": 0.0,
+          "stockout_pct": 50.52,
+          "error_pct": -50.52
+        },
+        {
+          "date": "2016-10-23",
+          "actual": 1605000.0,
+          "forecast": 1987949.12,
+          "overstock_pct": 23.86,
+          "stockout_pct": 0.0,
+          "error_pct": 23.86
+        },
+        {
+          "date": "2016-10-30",
+          "actual": 1062000.0,
+          "forecast": 2418807.12,
+          "overstock_pct": 127.76,
+          "stockout_pct": 0.0,
+          "error_pct": 127.76
+        },
+        {
+          "date": "2016-11-06",
+          "actual": 2872000.0,
+          "forecast": 1939485.14,
+          "overstock_pct": 0.0,
+          "stockout_pct": 32.47,
+          "error_pct": -32.47
+        },
+        {
+          "date": "2016-11-13",
+          "actual": 2543000.0,
+          "forecast": 1943522.98,
+          "overstock_pct": 0.0,
+          "stockout_pct": 23.57,
+          "error_pct": -23.57
+        },
+        {
+          "date": "2016-11-20",
+          "actual": 1493000.0,
+          "forecast": 2359970.8,
+          "overstock_pct": 58.07,
+          "stockout_pct": 0.0,
+          "error_pct": 58.07
+        },
+        {
+          "date": "2016-11-27",
+          "actual": 1081000.0,
+          "forecast": 1839178.88,
+          "overstock_pct": 70.14,
+          "stockout_pct": 0.0,
+          "error_pct": 70.14
+        },
+        {
+          "date": "2016-12-04",
+          "actual": 1820000.0,
+          "forecast": 1965022.88,
+          "overstock_pct": 7.97,
+          "stockout_pct": 0.0,
+          "error_pct": 7.97
+        },
+        {
+          "date": "2016-12-11",
+          "actual": 1644000.0,
+          "forecast": 2007485.75,
+          "overstock_pct": 22.11,
+          "stockout_pct": 0.0,
+          "error_pct": 22.11
+        },
+        {
+          "date": "2016-12-18",
+          "actual": 1717000.0,
+          "forecast": 2184821.81,
+          "overstock_pct": 27.25,
+          "stockout_pct": 0.0,
+          "error_pct": 27.25
+        },
+        {
+          "date": "2016-12-25",
+          "actual": 1189000.0,
+          "forecast": 1318887.79,
+          "overstock_pct": 10.92,
+          "stockout_pct": 0.0,
+          "error_pct": 10.92
+        },
+        {
+          "date": "2017-01-01",
+          "actual": 516000.0,
+          "forecast": 669734.17,
+          "overstock_pct": 29.79,
+          "stockout_pct": 0.0,
+          "error_pct": 29.79
+        },
+        {
+          "date": "2017-01-08",
+          "actual": 100000.0,
+          "forecast": 2412797.64,
+          "overstock_pct": 2312.8,
+          "stockout_pct": 0.0,
+          "error_pct": 2312.8
+        }
+      ]
+    }
+  ],
+  "ensemble": {
+    "model": "ENSEMBLE (LSTM + SARIMA average)",
+    "avg_overstock_pct": 37.58,
+    "avg_stockout_pct": 7.61,
+    "periods_evaluated": 46,
+    "note": "Ensemble averages both model forecasts to smooth individual model bias. Use this as the safest risk estimate."
+  }
+}

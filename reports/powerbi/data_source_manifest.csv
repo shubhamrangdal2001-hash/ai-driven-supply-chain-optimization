@@ -1,0 +1,7 @@
+Table,Source,Rows,Type
+fact_orders,DataCoSupplyChainDataset.csv,180519,Transactional (real)
+fact_demand_monthly,Historical Product Demand.csv,136026,Aggregated (real)
+inventory_plan,phase4 output,2160,Model output on real demand
+fact_routes,phase3 VRP on Olist geo,5,Optimization output (real stops)
+olist_delivery_kpis,Olist orders + customers,27,Aggregated (real)
+simulation_*,Monte Carlo on inventory_plan,500,Simulation (based on real SKU stats)

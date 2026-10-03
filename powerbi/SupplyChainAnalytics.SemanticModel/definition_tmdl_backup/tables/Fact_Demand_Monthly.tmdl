@@ -1,0 +1,14 @@
+table Fact_Demand_Monthly
+	lineageTag: fact_demand_monthly-001
+
+	partition Fact_Demand_Monthly = m
+		mode: import
+		source =
+				let
+			    Source = Csv.Document(
+			        File.Contents(PBI_DataPath & "\\fact_demand_monthly.csv"),
+			        [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.None]
+			    ),
+			    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true])
+		in
+			#Promoted Headers

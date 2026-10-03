@@ -1,0 +1,8 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.1.0/schema.json",
+  "name": "e4000000000000000004",
+  "displayName": "Demand Forecasting",
+  "displayOption": "FitToPage",
+  "height": 720,
+  "width": 1280
+}

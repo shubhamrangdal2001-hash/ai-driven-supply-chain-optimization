@@ -1,0 +1,14 @@
+table Olist_Delivery_KPIs
+	lineageTag: olist_delivery_kpis-001
+
+	partition Olist_Delivery_KPIs = m
+		mode: import
+		source =
+				let
+			    Source = Csv.Document(
+			        File.Contents(PBI_DataPath & "\\olist_delivery_kpis.csv"),
+			        [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.None]
+			    ),
+			    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true])
+		in
+			#Promoted Headers

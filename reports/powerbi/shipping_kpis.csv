@@ -1,0 +1,5 @@
+Shipping_Mode,Orders,Revenue,Profit,On_Time_Pct,Avg_Delay_Days,Profit_Margin
+First Class,27814,5674369.76,643121.92,0.0,-1.0,11.34
+Same Day,9737,1942528.56,203018.43,52.2,-0.48,10.58
+Second Class,35216,7145444.82,750308.17,20.3,-1.99,10.61
+Standard Class,107752,22022391.88,2370454.45,60.2,0.0,10.8

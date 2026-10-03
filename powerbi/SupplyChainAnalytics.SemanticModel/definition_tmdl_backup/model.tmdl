@@ -1,0 +1,26 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	annotation __PBI_TimeIntelligenceEnabled = 1
+	annotation PBI_ProTooling = ["DevMode"]
+
+	ref table Fact_Orders
+	ref table Dim_Date
+	ref table KPI_Summary
+	ref table Monthly_Trend
+	ref table Category_KPIs
+	ref table Region_KPIs
+	ref table Country_KPIs
+	ref table Shipping_KPIs
+	ref table Supplier_Performance
+	ref table Fact_Demand_Monthly
+	ref table Dim_Warehouse
+	ref table Inventory_Plan
+	ref table Fact_Routes
+	ref table Olist_Delivery_KPIs
+	ref table Simulation_KPIs
+	ref table ABC_Breakdown
+	ref table Simulation_Results
+	ref table Data_Source_Manifest
+
+	ref cultureInfo en-US

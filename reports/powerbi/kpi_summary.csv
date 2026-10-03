@@ -1,0 +1,11 @@
+KPI,Value,Unit,Format
+Total Revenue,36784735.01337984,$,Currency
+Total Orders,180519.0,,Integer
+Total Profit,3966902.974050357,$,Currency
+Avg Profit Margin %,10.8,%,Percent
+On-Time Rate %,42.7,%,Percent
+Late Delivery Risk %,54.8,%,Percent
+Avg Order Value,203.77,$,Currency
+Avg Delay Days,-0.57,days,Decimal
+Total Units Sold,384079.0,units,Integer
+Avg Discount Rate %,10.2,%,Percent

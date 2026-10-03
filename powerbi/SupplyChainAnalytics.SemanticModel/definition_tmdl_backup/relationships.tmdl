@@ -1,0 +1,7 @@
+relationship Fact_Orders_Date
+	fromColumn: Fact_Orders.Order_Date
+	toColumn: Dim_Date.Date
+
+relationship Demand_Warehouse
+	fromColumn: Fact_Demand_Monthly.Warehouse
+	toColumn: Dim_Warehouse.Warehouse
